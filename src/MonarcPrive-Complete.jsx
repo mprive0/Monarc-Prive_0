@@ -423,6 +423,28 @@ export default function MonarcPrive() {
   const closeModal = () => setModal(null);
   const field = k => e => setFv(p => ({...p, [k]: e.target.value}));
   const toggleFav = i => setFavs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
+  const sendWelcomeEmail = async (email, firstName, tier = "curated") => {
+    const tierNames = { curated:"Curated", private:"Private", founding:"Founding" };
+    const tierPrices = { curated:"$300", private:"$750", founding:"By Invitation" };
+    const API = import.meta.env.VITE_API_URL;
+    if (!API) return; // backend not connected yet — skip silently
+    try {
+      await fetch(`${API}/api/notifications/welcome`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          name: firstName,
+          tier,
+          tierName: tierNames[tier] || "Curated",
+          tierPrice: tierPrices[tier] || "$300",
+        }),
+      });
+    } catch (e) {
+      console.log("Welcome email queued — backend not yet connected");
+    }
+  };
+
   const approvePending = id => setPending(p => p.filter(x => x.id !== id));
   const approveBooking = ref => setBookings(p => p.map(b => b.ref===ref ? {...b, status:"confirmed"} : b));
 
@@ -1282,7 +1304,12 @@ export default function MonarcPrive() {
                   <div className="fg"><label className="fl">CVC</label><input className="fi" placeholder="•••" maxLength={4} onChange={field("cvc")}/></div>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:7,margin:"10px 0 4px",fontSize:".54rem",letterSpacing:".12em",textTransform:"uppercase",color:"var(--taupe)"}}><span style={{color:"var(--green)"}}>●</span>256-bit SSL · Stripe</div>
-                <button className="btnf" style={{marginTop:12}} onClick={()=>openModal("success")}>Activate Membership — $300</button>
+                <button className="btnf" style={{marginTop:12}} onClick={async ()=>{
+                  const email = fv.em || "";
+                  const firstName = fv.fn || "";
+                  await sendWelcomeEmail(email, firstName, "curated");
+                  openModal("success");
+                }}>Activate Membership — $300</button>
               </div>
             </>}
             {modal==="book"&&<>
@@ -1306,7 +1333,7 @@ export default function MonarcPrive() {
                   <div className="stit">Welcome to Monarc Prive</div>
                   <p className="ssub">Your membership is active. You now have access to all 6 estates, our full luxury partner network, and your AI concierge Sterling is ready.</p>
                   <div className="sref">MP-{Math.random().toString(36).substr(2,8).toUpperCase()}</div>
-                  <button className="btnf" onClick={()=>{closeModal();setPage("admin");setASection("agents_ai");}}>Enter Member Portal →</button>
+                  <button className="btnf" onClick={()=>{closeModal();setPage("home");}}>Start Exploring →</button>
                 </div>
               </div>
             </>}
