@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import MonarcMembership from "./pages/LandingPage";
+import MonarcPrive from "./MonarcPrive-Complete";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <MonarcMembership />
+    <MonarcPrive />
   </React.StrictMode>
 );
