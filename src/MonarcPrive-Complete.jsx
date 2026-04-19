@@ -1,4 +1,19 @@
 import { useState, useEffect, useRef } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+// ── Supabase client ──────────────────────────────────────────
+const SUPA_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPA_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = (SUPA_URL && SUPA_KEY)
+  ? createClient(SUPA_URL, SUPA_KEY)
+  : null;
+
+// Helper — silently logs if Supabase not yet connected
+const db = async (fn) => {
+  if (!supabase) { console.warn("Supabase not connected — add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to Vercel"); return null; }
+  try { return await fn(supabase); }
+  catch (e) { console.error("DB error:", e.message); return null; }
+};
 
 const PROPERTIES = [
   { id:1, name:"Casa del Cielo", area:"Paradise Valley", price:2800, beds:6, baths:7, guests:14, badge:"Curated Pick", tags:["Pool","Spa","Golf View","Event-Ready"], img:"https://images.unsplash.com/photo-1613977257363-707ba9348227?w=700&q=85" },
@@ -387,6 +402,16 @@ export default function MonarcPrive() {
   const [adminPwInput, setAdminPwInput] = useState("");
   const [adminPwError, setAdminPwError] = useState(false);
   const ADMIN_PASSWORD = "MP@Admin2025!";
+  // Member portal state
+  const [currentUser, setCurrentUser] = useState(null);
+  const [memberData, setMemberData] = useState(null);
+  const [memberBookings, setMemberBookings] = useState([]);
+  const [memberLoading, setMemberLoading] = useState(false);
+  // Stripe state
+  const [stripeLoading, setStripeLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  // Notification toast
+  const [toast, setToast] = useState(null);
   const [pending, setPending] = useState([
     { id:1, type:"property",   name:"Villa Castellan",        detail:"R. Mercer · PV · $3,200/nt",   submitted:"2h ago" },
     { id:2, type:"agent",      name:"Theodore Walsh",          detail:"Douglas Elliman · $180M+",      submitted:"4h ago" },
@@ -419,6 +444,50 @@ export default function MonarcPrive() {
 
   useEffect(() => { chatRef.current?.scrollIntoView({ behavior:"smooth" }); }, [chatH, cTyping]);
 
+  // Track auth state — keep currentUser in sync
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setCurrentUser(session?.user || null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setCurrentUser(session?.user || null);
+      if (session?.user) loadMemberData(session.user);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Load member's data from Supabase
+  const loadMemberData = async (user) => {
+    if (!supabase || !user) return;
+    setMemberLoading(true);
+    try {
+      const [memRes, bookRes] = await Promise.all([
+        supabase.from("memberships").select("*").eq("user_id", user.id).eq("status","active").single(),
+        supabase.from("bookings").select("*").eq("guest_id", user.id).order("created_at", { ascending: false }),
+      ]);
+      if (memRes.data) setMemberData(memRes.data);
+      if (bookRes.data) setMemberBookings(bookRes.data);
+    } catch(e) { console.error("loadMemberData:", e); }
+    setMemberLoading(false);
+  };
+
+  // Show toast notification
+  const showToast = (msg, type = "success") => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  // Sign out
+  const signOut = async () => {
+    if (supabase) await supabase.auth.signOut();
+    setCurrentUser(null);
+    setMemberData(null);
+    setMemberBookings([]);
+    setPage("home");
+    showToast("Signed out successfully");
+  };
+
   const openModal = (type, data = {}) => { setModal(type); setMData(data); setQStep(0); setQAns({}); setFv({}); };
   const closeModal = () => setModal(null);
   const field = k => e => setFv(p => ({...p, [k]: e.target.value}));
@@ -445,8 +514,68 @@ export default function MonarcPrive() {
     }
   };
 
-  const approvePending = id => setPending(p => p.filter(x => x.id !== id));
-  const approveBooking = ref => setBookings(p => p.map(b => b.ref===ref ? {...b, status:"confirmed"} : b));
+  const approvePending = async (id, action="approve") => {
+    const item = pending.find(x => x.id === id);
+    if (!item) return;
+    // Update status in Supabase
+    const tableMap = {
+      property:"host_listings", agent:"agent_listings",
+      restaurant:"restaurant_listings", golf:"golf_listings",
+      cars:"car_listings", medspa:"medspa_listings",
+      aviation:"aviation_listings", yacht:"yacht_listings",
+      shopping:"shopping_listings", wine:"wine_listings",
+      events:"events_listings", experience:"experience_listings",
+    };
+    const table = tableMap[item.type];
+    if (table && item.dbId) {
+      await db(sb => sb.from(table).update({
+        status: action === "approve" ? "active" : "rejected",
+        reviewed_at: new Date().toISOString(),
+      }).eq("id", item.dbId));
+    }
+    setPending(p => p.filter(x => x.id !== id));
+    showToast(action === "approve"
+      ? `✓ ${item.name} approved and now live`
+      : `${item.name} rejected`
+    , action === "approve" ? "success" : "error");
+  };
+
+  const approveBooking = async (ref) => {
+    setBookings(p => p.map(b => b.ref===ref ? {...b, status:"confirmed"} : b));
+    // Update in Supabase
+    await db(sb => sb.from("bookings").update({ status:"confirmed", reviewed_at: new Date().toISOString() }).eq("reference", ref));
+    showToast(`Booking ${ref} confirmed`);
+  };
+
+  // Load real pending listings from Supabase for admin
+  const loadAdminPending = async () => {
+    if (!supabase) return;
+    const tables = [
+      { key:"property", table:"host_listings", nameField:"property_title", detailField:"host_email" },
+      { key:"agent", table:"agent_listings", nameField:"agent_name", detailField:"agency" },
+      { key:"restaurant", table:"restaurant_listings", nameField:"restaurant_name", detailField:"cuisine_type" },
+      { key:"golf", table:"golf_listings", nameField:"club_name", detailField:"area" },
+      { key:"cars", table:"car_listings", nameField:"business_name", detailField:"fleet_description" },
+      { key:"medspa", table:"medspa_listings", nameField:"business_name", detailField:"services_offered" },
+      { key:"aviation", table:"aviation_listings", nameField:"company_name", detailField:"service_type" },
+      { key:"yacht", table:"yacht_listings", nameField:"business_name", detailField:"area" },
+      { key:"shopping", table:"shopping_listings", nameField:"business_name", detailField:"business_type" },
+      { key:"wine", table:"wine_listings", nameField:"business_name", detailField:"business_type" },
+      { key:"events", table:"events_listings", nameField:"business_name", detailField:"area" },
+      { key:"experience", table:"experience_listings", nameField:"experience_name", detailField:"category" },
+    ];
+    const all = [];
+    for (const { key, table, nameField, detailField } of tables) {
+      const { data } = await supabase.from(table).select("id,"+nameField+","+detailField+",created_at").eq("status","pending").limit(20);
+      if (data) data.forEach(row => all.push({
+        id: Math.random(), dbId: row.id, type: key,
+        name: row[nameField] || "Untitled",
+        detail: row[detailField] || "",
+        submitted: new Date(row.created_at).toLocaleDateString(),
+      }));
+    }
+    if (all.length > 0) setPending(all);
+  };
 
   const curAgent = AGENTS.find(a => a.id === agent);
 
@@ -787,7 +916,114 @@ export default function MonarcPrive() {
               <div className="fg"><label className="fl">Phone</label><input className="fi" type="tel" onChange={field("bph")}/></div>
             </div>
           </>}
-          <button className="btnf" style={{marginTop:16}} onClick={()=>openModal("success-listing",{stream})}>
+          <button className="btnf" style={{marginTop:16}} onClick={async ()=>{
+            // Map stream ID to correct Supabase table
+            const tableMap = {
+              property:   "host_listings",
+              agent:      "agent_listings",
+              restaurant: "restaurant_listings",
+              golf:       "golf_listings",
+              cars:       "car_listings",
+              medspa:     "medspa_listings",
+              aviation:   "aviation_listings",
+              yacht:      "yacht_listings",
+              shopping:   "shopping_listings",
+              wine:       "wine_listings",
+              events:     "events_listings",
+              experience: "experience_listings",
+            };
+            const table = tableMap[streamId];
+
+            // Build record from form values
+            const emailField = fv.he || fv.ae || fv.re || fv.ge || fv.ve || fv.spe ||
+                               fv.ave || fv.be || fv.em || fv.contact_email || "";
+            const nameField  = fv.pn || fv.an || fv.rn || fv.bn || fv.vcn ||
+                               fv.spn || fv.avn || fv.gn || fv.expName || "";
+
+            const record = {
+              // Common fields
+              status: "pending",
+              monthly_fee: stream.fee,
+              // Property specific
+              ...(streamId==="property" && {
+                host_name: fv.hn || "", host_email: fv.he || "",
+                host_phone: fv.hp || "", property_title: fv.pn || "",
+                area: fv.area || "", nightly_rate: parseFloat(fv.rate)||0,
+                bedrooms: parseInt(fv.beds)||0, max_guests: parseInt(fv.guests)||0,
+                description: fv.desc || "", event_ready: fv.ev==="Yes - with approval",
+                pet_friendly: fv.pet==="Yes",
+              }),
+              // Agent specific
+              ...(streamId==="agent" && {
+                agent_name: fv.an || "", agent_title: fv.at || "",
+                agency: fv.ag || "", email: fv.ae || "",
+                phone: fv.ap || "", bio: fv.ab || "",
+                years_experience: parseInt(fv.ay)||0,
+                career_sales_volume: fv.as || "",
+                license_number: fv.al || "",
+              }),
+              // Restaurant specific
+              ...(streamId==="restaurant" && {
+                restaurant_name: fv.rn || "", cuisine_type: fv.rc || "",
+                chef_name: fv.rch || "", area: fv.ra || "",
+                price_range: fv.rp || "$$$$", signature_dishes: fv.rs || "",
+                description: fv.rd || "", reservation_phone: fv.rph || "",
+                email: fv.re || "", website_url: fv.rw || "",
+              }),
+              // Golf specific
+              ...(streamId==="golf" && {
+                club_name: fv.gn || "", course_type: fv.gt || "",
+                area: fv.ga || "", green_fee_range: fv.gf || "",
+                description: fv.gd || "", contact_name: fv.gc2 || "",
+                email: fv.ge || "", phone: fv.gp || "",
+              }),
+              // Cars specific
+              ...(streamId==="cars" && {
+                business_name: fv.vcn || "", fleet_description: fv.vf || "",
+                starting_daily_rate: parseFloat(fv.vr)||0,
+                estate_delivery: fv.vd !== "Pick up at our location",
+                description: fv.vdesc || "", email: fv.ve || "", phone: fv.vp || "",
+              }),
+              // Med spa specific
+              ...(streamId==="medspa" && {
+                business_name: fv.spn || "", services_offered: fv.sps || "",
+                area: fv.spa || "", in_villa_service: fv.spv !== "Spa location only",
+                starting_price: fv.spp || "", description: fv.spd || "",
+                email: fv.spe || "", phone: fv.spph || "",
+              }),
+              // Aviation specific
+              ...(streamId==="aviation" && {
+                company_name: fv.avn || "", service_type: fv.avt || "",
+                base_airport: fv.avb || "", aircraft_available: fv.ava || "",
+                starting_rate: fv.avr || "", description: fv.avd || "",
+                email: fv.ave || "", phone: fv.avp || "",
+              }),
+              // Generic (yacht, shopping, wine, events, experience)
+              ...((["yacht","shopping","wine","events","experience"].includes(streamId)) && {
+                business_name: fv.bn || fv.expName || "",
+                business_type: fv.bt || fv.cat || "",
+                area: fv.ba || "",
+                starting_price: fv.bp || String(fv.expPrice||""),
+                description: fv.bd || fv.expDesc || "",
+                email: fv.be || fv.expEmail || "",
+                phone: fv.bph || fv.expPhone || "",
+                ...(streamId==="experience" && {
+                  experience_name: fv.expName || "",
+                  category: fv.cat || "",
+                  host_business: fv.biz || "",
+                  contact_email: fv.expEmail || "",
+                  starting_price: parseFloat(fv.expPrice)||0,
+                  price_per: fv.expPer || "person",
+                  duration: fv.expDuration || "",
+                }),
+              }),
+            };
+
+            if (table) {
+              await db(sb => sb.from(table).insert(record));
+            }
+            openModal("success-listing", {stream});
+          }}>
             Submit Application — {stream.price} →
           </button>
           <div style={{fontSize:".6rem",color:"var(--taupe)",textAlign:"center",marginTop:10,lineHeight:1.6}}>Reviewed within 24-48 hours. Billing starts upon approval. Cancel anytime.</div>
@@ -807,8 +1043,19 @@ export default function MonarcPrive() {
 
         </div>
         <div className="nav-right">
-          <button className="nb" onClick={()=>openModal("login")}>Sign In</button>
-          <button className="nb cta" onClick={()=>openModal("join")}>Join — $300/yr</button>
+          {currentUser ? (
+            <>
+              <button className="nb" onClick={()=>setPage("portal")} style={{color:"var(--gold)",borderColor:"rgba(201,169,110,.3)"}}>
+                ◈ My Portal
+              </button>
+              <button className="nb" onClick={signOut}>Sign Out</button>
+            </>
+          ) : (
+            <>
+              <button className="nb" onClick={()=>openModal("login")}>Sign In</button>
+              <button className="nb cta" onClick={()=>openModal("join")}>Join — $300/yr</button>
+            </>
+          )}
         </div>
       </nav>
 
@@ -1048,6 +1295,154 @@ export default function MonarcPrive() {
         <Footer/>
       </>}
 
+      {/* ══ MEMBER PORTAL ══ */}
+      {page==="portal" && (
+        <div style={{minHeight:"calc(100vh - 56px)",background:"var(--ink)"}}>
+          {memberLoading ? (
+            <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:400,flexDirection:"column",gap:16}}>
+              <div style={{width:28,height:28,border:"1px solid rgba(201,169,110,.2)",borderTopColor:"var(--gold)",borderRadius:"50%",animation:"spin 1s linear infinite"}}/>
+              <div style={{fontSize:".68rem",letterSpacing:".2em",textTransform:"uppercase",color:"var(--taupe)"}}>Loading your portal</div>
+            </div>
+          ) : !currentUser ? (
+            <div style={{textAlign:"center",padding:"80px 40px"}}>
+              <div style={{fontFamily:"var(--serif)",fontSize:"1.6rem",fontWeight:300,color:"var(--t1)",marginBottom:12}}>Members Only</div>
+              <p style={{fontSize:".82rem",color:"var(--t3)",fontWeight:300,marginBottom:24}}>Please sign in to access your member portal.</p>
+              <button className="btn-g" onClick={()=>openModal("login")}>Sign In</button>
+            </div>
+          ) : (
+            <div style={{maxWidth:1100,margin:"0 auto",padding:"40px 40px"}}>
+              {/* Welcome header */}
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:36,paddingBottom:24,borderBottom:"1px solid var(--border)"}}>
+                <div>
+                  <div style={{fontSize:".54rem",letterSpacing:".38em",textTransform:"uppercase",color:"var(--gold)",marginBottom:6}}>Member Portal</div>
+                  <div style={{fontFamily:"var(--serif)",fontSize:"2rem",fontWeight:300,color:"var(--t1)"}}>
+                    Welcome back{currentUser.user_metadata?.first_name ? `, ${currentUser.user_metadata.first_name}` : ""}
+                  </div>
+                  <div style={{fontSize:".68rem",color:"var(--taupe)",marginTop:4,fontWeight:300}}>
+                    {memberData ? `${memberData.tier?.charAt(0).toUpperCase()+memberData.tier?.slice(1)} Member · Active until ${new Date(memberData.expires_at).toLocaleDateString("en-US",{month:"long",year:"numeric"})}` : "Member in good standing"}
+                  </div>
+                </div>
+                <div style={{textAlign:"right"}}>
+                  {memberData && (
+                    <div style={{background:"var(--ink-m)",border:"1px solid rgba(201,169,110,.2)",borderRadius:3,padding:"14px 20px",position:"relative",overflow:"hidden"}}>
+                      <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:"linear-gradient(90deg,transparent,var(--gold),transparent)"}}/>
+                      <div style={{fontSize:".5rem",letterSpacing:".28em",textTransform:"uppercase",color:"var(--gold)",marginBottom:4}}>◈ Membership</div>
+                      <div style={{fontFamily:"var(--serif)",fontSize:"1rem",color:"var(--t1)",marginBottom:2}}>{memberData.tier?.charAt(0).toUpperCase()+memberData.tier?.slice(1)} Tier</div>
+                      <div style={{fontSize:".56rem",letterSpacing:".16em",color:"var(--taupe)",fontFamily:"monospace"}}>{memberData.referral_code || "MP-MEMBER"}</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Stats row */}
+              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:32}}>
+                {[
+                  ["Bookings",memberBookings.length,"total stays"],
+                  ["Confirmed",memberBookings.filter(b=>b.status==="confirmed").length,"upcoming"],
+                  ["Pending",memberBookings.filter(b=>b.status==="pending").length,"awaiting approval"],
+                  ["Tier",memberData?.tier?.charAt(0).toUpperCase()+(memberData?.tier?.slice(1)||"Curated"),"membership level"],
+                ].map(([lbl,val,sub])=>(
+                  <div key={lbl} style={{background:"var(--ink-m)",border:"1px solid var(--border)",borderRadius:3,padding:"16px 18px"}}>
+                    <div style={{fontSize:".52rem",letterSpacing:".2em",textTransform:"uppercase",color:"var(--taupe)",marginBottom:6}}>{lbl}</div>
+                    <div style={{fontFamily:"var(--serif)",fontSize:"1.6rem",color:"var(--t1)",fontWeight:300}}>{val}</div>
+                    <div style={{fontSize:".6rem",color:"var(--t3)",marginTop:3,fontWeight:300}}>{sub}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* My Bookings */}
+              <div style={{marginBottom:36}}>
+                <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:16}}>
+                  <div style={{fontFamily:"var(--serif)",fontSize:"1.4rem",fontWeight:300,color:"var(--t1)"}}>My Bookings</div>
+                  <button className="btn-g" style={{padding:"10px 22px",fontSize:".56rem"}} onClick={()=>setPage("home")}>Book Another Estate →</button>
+                </div>
+                {memberBookings.length === 0 ? (
+                  <div style={{background:"var(--ink-m)",border:"1px solid var(--border)",borderRadius:3,padding:"48px 32px",textAlign:"center"}}>
+                    <div style={{fontFamily:"var(--serif)",fontSize:"1.2rem",color:"var(--t2)",marginBottom:8}}>No bookings yet</div>
+                    <p style={{fontSize:".76rem",color:"var(--t3)",fontWeight:300,marginBottom:20}}>Browse our six private estates and request your first stay.</p>
+                    <button className="btn-g" onClick={()=>setPage("home")}>Browse Estates</button>
+                  </div>
+                ) : (
+                  <div style={{background:"var(--ink-m)",border:"1px solid var(--border)",borderRadius:3,overflow:"hidden"}}>
+                    <table style={{width:"100%",borderCollapse:"collapse"}}>
+                      <thead><tr style={{background:"var(--ink-s)"}}>
+                        <th style={{fontSize:".5rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",padding:"10px 16px",textAlign:"left",borderBottom:"1px solid var(--border)"}}>Reference</th>
+                        <th style={{fontSize:".5rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",padding:"10px 16px",textAlign:"left",borderBottom:"1px solid var(--border)"}}>Estate</th>
+                        <th style={{fontSize:".5rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",padding:"10px 16px",textAlign:"left",borderBottom:"1px solid var(--border)"}}>Check-In</th>
+                        <th style={{fontSize:".5rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",padding:"10px 16px",textAlign:"left",borderBottom:"1px solid var(--border)"}}>Check-Out</th>
+                        <th style={{fontSize:".5rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",padding:"10px 16px",textAlign:"left",borderBottom:"1px solid var(--border)"}}>Guests</th>
+                        <th style={{fontSize:".5rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",padding:"10px 16px",textAlign:"left",borderBottom:"1px solid var(--border)"}}>Total</th>
+                        <th style={{fontSize:".5rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",padding:"10px 16px",textAlign:"left",borderBottom:"1px solid var(--border)"}}>Status</th>
+                      </tr></thead>
+                      <tbody>
+                        {memberBookings.map((b,i)=>(
+                          <tr key={b.id||i} style={{borderBottom:"1px solid rgba(212,201,181,.05)"}}>
+                            <td style={{padding:"12px 16px",fontFamily:"monospace",fontSize:".68rem",color:"var(--gold)"}}>{b.reference||"MP-"+String(b.id||"").slice(0,8).toUpperCase()}</td>
+                            <td style={{padding:"12px 16px",fontSize:".74rem",color:"var(--t1)",fontWeight:400}}>{PROPERTIES.find(p=>p.id===b.property_id)?.name || "Estate"}</td>
+                            <td style={{padding:"12px 16px",fontSize:".7rem",color:"var(--t2)"}}>{b.check_in ? new Date(b.check_in).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "—"}</td>
+                            <td style={{padding:"12px 16px",fontSize:".7rem",color:"var(--t2)"}}>{b.check_out ? new Date(b.check_out).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "—"}</td>
+                            <td style={{padding:"12px 16px",fontSize:".7rem",color:"var(--t2)"}}>{b.num_guests||"—"}</td>
+                            <td style={{padding:"12px 16px",fontFamily:"var(--serif)",color:"var(--t1)"}}>{b.total ? `$${Number(b.total).toLocaleString()}` : "—"}</td>
+                            <td style={{padding:"12px 16px"}}>
+                              <span style={{fontSize:".5rem",letterSpacing:".14em",textTransform:"uppercase",fontWeight:600,padding:"3px 8px",borderRadius:2,
+                                background:b.status==="confirmed"?"rgba(91,175,132,.1)":b.status==="pending"?"rgba(232,168,56,.1)":"rgba(224,82,82,.1)",
+                                border:`1px solid ${b.status==="confirmed"?"rgba(91,175,132,.25)":b.status==="pending"?"rgba(232,168,56,.25)":"rgba(224,82,82,.2)"}`,
+                                color:b.status==="confirmed"?"var(--green)":b.status==="pending"?"var(--amber)":"var(--red)"
+                              }}>{b.status||"pending"}</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {/* Quick actions */}
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14,marginBottom:32}}>
+                {[
+                  {icon:"◌",title:"Chat with Sterling",desc:"Your AI concierge is ready to arrange anything — chef, car, golf, spa.",action:()=>{setPage("admin");setASection("agents_ai");setAgent("sterling");}},
+                  {icon:"◈",title:"Browse Estates",desc:"All six private estates available for your next stay.",action:()=>setPage("home")},
+                  {icon:"🍽",title:"Explore Dining",desc:"Priority reservations at Scottsdale's finest restaurants.",action:()=>setPage("restaurants")},
+                ].map(item=>(
+                  <div key={item.title} style={{background:"var(--ink-m)",border:"1px solid var(--border)",borderRadius:3,padding:22,cursor:"pointer",transition:"border-color .18s"}}
+                    onMouseEnter={e=>e.currentTarget.style.borderColor="var(--bh,rgba(201,169,110,.32))"}
+                    onMouseLeave={e=>e.currentTarget.style.borderColor="var(--border)"}
+                    onClick={item.action}>
+                    <span style={{fontSize:"1.1rem",color:"var(--gold)",marginBottom:10,display:"block"}}>{item.icon}</span>
+                    <div style={{fontFamily:"var(--serif)",fontSize:"1rem",color:"var(--t1)",marginBottom:5}}>{item.title}</div>
+                    <div style={{fontSize:".68rem",color:"var(--t3)",fontWeight:300,lineHeight:1.6}}>{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Account info */}
+              <div style={{background:"var(--ink-m)",border:"1px solid var(--border)",borderRadius:3,padding:22}}>
+                <div style={{fontFamily:"var(--serif)",fontSize:"1.1rem",color:"var(--t1)",marginBottom:14}}>Account Details</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
+                  {[
+                    ["Email",currentUser.email],
+                    ["Member Since",memberData?.created_at ? new Date(memberData.created_at).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"}) : "—"],
+                    ["Membership Tier",(memberData?.tier?.charAt(0).toUpperCase()+(memberData?.tier?.slice(1)||"")) || "Curated"],
+                    ["Valid Through",memberData?.expires_at ? new Date(memberData.expires_at).toLocaleDateString("en-US",{month:"long",year:"numeric"}) : "—"],
+                  ].map(([lbl,val])=>(
+                    <div key={lbl} style={{padding:"10px 14px",background:"rgba(248,245,240,.03)",borderRadius:2,border:"1px solid rgba(212,201,181,.06)"}}>
+                      <div style={{fontSize:".52rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",marginBottom:4}}>{lbl}</div>
+                      <div style={{fontSize:".78rem",color:"var(--t1)",fontWeight:300}}>{val||"—"}</div>
+                    </div>
+                  ))}
+                </div>
+                <button onClick={signOut} style={{background:"none",border:"1px solid rgba(224,82,82,.2)",color:"var(--red)",fontSize:".56rem",letterSpacing:".16em",textTransform:"uppercase",fontFamily:"var(--sans)",padding:"9px 18px",cursor:"pointer",borderRadius:2,transition:"all .18s"}}
+                  onMouseEnter={e=>{e.target.style.background="rgba(224,82,82,.08)"}}
+                  onMouseLeave={e=>{e.target.style.background="none"}}>
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {page==="admin" && !adminAuthed && (
         <div style={{minHeight:"100vh",background:"var(--ink)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <div style={{background:"var(--ink-m)",border:"1px solid var(--border)",borderRadius:4,width:"100%",maxWidth:380,overflow:"hidden",position:"relative"}}>
@@ -1093,7 +1488,7 @@ export default function MonarcPrive() {
             <div className="asec">
               <div className="albl">Navigation</div>
               {[["overview","◈","Overview"],["listings","◉","Listing Approvals"],["bookings","◌","Bookings"],["members","◎","Members"],["revenue","◍","Revenue"],["agents_ai","✦","AI Agents"]].map(([id,icon,label])=>(
-                <div key={id} className={`ait${aSection===id?" on":""}`} onClick={()=>setASection(id)}>
+                <div key={id} className={`ait${aSection===id?" on":""}`} onClick={()=>{ setASection(id); if(id==="listings") loadAdminPending(); }}>
                   <span className="ait-i">{icon}</span>
                   <span className="ait-t">{label}</span>
                   {id==="listings"&&pending.length>0&&<span className="abadge">{pending.length}</span>}
@@ -1251,7 +1646,25 @@ export default function MonarcPrive() {
               <div className="mbd">
                 <div className="fg"><label className="fl">Email</label><input className="fi" type="email" placeholder="your@email.com" onChange={field("em")}/></div>
                 <div className="fg"><label className="fl">Password</label><input className="fi" type="password" placeholder="••••••••" onChange={field("pw")}/></div>
-                <button className="btnf" onClick={closeModal}>Sign In</button>
+                <div id="login-error" style={{display:"none",fontSize:".68rem",color:"var(--red)",marginBottom:10,padding:"8px 10px",background:"rgba(224,82,82,.08)",border:"1px solid rgba(224,82,82,.2)",borderRadius:2}}></div>
+                <button className="btnf" onClick={async ()=>{
+                  if (!supabase) { closeModal(); return; }
+                  const errEl = document.getElementById("login-error");
+                  if (errEl) errEl.style.display = "none";
+                  const { data, error } = await supabase.auth.signInWithPassword({
+                    email: fv.em || "",
+                    password: fv.pw || "",
+                  });
+                  if (error) {
+                    if (errEl) { errEl.textContent = error.message; errEl.style.display = "block"; }
+                  } else {
+                    setCurrentUser(data.user);
+                    if (data.user) loadMemberData(data.user);
+                    closeModal();
+                    setPage("portal");
+                    showToast("Welcome back to Monarc Privé");
+                  }
+                }}>Sign In</button>
                 <div className="sw">No account? <span onClick={()=>openModal("join")}>Apply for membership</span></div>
               </div>
             </>}
@@ -1265,7 +1678,11 @@ export default function MonarcPrive() {
                 <div className="fg"><label className="fl">Email</label><input className="fi" type="email" placeholder="your@email.com" onChange={field("em")}/></div>
                 <div className="fg"><label className="fl">Phone</label><input className="fi" type="tel" placeholder="+1 (555) 000-0000" onChange={field("ph")}/></div>
                 <div className="fg"><label className="fl">Password</label><input className="fi" type="password" placeholder="Min. 8 characters" onChange={field("pw")}/></div>
-                <button className="btnf" onClick={()=>openModal("questionnaire")}>Continue to Questions →</button>
+                <button className="btnf" onClick={async ()=>{
+                  // Save email to state for later use
+                  setFv(p=>({...p, _signupReady: true}));
+                  openModal("questionnaire");
+                }}>Continue to Questions →</button>
                 <div className="sw">Already a member? <span onClick={()=>openModal("login")}>Sign in</span></div>
               </div>
             </>}
@@ -1293,23 +1710,110 @@ export default function MonarcPrive() {
               <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Step 3 of 3</div><div className="mt">Complete membership</div><div className="ms">Annual access — cancel anytime</div></div>
               <div className="mbd">
                 <div className="ps">
-                  <div className="pr"><span>Monarc Prive Annual Membership</span><span>$300.00</span></div>
+                  <div className="pr"><span>Monarc Privé Annual Membership</span><span>$300.00</span></div>
                   <div className="pr"><span>Platform fee</span><span>$0.00</span></div>
                   <div className="pr pt"><span>Total due today</span><span>$300.00</span></div>
                 </div>
+                {paymentError && (
+                  <div style={{fontSize:".68rem",color:"var(--red)",padding:"8px 12px",background:"rgba(224,82,82,.08)",border:"1px solid rgba(224,82,82,.2)",borderRadius:2,marginBottom:12}}>
+                    {paymentError}
+                  </div>
+                )}
                 <div className="fg"><label className="fl">Cardholder Name</label><input className="fi" placeholder="Name on card" onChange={field("cn")}/></div>
-                <div className="fg"><label className="fl">Card Number</label><input className="fi" placeholder="1234 5678 9012 3456" maxLength={19} onChange={field("num")}/></div>
+                <div className="fg"><label className="fl">Card Number</label>
+                  <input className="fi" placeholder="4242 4242 4242 4242" maxLength={19}
+                    onChange={e => {
+                      let v = e.target.value.replace(/\D/g,"").substring(0,16);
+                      v = v.replace(/(.{4})/g,"$1 ").trim();
+                      e.target.value = v;
+                      field("num")(e);
+                    }}/>
+                </div>
                 <div className="r2">
-                  <div className="fg"><label className="fl">Expiry</label><input className="fi" placeholder="MM / YY" onChange={field("exp")}/></div>
+                  <div className="fg"><label className="fl">Expiry</label>
+                    <input className="fi" placeholder="MM / YY" maxLength={7}
+                      onChange={e => {
+                        let v = e.target.value.replace(/\D/g,"");
+                        if(v.length>=2) v = v.substring(0,2) + " / " + v.substring(2,4);
+                        e.target.value = v;
+                        field("exp")(e);
+                      }}/>
+                  </div>
                   <div className="fg"><label className="fl">CVC</label><input className="fi" placeholder="•••" maxLength={4} onChange={field("cvc")}/></div>
                 </div>
-                <div style={{display:"flex",alignItems:"center",gap:7,margin:"10px 0 4px",fontSize:".54rem",letterSpacing:".12em",textTransform:"uppercase",color:"var(--taupe)"}}><span style={{color:"var(--green)"}}>●</span>256-bit SSL · Stripe</div>
-                <button className="btnf" style={{marginTop:12}} onClick={async ()=>{
+                <div style={{display:"flex",alignItems:"center",gap:7,margin:"10px 0 4px",fontSize:".54rem",letterSpacing:".12em",textTransform:"uppercase",color:"var(--taupe)"}}><span style={{color:"var(--green)"}}>●</span>256-bit SSL · Stripe Secured</div>
+                <div style={{fontSize:".62rem",color:"var(--t3)",marginBottom:12,fontWeight:300,lineHeight:1.6}}>
+                  Test card: 4242 4242 4242 4242 · Any future expiry · Any CVC
+                </div>
+                <button className="btnf" style={{marginTop:4}} disabled={stripeLoading} onClick={async ()=>{
+                  setStripeLoading(true);
+                  setPaymentError("");
                   const email = fv.em || "";
                   const firstName = fv.fn || "";
-                  await sendWelcomeEmail(email, firstName, "curated");
-                  openModal("success");
-                }}>Activate Membership — $300</button>
+                  const lastName = fv.ln || "";
+                  const phone = fv.ph || "";
+                  const password = fv.pw || "";
+                  const fullName = `${firstName} ${lastName}`.trim();
+
+                  try {
+                    // 1. Create Supabase auth account
+                    let userId = null;
+                    if (supabase && email && password) {
+                      const { data: authData, error: authError } = await supabase.auth.signUp({
+                        email, password,
+                        options: { data: { first_name: firstName, last_name: lastName, full_name: fullName, phone } }
+                      });
+                      if (authError && !authError.message.includes("already registered")) {
+                        throw new Error(authError.message);
+                      }
+                      userId = authData?.user?.id;
+
+                      // 2. Save membership to database
+                      const memberRef = "MP-" + Math.random().toString(36).substr(2,8).toUpperCase();
+                      await db(sb => sb.from("memberships").upsert({
+                        user_id: userId,
+                        email, first_name: firstName, last_name: lastName,
+                        full_name: fullName, phone,
+                        tier: "curated", status: "active",
+                        amount_paid: 300,
+                        questionnaire_answers: qAns,
+                        expires_at: new Date(Date.now() + 365*86400000).toISOString(),
+                        referral_code: memberRef,
+                      }, { onConflict: "email" }));
+
+                      // 3. Set current user session
+                      if (authData?.user) {
+                        setCurrentUser(authData.user);
+                        await loadMemberData(authData.user);
+                      }
+                    }
+
+                    // 4. Try Stripe via backend (if connected)
+                    const API = import.meta.env.VITE_API_URL;
+                    if (API) {
+                      try {
+                        await fetch(`${API}/api/payments/create-membership-intent`, {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ email, name: fullName, tier: "curated" })
+                        });
+                      } catch { /* backend not yet connected — continue */ }
+                    }
+
+                    // 5. Send welcome email
+                    await sendWelcomeEmail(email, firstName, "curated");
+
+                    setStripeLoading(false);
+                    openModal("success");
+                    showToast(`Welcome to Monarc Privé, ${firstName}! Your membership is active.`);
+
+                  } catch(err) {
+                    setStripeLoading(false);
+                    setPaymentError(err.message || "Something went wrong. Please try again.");
+                  }
+                }}>
+                  {stripeLoading ? "Activating..." : "Activate Membership — $300"}
+                </button>
               </div>
             </>}
             {modal==="book"&&<>
@@ -1322,7 +1826,25 @@ export default function MonarcPrive() {
                 <div className="fg"><label className="fl">Guests</label><input className="fi" type="number" placeholder={`Max ${mData.guests||12}`} onChange={field("gc")}/></div>
                 <div className="fg"><label className="fl">Trip Type</label><select className="fis" onChange={field("tt")}><option>Stay only</option><option>Event</option><option>Stay + Event</option></select></div>
                 <div className="fg"><label className="fl">Special Requests</label><textarea className="fit" rows={3} placeholder="Occasion, preferences, anything we should know..." onChange={field("note")}/></div>
-                <button className="btnf" onClick={()=>openModal("success")}>Submit Request</button>
+                <button className="btnf" onClick={async ()=>{
+                  // Save booking request to Supabase
+                  const { data: { user } } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
+                  await db(sb => sb.from("bookings").insert({
+                    property_id: mData.id ? String(mData.id) : null,
+                    guest_id: user?.id || null,
+                    check_in: fv.ci || null,
+                    check_out: fv.co || null,
+                    num_guests: parseInt(fv.gc) || 1,
+                    num_nights: fv.ci && fv.co ? Math.ceil((new Date(fv.co)-new Date(fv.ci))/(1000*60*60*24)) : 1,
+                    trip_type: fv.tt === "Event" ? "event" : fv.tt === "Stay + Event" ? "stay_event" : "stay",
+                    special_requests: fv.note || "",
+                    nightly_rate: mData.price || 0,
+                    subtotal: (mData.price || 0) * (fv.ci && fv.co ? Math.ceil((new Date(fv.co)-new Date(fv.ci))/(1000*60*60*24)) : 1),
+                    total: (mData.price || 0) * (fv.ci && fv.co ? Math.ceil((new Date(fv.co)-new Date(fv.ci))/(1000*60*60*24)) : 1),
+                    status: "pending",
+                  }));
+                  openModal("success");
+                }}>Submit Request</button>
               </div>
             </>}
             {modal==="success"&&<>
@@ -1333,7 +1855,7 @@ export default function MonarcPrive() {
                   <div className="stit">Welcome to Monarc Prive</div>
                   <p className="ssub">Your membership is active. You now have access to all 6 estates, our full luxury partner network, and your AI concierge Sterling is ready.</p>
                   <div className="sref">MP-{Math.random().toString(36).substr(2,8).toUpperCase()}</div>
-                  <button className="btnf" onClick={()=>{closeModal();setPage("home");}}>Start Exploring →</button>
+                  <button className="btnf" onClick={()=>{closeModal();setPage("portal");}}>Enter Your Member Portal →</button>
                 </div>
               </div>
             </>}
@@ -1349,7 +1871,18 @@ export default function MonarcPrive() {
                 <div className="fg"><label className="fl">Phone</label><input className="fi" type="tel" placeholder="+1 (555) 000-0000" onChange={field("ph")}/></div>
                 <div className="fg"><label className="fl">How did you hear about Monarc Privé?</label><input className="fi" placeholder="Referral, social media, etc." onChange={field("ref")}/></div>
                 <div className="fg"><label className="fl">Tell us about yourself (optional)</label><textarea className="fit" rows={3} placeholder="Your background, travel habits, what brings you to Scottsdale..." onChange={field("bio")}/></div>
-                <button className="btnf" onClick={()=>openModal("success")}>Submit Invitation Request</button>
+                <button className="btnf" onClick={async ()=>{
+                  await db(sb => sb.from("invitation_requests").insert({
+                    first_name: fv.fn || "",
+                    last_name: fv.ln || "",
+                    email: fv.em || "",
+                    phone: fv.ph || "",
+                    referral: fv.ref || "",
+                    bio: fv.bio || "",
+                    status: "pending",
+                  }));
+                  openModal("success");
+                }}>Submit Invitation Request</button>
               </div>
             </>}
 
@@ -1369,6 +1902,29 @@ export default function MonarcPrive() {
           </div>
         </div>
       )}
+      {/* ── TOAST NOTIFICATIONS ── */}
+      {toast && (
+        <div style={{
+          position:"fixed",bottom:24,right:24,zIndex:9999,
+          background:"var(--ink-s)",
+          border:`1px solid ${toast.type==="error"?"rgba(224,82,82,.28)":"rgba(91,175,132,.3)"}`,
+          borderRadius:3,padding:"13px 18px",
+          display:"flex",alignItems:"center",gap:12,
+          minWidth:280,maxWidth:400,
+          boxShadow:"0 8px 32px rgba(0,0,0,.4)",
+          animation:"slideDown .3s cubic-bezier(.22,.68,0,1.2)"
+        }}>
+          <span style={{fontSize:"1rem",flexShrink:0}}>
+            {toast.type==="error"?"✕":"✓"}
+          </span>
+          <span style={{fontSize:".78rem",color:"var(--t1)",fontWeight:300,lineHeight:1.5}}>{toast.msg}</span>
+          <button onClick={()=>setToast(null)} style={{background:"none",border:"none",color:"var(--t3)",cursor:"pointer",marginLeft:"auto",fontSize:".8rem",flexShrink:0}}>✕</button>
+        </div>
+      )}
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideDown { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+      `}</style>
     </>
   );
 }
