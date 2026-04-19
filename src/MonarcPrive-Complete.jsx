@@ -1069,7 +1069,7 @@ export default function MonarcPrive() {
               </table></div>}
               {aSection==="revenue" && <>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:18}}>
-                  {[["Memberships","$14,100","47 members × $300"],["Prop Listings","$150","6 × $25/mo"],["Agent Ads","$600","12 × $50/mo"],["Restaurants","$750","10 × $75/mo"],["Golf Clubs","$625","5 × $125/mo"],["Luxury Cars","$450","3 × $150/mo"],["Experiences","$800","8 × $100/mo"],["Aviation","$500","2 × $250/mo"]].map(([l,v,s])=>(
+                  {[["Memberships","$14,100","47 members × $300"],["Prop Listings","$150","6 × $55/mo"],["Agent Ads","$600","12 × $50/mo"],["Restaurants","$750","10 × $75/mo"],["Golf Clubs","$625","5 × $125/mo"],["Luxury Cars","$450","3 × $150/mo"],["Experiences","$800","8 × $100/mo"],["Aviation","$500","2 × $250/mo"]].map(([l,v,s])=>(
                     <div key={l} className="sc2"><div className="slbl">{l}</div><div className="sval" style={{fontSize:"1.2rem",color:"var(--gold)"}}>{v}</div><div style={{fontSize:".58rem",color:"var(--t3)",marginTop:3,fontWeight:300}}>{s}</div></div>
                   ))}
                 </div>
