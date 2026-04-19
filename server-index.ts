@@ -327,9 +327,131 @@ const wrap = (body: string) => `<!DOCTYPE html><html><head><meta charset="utf-8"
 
 async function emailWelcome(to: string, name: string, tier: string) {
   const tNames: Record<string, string> = { curated: "Curated", private: "Private", founding: "Founding" };
-  const tPrices: Record<string, string> = { curated: "$300", private: "$750", founding: "$1,500" };
-  const html = wrap(`<p>Dear ${name || "Member"},</p><p>Welcome to Monarc Privé. Your <strong>${tNames[tier]} Membership</strong> is now active.</p><h2>Your Membership</h2><p>Tier: <strong>${tNames[tier]}</strong> · Fee: <strong>${tPrices[tier]}/year</strong><br>Expires: <strong>${new Date(Date.now()+365*86400000).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</strong></p><p>Sterling, your AI concierge, is ready to assist 24/7 in your portal.</p><a href="${process.env.APP_URL||"https://monarcprive.com"}/portal" class="btn">Enter Member Portal</a><p>With warm regards,<br>The Monarc Privé Team</p>`);
-  await mailer().sendMail({ from: `"Monarc Privé" <${process.env.SMTP_USER}>`, to, subject: `Welcome to Monarc Privé — ${tNames[tier]} Membership Active`, html });
+  const tPrices: Record<string, string> = { curated: "$300", private: "$750", founding: "By Invitation" };
+  const firstName = name?.split(" ")[0] || "Member";
+  const ref = "MP-" + Math.random().toString(36).substr(2,8).toUpperCase();
+  const expiry = new Date(Date.now()+365*86400000).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  const joinDate = new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  const siteUrl = process.env.APP_URL || "https://monarcprive.com";
+
+  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Welcome to Monarc Privé</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:#0E0C0A;color:#F8F5F0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto;background:#0E0C0A}
+.hdr{background:#0E0C0A;padding:36px 44px 28px;text-align:center;border-bottom:1px solid rgba(201,169,110,.15)}
+.logo{font-size:1.5rem;font-weight:300;letter-spacing:.22em;text-transform:uppercase;color:#F8F5F0}
+.logo span{color:#C9A96E}
+.logo-sub{font-size:.5rem;letter-spacing:.4em;text-transform:uppercase;color:#9E8E78;margin-top:5px;font-family:Arial,sans-serif}
+.div{width:48px;height:1px;background:linear-gradient(90deg,transparent,#C9A96E,transparent);margin:14px auto}
+.hero{background:#161412;padding:48px 44px 40px;text-align:center}
+.eye{font-size:.5rem;letter-spacing:.4em;text-transform:uppercase;color:#C9A96E;margin-bottom:14px;font-family:Arial,sans-serif}
+.h1{font-size:2.2rem;font-weight:300;color:#F8F5F0;line-height:1.1;margin-bottom:14px}
+.h1 em{font-style:italic;color:#E2C896}
+.hero-p{font-size:.88rem;color:rgba(248,245,240,.62);font-weight:300;line-height:1.85;max-width:420px;margin:0 auto;font-family:Arial,sans-serif}
+.mc{background:#1E1C19;border:1px solid rgba(201,169,110,.2);border-radius:3px;padding:26px 30px;margin:0 44px;position:relative;overflow:hidden}
+.mc-top{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#C9A96E,transparent)}
+.mc-badge{font-size:.5rem;letter-spacing:.34em;text-transform:uppercase;color:#C9A96E;margin-bottom:8px;font-family:Arial,sans-serif}
+.mc-tier{font-size:1.5rem;font-weight:300;color:#F8F5F0;margin-bottom:3px}
+.mc-ref{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:#9E8E78;margin-bottom:18px;font-family:Arial,sans-serif}
+.mc-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(212,201,181,.06);font-family:Arial,sans-serif}
+.mc-lbl{font-size:.7rem;color:rgba(248,245,240,.42);font-weight:300}
+.mc-val{font-size:.7rem;color:#F8F5F0;font-weight:400}
+.mc-val.g{color:#C9A96E}
+.sec{padding:40px 44px;background:#0E0C0A}
+.sec-eye{font-size:.5rem;letter-spacing:.36em;text-transform:uppercase;color:#C9A96E;margin-bottom:12px;font-family:Arial,sans-serif}
+.sec-title{font-size:1.4rem;font-weight:300;color:#F8F5F0;margin-bottom:18px}
+.perk-row{display:flex;gap:12px;margin-bottom:10px}
+.perk{background:#161412;border:1px solid rgba(212,201,181,.1);border-radius:2px;padding:14px;flex:1}
+.perk-icon{font-size:1rem;color:#C9A96E;margin-bottom:7px;display:block}
+.perk-name{font-size:.82rem;color:#F8F5F0;margin-bottom:3px}
+.perk-desc{font-size:.66rem;color:rgba(248,245,240,.4);font-weight:300;line-height:1.5;font-family:Arial,sans-serif}
+.sterling{background:#161412;border:1px solid rgba(201,169,110,.15);border-radius:3px;padding:24px 28px;margin-bottom:28px}
+.s-hdr{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.s-av{width:40px;height:40px;border-radius:50%;background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.25);display:flex;align-items:center;justify-content:center;font-size:1rem;color:#C9A96E;flex-shrink:0;text-align:center;line-height:40px}
+.s-name{font-size:1rem;color:#F8F5F0;font-weight:300}
+.s-role{font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:#C9A96E;font-family:Arial,sans-serif}
+.s-msg{font-size:.8rem;color:rgba(248,245,240,.6);font-weight:300;line-height:1.8;font-style:italic;font-family:Georgia,serif}
+.estate-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(212,201,181,.07);font-family:Arial,sans-serif}
+.e-name{font-size:.9rem;color:#F8F5F0}
+.e-detail{font-size:.62rem;color:#9E8E78;font-weight:300;margin-top:2px}
+.e-price{font-size:.88rem;color:#C9A96E}
+.cta-sec{text-align:center;padding:40px 44px;background:#161412;border-top:1px solid rgba(212,201,181,.1);border-bottom:1px solid rgba(212,201,181,.1)}
+.cta-title{font-size:1.5rem;font-weight:300;color:#F8F5F0;margin-bottom:10px}
+.cta-p{font-size:.78rem;color:rgba(248,245,240,.5);font-weight:300;line-height:1.75;margin-bottom:22px;font-family:Arial,sans-serif}
+.btn{display:inline-block;background:#C9A96E;color:#161412;font-family:Arial,sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:15px 38px;border-radius:2px}
+.ft{padding:28px 44px;text-align:center;border-top:1px solid rgba(212,201,181,.08)}
+.ft-logo{font-size:.95rem;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,245,240,.4);margin-bottom:10px}
+.ft-logo span{color:#C9A96E}
+.ft-copy{font-size:.6rem;color:rgba(248,245,240,.2);font-weight:300;line-height:1.7;font-family:Arial,sans-serif}
+</style></head><body>
+<div class="wrap">
+<div class="hdr"><div class="logo">Monarc<span>·</span>Privé</div><div class="logo-sub">Private Estates · Scottsdale, Arizona</div><div class="div"></div></div>
+<div class="hero">
+  <div class="eye">Welcome, ${firstName}</div>
+  <div class="h1">Your membership<br/>is <em>active.</em></div>
+  <p class="hero-p">You now have exclusive access to Scottsdale's most private portfolio of luxury estates, our full network of curated partners, and Sterling — your personal AI concierge available around the clock.</p>
+</div>
+<div class="mc">
+  <div class="mc-top"></div>
+  <div class="mc-badge">◈ Membership Details</div>
+  <div class="mc-tier">${tNames[tier]} Member</div>
+  <div class="mc-ref">${ref}</div>
+  <div>
+    <div class="mc-row"><span class="mc-lbl">Member Name</span><span class="mc-val">${name || firstName}</span></div>
+    <div class="mc-row"><span class="mc-lbl">Membership Tier</span><span class="mc-val g">${tNames[tier]}</span></div>
+    <div class="mc-row"><span class="mc-lbl">Annual Fee</span><span class="mc-val">${tPrices[tier]}</span></div>
+    <div class="mc-row"><span class="mc-lbl">Valid Through</span><span class="mc-val">${expiry}</span></div>
+    <div class="mc-row"><span class="mc-lbl">Member Since</span><span class="mc-val">${joinDate}</span></div>
+    <div class="mc-row"><span class="mc-lbl">Status</span><span class="mc-val g">● Active</span></div>
+  </div>
+</div>
+<div class="sec">
+  <div class="sec-eye">Your Access</div>
+  <div class="sec-title">Everything Monarc Privé has to offer</div>
+  <div class="perk-row">
+    <div class="perk"><span class="perk-icon">◈</span><div class="perk-name">6 Private Estates</div><div class="perk-desc">Paradise Valley and Scottsdale's finest from $1,650 to $5,800 per night</div></div>
+    <div class="perk"><span class="perk-icon">◌</span><div class="perk-name">Sterling Concierge</div><div class="perk-desc">Your personal AI concierge available 24 hours a day, 7 days a week</div></div>
+  </div>
+  <div class="perk-row">
+    <div class="perk"><span class="perk-icon">🍽</span><div class="perk-name">Curated Dining</div><div class="perk-desc">Priority reservations at Nobu, Maple & Ash, Bourbon Steak and more</div></div>
+    <div class="perk"><span class="perk-icon">🚗</span><div class="perk-name">Exotic Vehicles</div><div class="perk-desc">Ferrari, Rolls-Royce and Lamborghini delivered to your estate door</div></div>
+  </div>
+  <div class="perk-row">
+    <div class="perk"><span class="perk-icon">⛳</span><div class="perk-name">World-Class Golf</div><div class="perk-desc">TPC Scottsdale, Troon North, Desert Highlands access arranged</div></div>
+    <div class="perk"><span class="perk-icon">✈</span><div class="perk-name">Private Aviation</div><div class="perk-desc">Jet charters and helicopter tours from Scottsdale Airport</div></div>
+  </div>
+  <div class="sec-eye" style="margin-top:28px">Your Personal Concierge</div>
+  <div class="sterling">
+    <div class="s-hdr"><div class="s-av">◌</div><div><div class="s-name">Sterling</div><div class="s-role">Personal AI Concierge · 24/7</div></div></div>
+    <p class="s-msg">"Good day, ${firstName}. I have been briefed on your membership and I am ready to assist you. Whether you would like to arrange a private chef for your arrival, reserve a table at Nobu, book a sunrise horseback ride, or have a Rolls-Royce waiting at your estate — simply ask. I am here every hour of every day."</p>
+  </div>
+  <div class="sec-eye">Your Private Portfolio</div>
+  <div class="sec-title">Six curated estates</div>
+  <div class="estate-row"><div><div class="e-name">Casa del Cielo</div><div class="e-detail">Paradise Valley · 6bd · Sleeps 14</div></div><div class="e-price">$2,800/nt</div></div>
+  <div class="estate-row"><div><div class="e-name">The Ironwood Estate</div><div class="e-detail">North Scottsdale · 8bd · Sleeps 20 · Event-Ready</div></div><div class="e-price">$4,200/nt</div></div>
+  <div class="estate-row"><div><div class="e-name">Hacienda Serena</div><div class="e-detail">Scottsdale · 4bd · Sleeps 8 · Wellness</div></div><div class="e-price">$1,650/nt</div></div>
+  <div class="estate-row"><div><div class="e-name">Monolith Modern</div><div class="e-detail">Paradise Valley · 5bd · Sleeps 10</div></div><div class="e-price">$3,500/nt</div></div>
+  <div class="estate-row"><div><div class="e-name">The Camelback Retreat</div><div class="e-detail">Paradise Valley · 9bd · Sleeps 22 · Elite</div></div><div class="e-price">$5,800/nt</div></div>
+  <div class="estate-row"><div><div class="e-name">Desert Glass House</div><div class="e-detail">North Scottsdale · 4bd · Sleeps 8</div></div><div class="e-price">$2,100/nt</div></div>
+</div>
+<div class="cta-sec">
+  <div class="cta-title">Your first stay awaits</div>
+  <p class="cta-p">Browse all six estates, speak with Sterling, and begin planning something unforgettable.<br/>This is Scottsdale the way it was meant to be experienced.</p>
+  <a href="${siteUrl}" class="btn">Browse Private Estates</a>
+</div>
+<div class="ft">
+  <div class="ft-logo">Monarc<span>·</span>Privé</div>
+  <div class="ft-copy">You are receiving this because you recently joined Monarc Privé.<br/>Your membership is confirmed and active.<br/>© ${new Date().getFullYear()} Monarc Privé · Scottsdale, Arizona</div>
+</div>
+</div></body></html>`;
+
+  await mailer().sendMail({
+    from: `"Monarc Privé" <${process.env.SMTP_USER}>`,
+    to,
+    subject: `Welcome to Monarc Privé — Your ${tNames[tier]} Membership Is Active`,
+    html,
+  });
 }
 
 async function emailListingApproved(type: string, to: string, listing: any) {

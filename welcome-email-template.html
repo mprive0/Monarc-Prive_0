@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="x-apple-disable-message-reformatting"/>
+  <title>Welcome to Monarc Privé</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Jost', Georgia, sans-serif; background: #0E0C0A; color: #F8F5F0; -webkit-font-smoothing: antialiased; }
+    .wrapper { max-width: 600px; margin: 0 auto; background: #0E0C0A; }
+    .header { background: #0E0C0A; padding: 40px 48px 32px; text-align: center; border-bottom: 1px solid rgba(201,169,110,.15); }
+    .logo { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.6rem; font-weight: 300; letter-spacing: .22em; text-transform: uppercase; color: #F8F5F0; }
+    .logo span { color: #C9A96E; }
+    .logo-sub { font-size: .52rem; letter-spacing: .42em; text-transform: uppercase; color: #9E8E78; margin-top: 5px; }
+    .divider { width: 50px; height: 1px; background: linear-gradient(90deg, transparent, #C9A96E, transparent); margin: 16px auto; }
+    .hero-section { background: #161412; padding: 52px 48px 44px; text-align: center; position: relative; }
+    .hero-eyebrow { font-size: .54rem; letter-spacing: .42em; text-transform: uppercase; color: #C9A96E; margin-bottom: 16px; }
+    .hero-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2.4rem; font-weight: 300; color: #F8F5F0; line-height: 1.1; margin-bottom: 16px; }
+    .hero-title em { font-style: italic; color: #E2C896; }
+    .hero-body { font-size: .88rem; color: rgba(248,245,240,.65); font-weight: 300; line-height: 1.85; max-width: 420px; margin: 0 auto 28px; }
+    .membership-card { background: #1E1C19; border: 1px solid rgba(201,169,110,.2); border-radius: 3px; padding: 28px 32px; margin: 0 48px; position: relative; overflow: hidden; }
+    .membership-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #C9A96E, transparent); }
+    .mc-badge { font-size: .52rem; letter-spacing: .36em; text-transform: uppercase; color: #C9A96E; margin-bottom: 10px; }
+    .mc-tier { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.6rem; font-weight: 300; color: #F8F5F0; margin-bottom: 4px; }
+    .mc-ref { font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: #9E8E78; margin-bottom: 20px; }
+    .mc-details { border-top: 1px solid rgba(212,201,181,.1); padding-top: 18px; }
+    .mc-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(212,201,181,.06); }
+    .mc-label { font-size: .72rem; color: rgba(248,245,240,.45); font-weight: 300; }
+    .mc-value { font-size: .72rem; color: #F8F5F0; font-weight: 400; }
+    .mc-value.gold { color: #C9A96E; }
+    .content-section { padding: 44px 48px; background: #0E0C0A; }
+    .section-eyebrow { font-size: .52rem; letter-spacing: .38em; text-transform: uppercase; color: #C9A96E; margin-bottom: 14px; }
+    .section-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; font-weight: 300; color: #F8F5F0; margin-bottom: 20px; }
+    .perks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 32px; }
+    .perk { background: #161412; border: 1px solid rgba(212,201,181,.1); border-radius: 2px; padding: 16px; }
+    .perk-icon { font-size: 1.1rem; color: #C9A96E; margin-bottom: 8px; display: block; }
+    .perk-name { font-family: 'Cormorant Garamond', Georgia, serif; font-size: .95rem; color: #F8F5F0; font-weight: 400; margin-bottom: 4px; }
+    .perk-desc { font-size: .68rem; color: rgba(248,245,240,.42); font-weight: 300; line-height: 1.55; }
+    .sterling-section { background: #161412; border: 1px solid rgba(201,169,110,.15); border-radius: 3px; padding: 28px 32px; margin-bottom: 32px; }
+    .sterling-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .sterling-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(201,169,110,.12); border: 1px solid rgba(201,169,110,.25); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #C9A96E; flex-shrink: 0; }
+    .sterling-name { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.1rem; color: #F8F5F0; font-weight: 400; }
+    .sterling-role { font-size: .58rem; letter-spacing: .14em; text-transform: uppercase; color: #C9A96E; margin-top: 2px; }
+    .sterling-msg { font-size: .8rem; color: rgba(248,245,240,.65); font-weight: 300; line-height: 1.8; font-style: italic; }
+    .cta-section { text-align: center; padding: 44px 48px; background: #161412; border-top: 1px solid rgba(212,201,181,.1); border-bottom: 1px solid rgba(212,201,181,.1); }
+    .cta-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.6rem; font-weight: 300; color: #F8F5F0; margin-bottom: 12px; }
+    .cta-body { font-size: .8rem; color: rgba(248,245,240,.5); font-weight: 300; line-height: 1.75; margin-bottom: 24px; }
+    .btn-gold { display: inline-block; background: #C9A96E; color: #161412; font-family: 'Jost', sans-serif; font-size: .62rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; padding: 16px 40px; border-radius: 2px; }
+    .estates-section { padding: 40px 48px; background: #0E0C0A; }
+    .estate-list { list-style: none; }
+    .estate-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(212,201,181,.07); }
+    .estate-item:last-child { border-bottom: none; }
+    .estate-name { font-family: 'Cormorant Garamond', Georgia, serif; font-size: .95rem; color: #F8F5F0; font-weight: 400; }
+    .estate-detail { font-size: .65rem; color: #9E8E78; font-weight: 300; }
+    .estate-price { font-family: 'Cormorant Garamond', Georgia, serif; font-size: .9rem; color: #C9A96E; }
+    .footer { padding: 32px 48px; text-align: center; border-top: 1px solid rgba(212,201,181,.08); }
+    .footer-logo { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1rem; font-weight: 300; letter-spacing: .18em; text-transform: uppercase; color: rgba(248,245,240,.45); margin-bottom: 12px; }
+    .footer-logo span { color: #C9A96E; }
+    .footer-links { margin-bottom: 16px; }
+    .footer-link { font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: #9E8E78; text-decoration: none; margin: 0 10px; }
+    .footer-copy { font-size: .62rem; color: rgba(248,245,240,.22); font-weight: 300; line-height: 1.7; }
+    .footer-addr { font-size: .58rem; color: rgba(248,245,240,.18); margin-top: 6px; }
+    @media (max-width: 600px) {
+      .header, .hero-section, .content-section, .cta-section, .estates-section, .footer { padding: 28px 24px; }
+      .membership-card { margin: 0 24px; }
+      .perks-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">Monarc<span>·</span>Privé</div>
+    <div class="logo-sub">Private Estates · Scottsdale, Arizona</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="hero-eyebrow">Welcome, {{FIRST_NAME}}</div>
+    <h1 class="hero-title">Your membership<br/>is <em>active.</em></h1>
+    <p class="hero-body">
+      You now have exclusive access to Scottsdale's most private portfolio of luxury estates, 
+      our full network of curated partners, and Sterling — your personal AI concierge available 
+      around the clock.
+    </p>
+  </div>
+
+  <!-- MEMBERSHIP CARD -->
+  <div class="membership-card">
+    <div class="mc-badge">◈ Membership Details</div>
+    <div class="mc-tier">{{TIER_NAME}} Member</div>
+    <div class="mc-ref">{{MEMBERSHIP_REF}}</div>
+    <div class="mc-details">
+      <div class="mc-row">
+        <span class="mc-label">Member Name</span>
+        <span class="mc-value">{{FULL_NAME}}</span>
+      </div>
+      <div class="mc-row">
+        <span class="mc-label">Membership Tier</span>
+        <span class="mc-value gold">{{TIER_NAME}}</span>
+      </div>
+      <div class="mc-row">
+        <span class="mc-label">Annual Fee</span>
+        <span class="mc-value">{{TIER_PRICE}}</span>
+      </div>
+      <div class="mc-row">
+        <span class="mc-label">Valid Through</span>
+        <span class="mc-value">{{EXPIRY_DATE}}</span>
+      </div>
+      <div class="mc-row">
+        <span class="mc-label">Member Since</span>
+        <span class="mc-value">{{JOIN_DATE}}</span>
+      </div>
+      <div class="mc-row">
+        <span class="mc-label">Status</span>
+        <span class="mc-value gold">● Active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT YOU HAVE ACCESS TO -->
+  <div class="content-section">
+    <div class="section-eyebrow">Your Access</div>
+    <div class="section-title">Everything Monarc Privé has to offer</div>
+    <div class="perks-grid">
+      <div class="perk">
+        <span class="perk-icon">◈</span>
+        <div class="perk-name">6 Private Estates</div>
+        <div class="perk-desc">From $1,650 to $5,800 per night across Paradise Valley and Scottsdale</div>
+      </div>
+      <div class="perk">
+        <span class="perk-icon">◌</span>
+        <div class="perk-name">Sterling AI Concierge</div>
+        <div class="perk-desc">Your personal concierge available 24 hours a day, 7 days a week</div>
+      </div>
+      <div class="perk">
+        <span class="perk-icon">🍽</span>
+        <div class="perk-name">Curated Dining</div>
+        <div class="perk-desc">Priority reservations at Scottsdale's finest restaurants</div>
+      </div>
+      <div class="perk">
+        <span class="perk-icon">🚗</span>
+        <div class="perk-name">Exotic Vehicles</div>
+        <div class="perk-desc">Ferrari, Rolls-Royce, Lamborghini delivered to your estate</div>
+      </div>
+      <div class="perk">
+        <span class="perk-icon">⛳</span>
+        <div class="perk-name">World-Class Golf</div>
+        <div class="perk-desc">TPC Scottsdale, Troon North, Desert Highlands and more</div>
+      </div>
+      <div class="perk">
+        <span class="perk-icon">✈</span>
+        <div class="perk-name">Private Aviation</div>
+        <div class="perk-desc">Jet charters and helicopter tours from Scottsdale Airport</div>
+      </div>
+      <div class="perk">
+        <span class="perk-icon">💆</span>
+        <div class="perk-name">Spa & Wellness</div>
+        <div class="perk-desc">IV therapy, aesthetics, and in-villa massage available</div>
+      </div>
+      <div class="perk">
+        <span class="perk-icon">🍷</span>
+        <div class="perk-name">Wine & Spirits</div>
+        <div class="perk-desc">Rare bottle delivery and private tastings at your estate</div>
+      </div>
+    </div>
+
+    <!-- STERLING INTRO -->
+    <div class="sterling-section">
+      <div class="sterling-header">
+        <div class="sterling-icon">◌</div>
+        <div>
+          <div class="sterling-name">Sterling</div>
+          <div class="sterling-role">Your Personal AI Concierge</div>
+        </div>
+      </div>
+      <p class="sterling-msg">
+        "Good day, {{FIRST_NAME}}. I have been briefed on your membership and I am ready to assist you. 
+        Whether you would like to arrange a private chef for your arrival, reserve a table at Nobu, 
+        book a sunrise horseback ride, or have a Rolls-Royce waiting at your estate — simply ask. 
+        I am available to you every hour of every day. I look forward to exceeding your expectations."
+      </p>
+    </div>
+
+    <!-- ESTATES PREVIEW -->
+    <div class="section-eyebrow">Featured Estates</div>
+    <div class="section-title">Your private portfolio</div>
+    <ul class="estate-list">
+      <li class="estate-item">
+        <div><div class="estate-name">Casa del Cielo</div><div class="estate-detail">Paradise Valley · 6bd · Sleeps 14 · Event-Ready</div></div>
+        <div class="estate-price">$2,800/nt</div>
+      </li>
+      <li class="estate-item">
+        <div><div class="estate-name">The Ironwood Estate</div><div class="estate-detail">North Scottsdale · 8bd · Sleeps 20 · 7 Acres</div></div>
+        <div class="estate-price">$4,200/nt</div>
+      </li>
+      <li class="estate-item">
+        <div><div class="estate-name">Hacienda Serena</div><div class="estate-detail">Scottsdale · 4bd · Sleeps 8 · Wellness</div></div>
+        <div class="estate-price">$1,650/nt</div>
+      </li>
+      <li class="estate-item">
+        <div><div class="estate-name">Monolith Modern</div><div class="estate-detail">Paradise Valley · 5bd · Sleeps 10 · Architecture</div></div>
+        <div class="estate-price">$3,500/nt</div>
+      </li>
+      <li class="estate-item">
+        <div><div class="estate-name">The Camelback Retreat</div><div class="estate-detail">Paradise Valley · 9bd · Sleeps 22 · Elite</div></div>
+        <div class="estate-price">$5,800/nt</div>
+      </li>
+      <li class="estate-item">
+        <div><div class="estate-name">Desert Glass House</div><div class="estate-detail">North Scottsdale · 4bd · Sleeps 8 · Pet-Friendly</div></div>
+        <div class="estate-price">$2,100/nt</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-title">Your first stay awaits</div>
+    <p class="cta-body">
+      Browse all six estates, speak with Sterling, and begin planning something unforgettable.<br/>
+      This is Scottsdale the way it was meant to be experienced.
+    </p>
+    <a href="{{SITE_URL}}" class="btn-gold">Browse Private Estates</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">Monarc<span>·</span>Privé</div>
+    <div class="footer-links">
+      <a href="{{SITE_URL}}" class="footer-link">Browse Estates</a>
+      <a href="{{SITE_URL}}/membership" class="footer-link">Membership</a>
+      <a href="mailto:hello@monarcprive.com" class="footer-link">Contact Us</a>
+    </div>
+    <div class="footer-copy">
+      You are receiving this because you recently joined Monarc Privé.<br/>
+      Your membership is confirmed and active.<br/>
+      <a href="mailto:hello@monarcprive.com" style="color:#9E8E78;">Unsubscribe</a>
+    </div>
+    <div class="footer-addr">
+      © {{YEAR}} Monarc Privé · Scottsdale, Arizona · All rights reserved
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
