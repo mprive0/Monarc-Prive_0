@@ -20,7 +20,7 @@ const RESTAURANTS = [
 
 const LUXURY_CARS = [
   { id:1, name:"Ferrari Roma Spider", category:"Exotic Sports", company:"Arizona Exotics", price:2800, img:"https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&q=85", badge:"Most Requested", desc:"Open-top Italian perfection. 612hp. The drive Scottsdale deserves.", included:["Insurance","Estate Delivery","Concierge Support"] },
-  { id:2, name:"Rolls-Royce Cullinan", category:"Ultra-Luxury SUV", company:"Scottsdale Luxury Fleet", price:3200, img:"https://images.unsplash.com/photo-1563720223523-85e4ee0534dd?w=700&q=85", badge:"Member Favorite", desc:"The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included:["Chauffeur Available","Insurance","Airport Pickup"] },
+  { id:2, name:"Rolls-Royce Cullinan", category:"Ultra-Luxury SUV", company:"Scottsdale Luxury Fleet", price:3200, img:"https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", badge:"Member Favorite", desc:"The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included:["Chauffeur Available","Insurance","Airport Pickup"] },
   { id:3, name:"Lamborghini Urus", category:"Super SUV", company:"Arizona Exotics", price:2400, img:"https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=85", badge:"Top Pick", desc:"640hp super SUV. Four seats. Fits golf clubs. Turns every road into an event.", included:["Insurance","Delivery","24/7 Support"] },
   { id:4, name:"Bentley Continental GT", category:"Grand Tourer", company:"Scottsdale Luxury Fleet", price:1800, img:"https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&q=85", badge:"Classic Choice", desc:"Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included:["Insurance","Estate Delivery","Concierge"] },
 ];
@@ -52,7 +52,7 @@ const WINE_DATA = [
 
 const SHOPPING_DATA = [
   { id:1, name:"Elan Personal Styling", type:"Personal Shopper · Styling", area:"Scottsdale Fashion Square", price:"From $500/session", img:"https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&q=85", badge:"By Appointment", desc:"Private styling sessions at Scottsdale Fashion Square. Hermes, Chanel, Louis Vuitton. After-hours access." },
-  { id:2, name:"Desert Jewels Fine", type:"Custom Jewelry · Estate Pieces", area:"Old Town Scottsdale", price:"From $1,000", img:"https://images.unsplash.com/photo-1573408301185-9519f94816b6?w=700&q=85", badge:"Bespoke", desc:"Custom jewelry design and estate piece acquisition. In-villa consultations for significant purchases." },
+  { id:2, name:"Desert Jewels Fine", type:"Custom Jewelry · Estate Pieces", area:"Old Town Scottsdale", price:"From $1,000", img:"https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=700&q=85", badge:"Bespoke", desc:"Custom jewelry design and estate piece acquisition. In-villa consultations for significant purchases." },
   { id:3, name:"Art Scottsdale Gallery", type:"Fine Art · Acquisition", area:"Old Town Scottsdale", price:"Custom", img:"https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=700&q=85", badge:"Collector Access", desc:"Private after-hours gallery access. Artist introductions. Acquisition consulting for serious collectors." },
 ];
 
@@ -806,15 +806,7 @@ export default function MonarcPrive() {
             {HERO_IMGS.map((_,i)=><div key={i} className={`hd${i===heroIdx?" on":""}`} onClick={()=>setHeroIdx(i)}/>)}
           </div>
         </div>
-        <div className="rstrip">
-          {[["◈","$300/yr","Membership"],["🍽","$75/mo","Restaurant"],["🚗","$150/mo","Luxury Cars"],["⛳","$125/mo","Golf Club"],["✈","$250/mo","Aviation"],["◉","$50/mo","Agent Ad"]].map(([icon,amt,lbl])=>(
-            <div key={lbl} className="rsi" onClick={()=>setPage("partners")}>
-              <div style={{fontSize:".9rem",marginBottom:4}}>{icon}</div>
-              <div className="rsamt">{amt}</div>
-              <div className="rslbl">{lbl}</div>
-            </div>
-          ))}
-        </div>
+
         <div className="sec sec-d">
           <div className="sh"><div className="st">Featured Estates</div><span className="sl" onClick={()=>setPage("home")}>All 6 →</span></div>
           <div className="g3">{PROPERTIES.slice(0,3).map((p,i)=><PropCard key={p.id} p={p} idx={i}/>)}</div>
