@@ -1,0 +1,143 @@
+# ============================================================
+# Monarc Privé — Environment Variables
+# File: .env.example
+# Copy to .env and fill in all values before deploying
+# ============================================================
+
+# ── ANTHROPIC (REQUIRED for AI agents) ──────────────────────
+ANTHROPIC_API_KEY=sk-ant-...
+
+# ── SUPABASE (REQUIRED for database + auth) ──────────────────
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_KEY=eyJ...  # Never expose this on frontend
+
+# ── STRIPE (REQUIRED for payments) ───────────────────────────
+STRIPE_SECRET_KEY=sk_live_...       # Use sk_test_ for testing
+STRIPE_PUBLISHABLE_KEY=pk_live_...  # Safe to expose on frontend
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# ── EMAIL / SMTP (REQUIRED for weekly reports) ───────────────
+SMTP_HOST=smtp.sendgrid.net         # or smtp.postmarkapp.com
+SMTP_PORT=587
+SMTP_USER=apikey                    # For SendGrid
+SMTP_PASS=SG.YOUR_SENDGRID_API_KEY
+
+# Owner email — receives all scheduled weekly reports
+OWNER_EMAIL=you@monarcprive.com
+
+# ── APP CONFIG ────────────────────────────────────────────────
+NODE_ENV=production
+PORT=3001
+ALLOWED_ORIGINS=https://monarcprive.com,https://app.monarcprive.com
+
+# ── STORAGE (for property photos/videos) ─────────────────────
+# Option A: Supabase Storage (easiest, built-in)
+# Already included via SUPABASE_URL + keys above
+
+# Option B: Cloudinary (better for image optimization)
+CLOUDINARY_CLOUD_NAME=monarc-prive
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
+
+# ── PUSH NOTIFICATIONS (optional for mobile) ─────────────────
+FIREBASE_PROJECT_ID=monarc-prive
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk@...
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n..."
+
+# ── SMS (optional) ────────────────────────────────────────────
+TWILIO_ACCOUNT_SID=AC...
+TWILIO_AUTH_TOKEN=...
+TWILIO_PHONE_NUMBER=+1...
+
+# ── MONITORING (recommended for production) ───────────────────
+SENTRY_DSN=https://...@sentry.io/...
+
+
+# ============================================================
+# Monarc Privé — Deployment Guide
+# ============================================================
+#
+# FASTEST PATH TO PRODUCTION TODAY:
+#
+# ─────────────────────────────────────────────────────────────
+# STEP 1: SUPABASE (10 minutes)
+# ─────────────────────────────────────────────────────────────
+# 1. Go to supabase.com → New Project
+# 2. Name: monarc-prive | Region: US West (closest to Scottsdale)
+# 3. In SQL Editor: paste + run supabase/schema.sql
+# 4. In Settings > API: copy your URL, anon key, service key
+# 5. In Authentication: enable Email, Google, Apple providers
+#
+# ─────────────────────────────────────────────────────────────
+# STEP 2: ANTHROPIC API KEY (2 minutes)
+# ─────────────────────────────────────────────────────────────
+# 1. Go to console.anthropic.com
+# 2. API Keys → Create new key
+# 3. Copy into ANTHROPIC_API_KEY above
+#
+# ─────────────────────────────────────────────────────────────
+# STEP 3: STRIPE (15 minutes)
+# ─────────────────────────────────────────────────────────────
+# 1. Go to dashboard.stripe.com
+# 2. Developers → API Keys → copy live keys
+# 3. Create webhook: endpoint URL = https://your-backend.com/api/webhooks/stripe
+#    Events to listen: payment_intent.succeeded, payment_intent.failed,
+#    customer.created, charge.dispute.created
+#
+# ─────────────────────────────────────────────────────────────
+# STEP 4: SENDGRID EMAIL (5 minutes)
+# ─────────────────────────────────────────────────────────────
+# 1. app.sendgrid.com → Settings → API Keys → Create API Key
+# 2. Full access
+# 3. Verify sender domain (monarcprive.com)
+#
+# ─────────────────────────────────────────────────────────────
+# STEP 5: DEPLOY BACKEND (10 minutes with Render)
+# ─────────────────────────────────────────────────────────────
+# 1. Push your code to GitHub
+# 2. render.com → New → Web Service → connect GitHub repo
+# 3. Root directory: server/
+# 4. Build command: npm install && npm run build
+# 5. Start command: node dist/index.js
+# 6. Add all environment variables from this file
+# 7. Deploy — you get a URL like: https://monarc-api.onrender.com
+#
+# ─────────────────────────────────────────────────────────────
+# STEP 6: DEPLOY FRONTEND (5 minutes with Vercel)
+# ─────────────────────────────────────────────────────────────
+# 1. vercel.com → New Project → Import from GitHub
+# 2. Framework: Vite (React)
+# 3. Add env vars: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY,
+#    VITE_STRIPE_PUBLISHABLE_KEY, VITE_API_URL (your Render URL)
+# 4. Deploy — you get monarcprive.vercel.app (then add custom domain)
+#
+# ─────────────────────────────────────────────────────────────
+# STEP 7: DOMAIN (optional, 30 min with DNS propagation)
+# ─────────────────────────────────────────────────────────────
+# 1. Buy monarcprive.com on Namecheap or GoDaddy (~$15/yr)
+# 2. In Vercel: Settings → Domains → Add monarcprive.com
+# 3. Update DNS records at your registrar as instructed
+#
+# ─────────────────────────────────────────────────────────────
+# TOTAL COST ESTIMATE (monthly)
+# ─────────────────────────────────────────────────────────────
+# Supabase Pro:          $25/month
+# Render Starter:        $7/month
+# Vercel Hobby:          Free (Pro $20/month for custom domain)
+# SendGrid Essentials:   $20/month (up to 50k emails)
+# Anthropic API:         ~$50–200/month (usage-based)
+# Stripe:                2.9% + $0.30 per transaction
+# Cloudinary Free:       Free (25GB storage)
+# TOTAL:                 ~$100–200/month base
+#
+# ─────────────────────────────────────────────────────────────
+# WEEKLY REPORT SCHEDULE
+# ─────────────────────────────────────────────────────────────
+# Automated via node-cron in server/index.ts
+# Schedule: Every Monday at 8:00 AM MST (America/Phoenix)
+# Agents reporting: Aria (Sales), Celeste (Marketing),
+#                   Atlas (Operations), Orion (Analytics)
+# Delivery: Email to OWNER_EMAIL + stored in weekly_reports table
+# To trigger manually: POST /api/agents/:agentId/weekly-report
+#
