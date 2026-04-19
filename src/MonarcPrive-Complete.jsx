@@ -383,6 +383,10 @@ export default function MonarcPrive() {
   const [chatH, setChatH] = useState({});
   const [cInp, setCInp] = useState("");
   const [cTyping, setCTyping] = useState(false);
+  const [adminAuthed, setAdminAuthed] = useState(false);
+  const [adminPwInput, setAdminPwInput] = useState("");
+  const [adminPwError, setAdminPwError] = useState(false);
+  const ADMIN_PASSWORD = "MP@Admin2025!";
   const [pending, setPending] = useState([
     { id:1, type:"property",   name:"Villa Castellan",        detail:"R. Mercer · PV · $3,200/nt",   submitted:"2h ago" },
     { id:2, type:"agent",      name:"Theodore Walsh",          detail:"Douglas Elliman · $180M+",      submitted:"4h ago" },
@@ -452,7 +456,7 @@ export default function MonarcPrive() {
     {id:"experiences",label:"Experiences"},{id:"medspa",label:"Spa & Wellness"},
     {id:"aviation",label:"Aviation"},{id:"wine",label:"Wine & Spirits"},
     {id:"shopping",label:"Shopping"},{id:"membership",label:"Membership"},
-    {id:"partners",label:"List / Advertise"},
+
   ];
 
   const PropCard = ({p, idx}) => (
@@ -778,7 +782,7 @@ export default function MonarcPrive() {
         <div className="nav-logo" onClick={()=>setPage("home")}>Monarc<span>·</span>Prive</div>
         <div className="nav-links">
           {NavItems.map(n=><div key={n.id} className={`nl${page===n.id?" on":""}`} onClick={()=>setPage(n.id)}>{n.label}</div>)}
-          <div className={`nl${page==="admin"?" on":""}`} onClick={()=>setPage("admin")}>Admin</div>
+
         </div>
         <div className="nav-right">
           <button className="nb" onClick={()=>openModal("login")}>Sign In</button>
@@ -930,22 +934,63 @@ export default function MonarcPrive() {
       </>}
 
       {page==="membership" && <>
-        <div style={{textAlign:"center",padding:"80px 56px",background:"var(--ink)"}}>
-          <div style={{fontSize:".58rem",letterSpacing:".4em",textTransform:"uppercase",color:"var(--gold)",marginBottom:14}}>Exclusive Access</div>
-          <h1 style={{fontFamily:"var(--serif)",fontSize:"clamp(2.2rem,4.5vw,3.8rem)",fontWeight:300,color:"var(--t1)",lineHeight:1.1,marginBottom:16}}>Not a marketplace.<br/><em style={{fontStyle:"italic",color:"var(--gold-l)"}}>A private club.</em></h1>
-          <p style={{fontSize:".86rem",color:"var(--t3)",fontWeight:300,lineHeight:1.85,maxWidth:520,margin:"0 auto 44px"}}>One membership unlocks 6 private estates, dozens of luxury partners — restaurants, cars, golf, spas, aviation — and a 24/7 AI concierge that knows your preferences before you ask.</p>
-          <div style={{display:"inline-block",background:"var(--ink-m)",border:"1px solid rgba(201,169,110,.2)",borderRadius:3,padding:"36px 44px",textAlign:"left",maxWidth:400,width:"100%",position:"relative",overflow:"hidden"}}>
-            <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,var(--gold),transparent)"}}/>
-            <div style={{fontSize:".52rem",letterSpacing:".36em",textTransform:"uppercase",color:"var(--gold)",marginBottom:16}}>◈ Annual Membership</div>
-            <div style={{fontFamily:"var(--serif)",fontSize:"3rem",fontWeight:300,color:"var(--t1)",lineHeight:1}}><sup style={{fontSize:"1.3rem",verticalAlign:"top",marginTop:".4rem",color:"var(--gold)"}}>$</sup>300</div>
-            <div style={{fontSize:".6rem",letterSpacing:".18em",textTransform:"uppercase",color:"var(--taupe)",marginBottom:22}}>per year · cancel anytime</div>
-            <ul style={{listStyle:"none",marginBottom:26}}>
-              {["Access to 6 curated private estates","Full partner network — dining, cars, golf, spas, aviation","Sterling AI concierge — 24/7 personalized","Priority booking and member pricing","AI-powered arrival personalization","Vetted community — total discretion"].map(p=>(
-                <li key={p} style={{display:"flex",gap:10,padding:"6px 0",borderBottom:"1px solid rgba(212,201,181,.06)",fontSize:".74rem",color:"var(--t2)",fontWeight:300}}><span style={{color:"var(--gold)",flexShrink:0}}>—</span>{p}</li>
+        <div style={{background:"var(--ink)"}}>
+          {/* Hero */}
+          <div style={{textAlign:"center",padding:"72px 56px 56px"}}>
+            <div style={{fontSize:".58rem",letterSpacing:".4em",textTransform:"uppercase",color:"var(--gold)",marginBottom:14}}>Exclusive Membership</div>
+            <h1 style={{fontFamily:"var(--serif)",fontSize:"clamp(2.2rem,4.5vw,3.8rem)",fontWeight:300,color:"var(--t1)",lineHeight:1.1,marginBottom:16}}>Not a marketplace.<br/><em style={{fontStyle:"italic",color:"var(--gold-l)"}}>A private club.</em></h1>
+            <p style={{fontSize:".86rem",color:"var(--t3)",fontWeight:300,lineHeight:1.85,maxWidth:560,margin:"0 auto"}}>One membership unlocks 6 private estates, every luxury partner — restaurants, exotic cars, golf, spas, aviation, wine, shopping — and a 24/7 AI concierge that knows your preferences before you ask.</p>
+          </div>
+          {/* Three Tiers */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:1,background:"var(--border)",marginBottom:0}}>
+            {[
+              { name:"Curated", icon:"◌", price:"$300", period:"/year", highlight:false, badge:null,
+                perks:["Access to all 6 curated private estates","Sterling AI concierge — 24/7","Standard booking window","Member pricing on all services","Vetted guest community","Digital membership card"] },
+              { name:"Private", icon:"◈", price:"$750", period:"/year", highlight:true, badge:"Most Popular",
+                perks:["Everything in Curated","48-hour priority access window","Dedicated account manager","Exclusive member events & invitations","Concierge service credits ($200)","Physical membership card & gift","Early access to new estates"] },
+              { name:"Founding", icon:"◉", price:"By Invite", period:"", highlight:false, badge:"Limited — 50 Members",
+                perks:["Everything in Private","Founding member status forever","Annual luxury gratitude gift","Direct founder access & influence","Co-creation of new estate additions","Lifetime rate lock — never increases","Named acknowledgment in platform"] },
+            ].map(t=>(
+              <div key={t.name} style={{background:"var(--ink-m)",padding:"36px 32px",position:"relative",overflow:"hidden"}}>
+                {t.highlight && <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,var(--gold),transparent)"}}/>}
+                {t.badge && <div style={{position:"absolute",top:t.highlight?14:10,right:16,fontSize:".48rem",letterSpacing:".2em",textTransform:"uppercase",color:t.highlight?"var(--gold)":"var(--taupe)",background:"var(--ink-m)",padding:"0 6px"}}>{t.badge}</div>}
+                <div style={{textAlign:"center",marginBottom:24}}>
+                  <span style={{fontSize:"1.4rem",color:"var(--gold)",display:"block",marginBottom:10}}>{t.icon}</span>
+                  <div style={{fontFamily:"var(--serif)",fontSize:"1.3rem",color:"var(--t1)",fontWeight:400,marginBottom:6}}>{t.name}</div>
+                  <div style={{fontFamily:"var(--serif)",fontSize:"2.6rem",color:t.highlight?"var(--gold)":"var(--t1)",fontWeight:300,lineHeight:1}}>{t.price==="$300"||t.price==="$750"?<><sup style={{fontSize:"1.1rem",verticalAlign:"top",marginTop:".3rem",color:"var(--gold)"}}>$</sup>{t.price.slice(1)}</>:t.price}</div>
+                  <div style={{fontSize:".58rem",letterSpacing:".16em",textTransform:"uppercase",color:"var(--taupe)",marginTop:5}}>{t.period||" "}</div>
+                </div>
+                <ul style={{listStyle:"none",marginBottom:26,borderTop:"1px solid rgba(212,201,181,.08)",paddingTop:18}}>
+                  {t.perks.map(p=>(
+                    <li key={p} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"6px 0",borderBottom:"1px solid rgba(212,201,181,.05)",fontSize:".72rem",color:"var(--t2)",fontWeight:300,lineHeight:1.5}}>
+                      <span style={{color:"var(--gold)",flexShrink:0,marginTop:1}}>—</span>{p}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={()=>t.price==="By Invite"?openModal("invite"):openModal("join")}
+                  style={{width:"100%",background:t.highlight?"var(--gold)":"none",color:t.highlight?"var(--ink)":"var(--t2)",border:t.highlight?"none":"1px solid rgba(212,201,181,.2)",fontSize:".58rem",letterSpacing:".2em",textTransform:"uppercase",fontWeight:t.highlight?600:400,fontFamily:"var(--sans)",padding:13,cursor:"pointer",borderRadius:2,transition:"all .2s"}}
+                  onMouseEnter={e=>{if(!t.highlight){e.target.style.borderColor="var(--gold)";e.target.style.color="var(--gold)";}}}
+                  onMouseLeave={e=>{if(!t.highlight){e.target.style.borderColor="rgba(212,201,181,.2)";e.target.style.color="var(--t2)";}}}
+                >
+                  {t.price==="By Invite"?"Request an Invitation":"Apply for "+t.name}
+                </button>
+              </div>
+            ))}
+          </div>
+          {/* Comparison note */}
+          <div style={{background:"var(--ink-s)",padding:"28px 56px",borderTop:"1px solid var(--border)",borderBottom:"1px solid var(--border)"}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,maxWidth:900,margin:"0 auto",textAlign:"center"}}>
+              {[["6 Private Estates","All tiers"],["AI Concierge 24/7","Sterling · All tiers"],["12 Luxury Partners","Dining · Cars · Golf · Spa · Aviation · More"],["Total Discretion","Vetted members only"]].map(([val,sub])=>(
+                <div key={val}>
+                  <div style={{fontFamily:"var(--serif)",fontSize:"1rem",color:"var(--t1)",fontWeight:400,marginBottom:4}}>{val}</div>
+                  <div style={{fontSize:".6rem",color:"var(--taupe)",fontWeight:300}}>{sub}</div>
+                </div>
               ))}
-            </ul>
-            <button className="btnf" onClick={()=>openModal("join")}>Apply for Membership</button>
-            <button className="btng" onClick={()=>openModal("login")}>Already a member? Sign in</button>
+            </div>
+          </div>
+          <div style={{textAlign:"center",padding:"40px 56px"}}>
+            <button className="btng" style={{display:"inline-block",width:"auto",padding:"12px 32px"}} onClick={()=>openModal("login")}>Already a member? Sign in</button>
           </div>
         </div>
         <Footer/>
@@ -981,7 +1026,7 @@ export default function MonarcPrive() {
                   </div>
                 ))}
               </div>
-              <div style={{textAlign:"center",marginTop:16,fontSize:".8rem",color:"var(--t2)",fontWeight:300}}> = <strong style={{color:"var(--gold-l)"}}></strong> </div>
+              <div style={{textAlign:"center",marginTop:16,fontSize:".8rem",color:"var(--t2)",fontWeight:300}}>10 partners per category × 12 categories = <strong style={{color:"var(--gold-l)"}}>$12,750+/month</strong> in recurring partner fees alone</div>
             </div>
           </div>
         )}
@@ -989,7 +1034,45 @@ export default function MonarcPrive() {
         <Footer/>
       </>}
 
-      {page==="admin" && (
+      {page==="admin" && !adminAuthed && (
+        <div style={{minHeight:"100vh",background:"var(--ink)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <div style={{background:"var(--ink-m)",border:"1px solid var(--border)",borderRadius:4,width:"100%",maxWidth:380,overflow:"hidden",position:"relative"}}>
+            <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,var(--gold),transparent)"}}/>
+            <div style={{padding:"28px 30px 24px"}}>
+              <div style={{textAlign:"center",marginBottom:24}}>
+                <div style={{fontFamily:"var(--serif)",fontSize:"1.4rem",fontWeight:300,letterSpacing:".16em",textTransform:"uppercase",color:"var(--t1)",marginBottom:4}}>Monarc<span style={{color:"var(--gold)"}}>·</span>Privé</div>
+                <div style={{fontSize:".52rem",letterSpacing:".3em",textTransform:"uppercase",color:"var(--taupe)"}}>Admin Portal</div>
+                <div style={{width:40,height:1,background:"linear-gradient(90deg,transparent,var(--gold),transparent)",margin:"14px auto 0"}}/>
+              </div>
+              <div style={{fontSize:".56rem",letterSpacing:".2em",textTransform:"uppercase",color:"var(--taupe)",display:"block",marginBottom:7,fontWeight:500}}>Access Password</div>
+              <input
+                type="password"
+                placeholder="Enter admin password"
+                value={adminPwInput}
+                onChange={e=>{setAdminPwInput(e.target.value);setAdminPwError(false);}}
+                onKeyDown={e=>{
+                  if(e.key==="Enter"){
+                    if(adminPwInput===ADMIN_PASSWORD){setAdminAuthed(true);setAdminPwInput("");}
+                    else{setAdminPwError(true);setAdminPwInput("");}
+                  }
+                }}
+                style={{width:"100%",background:"rgba(248,245,240,.04)",border:`1px solid ${adminPwError?"var(--red)":"var(--border)"}`,borderRadius:2,padding:"11px 13px",fontFamily:"var(--sans)",fontSize:".8rem",color:"var(--t1)",fontWeight:300,outline:"none",marginBottom:adminPwError?6:14,letterSpacing:".1em"}}
+              />
+              {adminPwError && <div style={{fontSize:".62rem",color:"var(--red)",marginBottom:12}}>Incorrect password. Try again.</div>}
+              <button
+                onClick={()=>{
+                  if(adminPwInput===ADMIN_PASSWORD){setAdminAuthed(true);setAdminPwInput("");}
+                  else{setAdminPwError(true);setAdminPwInput("");}
+                }}
+                style={{width:"100%",background:"var(--gold)",color:"var(--ink)",fontSize:".58rem",letterSpacing:".2em",textTransform:"uppercase",fontWeight:600,fontFamily:"var(--sans)",padding:13,border:"none",cursor:"pointer",borderRadius:2}}
+              >Enter Admin Portal</button>
+              <button onClick={()=>setPage("home")} style={{width:"100%",background:"none",border:"1px solid var(--border)",color:"var(--t3)",fontSize:".56rem",letterSpacing:".18em",textTransform:"uppercase",fontFamily:"var(--sans)",padding:10,cursor:"pointer",borderRadius:2,marginTop:8}}>← Return to Site</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {page==="admin" && adminAuthed && (
         <div className="adm">
           <aside className="aside">
             <div className="aside-logo"><div className="aside-wm">Monarc<span>·</span>Prive</div><div className="aside-sub">Admin Dashboard</div></div>
@@ -1010,7 +1093,10 @@ export default function MonarcPrive() {
                 <div className="adm-title">{{overview:"Command Center",listings:"Listing Approvals",bookings:"Bookings",members:"Members",revenue:"Revenue",agents_ai:"AI Agents"}[aSection]||""}</div>
                 <div style={{fontSize:".56rem",letterSpacing:".14em",textTransform:"uppercase",color:"var(--t3)",marginTop:2}}>{new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})}</div>
               </div>
-              <button className="nb" onClick={()=>setPage("home")}>← Back to Site</button>
+              <div style={{display:"flex",gap:8}}>
+                <button className="nb" onClick={()=>setPage("home")}>← Back to Site</button>
+                <button className="nb" onClick={()=>{setAdminAuthed(false);setPage("home");}} style={{borderColor:"rgba(224,82,82,.2)",color:"var(--red)"}}>Sign Out</button>
+              </div>
             </div>
             <div className="adm-body">
               {aSection==="overview" && <>
@@ -1069,7 +1155,7 @@ export default function MonarcPrive() {
               </table></div>}
               {aSection==="revenue" && <>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:18}}>
-                  {[["Memberships","$14,100","47 members × $300"],["Prop Listings","$150","6 × $55/mo"],["Agent Ads","$600","12 × $50/mo"],["Restaurants","$750","10 × $75/mo"],["Golf Clubs","$625","5 × $125/mo"],["Luxury Cars","$450","3 × $150/mo"],["Experiences","$800","8 × $100/mo"],["Aviation","$500","2 × $250/mo"]].map(([l,v,s])=>(
+                  {[["Memberships","$14,100","47 members × $300"],["Prop Listings","$150","6 × $25/mo"],["Agent Ads","$600","12 × $50/mo"],["Restaurants","$750","10 × $75/mo"],["Golf Clubs","$625","5 × $125/mo"],["Luxury Cars","$450","3 × $150/mo"],["Experiences","$800","8 × $100/mo"],["Aviation","$500","2 × $250/mo"]].map(([l,v,s])=>(
                     <div key={l} className="sc2"><div className="slbl">{l}</div><div className="sval" style={{fontSize:"1.2rem",color:"var(--gold)"}}>{v}</div><div style={{fontSize:".58rem",color:"var(--t3)",marginTop:3,fontWeight:300}}>{s}</div></div>
                   ))}
                 </div>
@@ -1232,6 +1318,22 @@ export default function MonarcPrive() {
                 </div>
               </div>
             </>}
+            {modal==="invite"&&<>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Founding Membership</div><div className="mt">Request an Invitation</div><div className="ms">Limited to 50 founding members worldwide</div></div>
+              <div className="mbd">
+                <div style={{background:"rgba(201,169,110,.06)",border:"1px solid rgba(201,169,110,.15)",borderRadius:2,padding:14,marginBottom:18,fontSize:".74rem",color:"var(--t2)",fontWeight:300,lineHeight:1.7}}>Founding membership is by invitation only. Submit your details and our team will review your application personally within 48 hours.</div>
+                <div className="r2">
+                  <div className="fg"><label className="fl">First Name</label><input className="fi" placeholder="First" onChange={field("fn")}/></div>
+                  <div className="fg"><label className="fl">Last Name</label><input className="fi" placeholder="Last" onChange={field("ln")}/></div>
+                </div>
+                <div className="fg"><label className="fl">Email</label><input className="fi" type="email" placeholder="your@email.com" onChange={field("em")}/></div>
+                <div className="fg"><label className="fl">Phone</label><input className="fi" type="tel" placeholder="+1 (555) 000-0000" onChange={field("ph")}/></div>
+                <div className="fg"><label className="fl">How did you hear about Monarc Privé?</label><input className="fi" placeholder="Referral, social media, etc." onChange={field("ref")}/></div>
+                <div className="fg"><label className="fl">Tell us about yourself (optional)</label><textarea className="fit" rows={3} placeholder="Your background, travel habits, what brings you to Scottsdale..." onChange={field("bio")}/></div>
+                <button className="btnf" onClick={()=>openModal("success")}>Submit Invitation Request</button>
+              </div>
+            </>}
+
             {modal==="success-listing"&&<>
               <div className="mh"><div className="me">Monarc Prive</div></div>
               <div className="mbd">
