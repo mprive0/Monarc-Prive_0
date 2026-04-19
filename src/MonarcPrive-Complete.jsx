@@ -981,7 +981,7 @@ export default function MonarcPrive() {
                   </div>
                 ))}
               </div>
-              <div style={{textAlign:"center",marginTop:16,fontSize:".8rem",color:"var(--t2)",fontWeight:300}}>10 partners per category × 12 categories = <strong style={{color:"var(--gold-l)"}}>$12,750+/month</strong> in recurring partner fees alone</div>
+              <div style={{textAlign:"center",marginTop:16,fontSize:".8rem",color:"var(--t2)",fontWeight:300}}> = <strong style={{color:"var(--gold-l)"}}>$12,750+/month</strong> in recurring partner fees alone</div>
             </div>
           </div>
         )}
