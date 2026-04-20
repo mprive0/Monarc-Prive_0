@@ -1054,7 +1054,7 @@ export default function MonarcPrive() {
           ) : (
             <>
               <button className="nb" onClick={()=>openModal("login")}>Sign In</button>
-              <button className="nb cta" onClick={()=>openModal("join")}>Join — $300/yr</button>
+              <button className="nb cta" onClick={()=>openModal("join")}>Join</button>
             </>
           )}
         </div>
