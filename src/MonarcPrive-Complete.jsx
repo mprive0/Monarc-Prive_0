@@ -3,18 +3,15 @@ import { createClient } from "@supabase/supabase-js";
 
 
 // ── Supabase client ──────────────────────────────────────────
-const SUPA_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPA_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = (SUPA_URL && SUPA_KEY)
-  ? createClient(SUPA_URL, SUPA_KEY)
-  : null;
+const SUPA_URL = "https://vgmxzkedexjxdtjtbbok.supabase.co";
+const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbXh6a2VkZXhqeGR0anRiYm9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjQ1NjUsImV4cCI6MjA5MjIwMDU2NX0.zbCmIPOvIzFRFYTdVsjp1UTFEDl6x1CwqxfaizmwSkw";
+const supabase = createClient(SUPA_URL, SUPA_KEY);
 
-// Helper — silently logs if Supabase not yet connected
 const db = async (fn) => {
-  if (!supabase) { console.warn("Supabase not connected — add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to Vercel"); return null; }
   try { return await fn(supabase); }
   catch (e) { console.error("DB error:", e.message); return null; }
 };
+
 
 const PROPERTIES = [
   { id:1, name:"Casa del Cielo", area:"Paradise Valley", price:2800, beds:6, baths:7, guests:14, badge:"Curated Pick", tags:["Pool","Spa","Golf View","Event-Ready"], img:"https://images.unsplash.com/photo-1613977257363-707ba9348227?w=700&q=85" },
