@@ -33,7 +33,7 @@ const RESTAURANTS = [
 
 const LUXURY_CARS = [
   { id: 1, name: "Ferrari Roma Spider", category: "Exotic Sports", company: "Arizona Exotics", price: 2800, img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&q=85", badge: "Most Requested", desc: "Open-top Italian perfection. 612hp. The drive Scottsdale deserves.", included: ["Insurance", "Estate Delivery", "Concierge Support"] },
-  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "center", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
+  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "bottom", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
   { id: 3, name: "Lamborghini Urus", category: "Super SUV", company: "Arizona Exotics", price: 2400, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=85", badge: "Top Pick", desc: "640hp super SUV. Four seats. Fits golf clubs. Turns every road into an event.", included: ["Insurance", "Delivery", "24/7 Support"] },
   { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&q=85", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
 ];
@@ -653,7 +653,7 @@ export default function MonarcPrive() {
         <div style={{ fontSize: ".62rem", color: "var(--t2)", fontStyle: "italic", marginBottom: 10 }}>✦ {r.signature}</div>
         <div className="cf">
           <span style={{ fontSize: ".6rem", color: "var(--taupe)", fontWeight: 300 }}>{r.area}</span>
-          <button className="cc" onClick={() => openModal("join")}>Reserve →</button>
+          <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: r.name, type: "Dining Reservation", price: r.price }) : openModal("join")}>Reserve →</button>
         </div>
       </div>
     </div>
@@ -675,7 +675,7 @@ export default function MonarcPrive() {
         </div>
         <div className="cf">
           <div><span className="cp">${c.price.toLocaleString()}</span><div className="cps">per day</div></div>
-          <button className="cc" onClick={() => openModal("join")}>Reserve →</button>
+          <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: c.name, type: "Luxury Car Rental", price: `$${c.price.toLocaleString()}/day` }) : openModal("join")}>Reserve →</button>
         </div>
       </div>
     </div>
@@ -693,7 +693,7 @@ export default function MonarcPrive() {
         <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 8 }}>{item.desc}</div>
         <div className="cf">
           <div><div className="cp" style={{ fontSize: ".95rem" }}>{item.price || item.green_fee}</div><div className="cps">{item.area || ""}</div></div>
-          <button className="cc" onClick={e => { e.stopPropagation(); openModal("join"); }}>Book →</button>
+          <button className="cc" onClick={e => { e.stopPropagation(); currentUser ? openModal("concierge", { name: item.name, type: item.type || item.category, price: item.price }) : openModal("join"); }}>Book →</button>
         </div>
       </div>
     </div>
@@ -712,7 +712,7 @@ export default function MonarcPrive() {
         <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 10 }}>{e.desc}</div>
         <div className="cf">
           <div><div className="cp">${e.price.toLocaleString()}</div><div className="cps">per {e.per} · {e.duration}</div></div>
-          <button className="cc" onClick={() => openModal("join")}>Book →</button>
+          <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: e.name, type: e.category, price: `$${e.price.toLocaleString()} per ${e.per}` }) : openModal("join")}>Book →</button>
         </div>
       </div>
     </div>
@@ -1980,6 +1980,30 @@ export default function MonarcPrive() {
                 }}>
                   {stripeLoading ? "Activating..." : "Activate Membership — $300"}
                 </button>
+              </div>
+            </>}
+            {modal === "concierge" && <>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Concierge Request</div><div className="mt">{mData.name}</div><div className="ms">{mData.type} · {mData.price}</div></div>
+              <div className="mbd">
+                <div style={{ fontSize: ".76rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, marginBottom: 18, padding: "12px 14px", background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.12)", borderRadius: 2 }}>
+                  Sterling, your AI concierge, will confirm availability and arrange all details within 2 hours of your request.
+                </div>
+                <div className="fg"><label className="fl">Preferred Date</label><input className="fi" type="date" onChange={field("cdate")} /></div>
+                <div className="fg"><label className="fl">Number of Guests</label><input className="fi" type="number" placeholder="2" onChange={field("cguests")} /></div>
+                <div className="fg"><label className="fl">Special Requests</label><textarea className="fit" rows={3} placeholder="Any specific preferences or requirements..." onChange={field("cnote")} /></div>
+                <button className="btnf" onClick={async () => {
+                  await db(sb => sb.from("concierge_requests").insert({
+                    guest_id: currentUser?.id || null,
+                    service_type: mData.type || mData.name,
+                    description: mData.name,
+                    requested_date: fv.cdate || null,
+                    num_guests: parseInt(fv.cguests) || 1,
+                    special_notes: fv.cnote || "",
+                    status: "requested",
+                  }));
+                  closeModal();
+                  showToast(`Request submitted — Sterling will confirm your ${mData.name} within 2 hours.`);
+                }}>Submit Request</button>
               </div>
             </>}
             {modal === "book" && <>
