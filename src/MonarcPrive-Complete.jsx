@@ -33,9 +33,9 @@ const RESTAURANTS = [
 
 const LUXURY_CARS = [
   { id: 1, name: "Ferrari Roma Spider", category: "Exotic Sports", company: "Arizona Exotics", price: 2800, img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&q=85", badge: "Most Requested", desc: "Open-top Italian perfection. 612hp. The drive Scottsdale deserves.", included: ["Insurance", "Estate Delivery", "Concierge Support"] },
-  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "top", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
+  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "center", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
   { id: 3, name: "Lamborghini Urus", category: "Super SUV", company: "Arizona Exotics", price: 2400, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=85", badge: "Top Pick", desc: "640hp super SUV. Four seats. Fits golf clubs. Turns every road into an event.", included: ["Insurance", "Delivery", "24/7 Support"] },
-  { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&q=85", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
+  { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=85", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
 ];
 
 const GOLF_VENUES = [
@@ -632,7 +632,10 @@ export default function MonarcPrive() {
         <div className="ctags">{p.tags.slice(0, 3).map(t => <span key={t} className="ctag">{t}</span>)}</div>
         <div className="cf">
           <div><span className="cp">${p.price.toLocaleString()}</span><div className="cps">{p.beds}bd · {p.baths}ba · Sleeps {p.guests}</div></div>
-          <button className="cc" onClick={() => currentUser ? openModal("book", p) : openModal("join")}>Request →</button>
+          <button className="cc" onClick={() => {
+            if (currentUser) { openModal("book", p); }
+            else { openModal("join"); }
+          }}>Request →</button>
         </div>
       </div>
     </div>
@@ -653,7 +656,7 @@ export default function MonarcPrive() {
         <div style={{ fontSize: ".62rem", color: "var(--t2)", fontStyle: "italic", marginBottom: 10 }}>✦ {r.signature}</div>
         <div className="cf">
           <span style={{ fontSize: ".6rem", color: "var(--taupe)", fontWeight: 300 }}>{r.area}</span>
-          <button className="cc" onClick={() => openModal("join")}>Reserve →</button>
+          <button className="cc" onClick={() => currentUser ? openModal("reserve-service", { type: "Luxury Car", name: c.name, price: c.price, per: "day" }) : openModal("join")}>Reserve →</button>
         </div>
       </div>
     </div>
@@ -693,7 +696,7 @@ export default function MonarcPrive() {
         <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 8 }}>{item.desc}</div>
         <div className="cf">
           <div><div className="cp" style={{ fontSize: ".95rem" }}>{item.price || item.green_fee}</div><div className="cps">{item.area || ""}</div></div>
-          <button className="cc" onClick={e => { e.stopPropagation(); openModal("join"); }}>Book →</button>
+          <button className="cc" onClick={e => { e.stopPropagation(); currentUser ? openModal("reserve-service", { type: item.type || item.category, name: item.name, price: item.price || item.green_fee }) : openModal("join"); }}>Book →</button>
         </div>
       </div>
     </div>
@@ -712,7 +715,7 @@ export default function MonarcPrive() {
         <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 10 }}>{e.desc}</div>
         <div className="cf">
           <div><div className="cp">${e.price.toLocaleString()}</div><div className="cps">per {e.per} · {e.duration}</div></div>
-          <button className="cc" onClick={() => openModal("join")}>Book →</button>
+          <button className="cc" onClick={() => currentUser ? openModal("reserve-service", { type: e.category, name: e.name, price: `$${e.price}`, per: e.per }) : openModal("join")}>Book →</button>
         </div>
       </div>
     </div>
@@ -1863,6 +1866,34 @@ export default function MonarcPrive() {
                 }}>Submit Request</button>
               </div>
             </>}
+            {modal === "reserve-service" && <>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Service Request</div><div className="mt">{mData.name || "Reserve"}</div><div className="ms">{mData.type || "Luxury Service"} · {mData.price}{mData.per ? ` per ${mData.per}` : ""}</div></div>
+              <div className="mbd">
+                <div className="ps">
+                  <div className="pr"><span>{mData.name}</span><span>{mData.price}{mData.per ? `/${mData.per}` : ""}</span></div>
+                  <div className="pr"><span>Type</span><span>{mData.type}</span></div>
+                </div>
+                <div className="fg"><label className="fl">Preferred Date</label><input className="fi" type="date" onChange={field("sdate")} /></div>
+                <div className="fg"><label className="fl">Number of Guests</label><input className="fi" type="number" placeholder="2" onChange={field("sguests")} /></div>
+                <div className="fg"><label className="fl">Special Requests</label><textarea className="fit" rows={3} placeholder="Any specific requirements or preferences..." onChange={field("snote")} /></div>
+                <div style={{ fontSize: ".68rem", color: "var(--taupe)", fontWeight: 300, lineHeight: 1.7, marginBottom: 12, padding: "10px 12px", background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.12)", borderRadius: 2 }}>
+                  Your concierge Sterling will confirm availability and arrange all details within 2 hours.
+                </div>
+                <button className="btnf" onClick={async () => {
+                  await db(sb => sb.from("concierge_requests").insert({
+                    guest_id: currentUser?.id || null,
+                    service_type: mData.type || mData.name,
+                    description: `${mData.name} — ${mData.price}${mData.per ? `/${mData.per}` : ""}`,
+                    requested_date: fv.sdate || null,
+                    num_guests: parseInt(fv.sguests) || 1,
+                    special_notes: fv.snote || "",
+                    status: "requested",
+                  }));
+                  openModal("success");
+                }}>Submit Request</button>
+              </div>
+            </>}
+
             {modal === "success" && <>
               <div className="mh"><div className="me">Monarc Prive</div></div>
               <div className="mbd">
