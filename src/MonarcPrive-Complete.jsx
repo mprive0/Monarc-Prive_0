@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 // ── Supabase client ──────────────────────────────────────────
 // ── Hardcoded Supabase connection ───────────────────────────
 const SUPA_URL = "https://vgmxzkedexjxdtjtbbok.supabase.co";
-const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbXh6a2VkZXhqeGR0anRiYm9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjQ1NjUsImV4cCI6MjA5MjIwMDU2NX0.zbCmIPOvIzFRFYTdVsjp1UTFEDl6x1CwqxfaizmwSkw";
+const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbXh6a2VkZXhqeGR0anRiYm9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUxMDE3MTUsImV4cCI6MjA2MDY3NzcxNX0.vgmxzkedexjxdtjtbbok";
 const supabase = createClient(SUPA_URL, SUPA_KEY);
 
 // Helper — wraps all DB calls with error logging
@@ -33,7 +33,7 @@ const RESTAURANTS = [
 
 const LUXURY_CARS = [
   { id: 1, name: "Ferrari Roma Spider", category: "Exotic Sports", company: "Arizona Exotics", price: 2800, img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&q=85", badge: "Most Requested", desc: "Open-top Italian perfection. 612hp. The drive Scottsdale deserves.", included: ["Insurance", "Estate Delivery", "Concierge Support"] },
-  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
+  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "top", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
   { id: 3, name: "Lamborghini Urus", category: "Super SUV", company: "Arizona Exotics", price: 2400, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=85", badge: "Top Pick", desc: "640hp super SUV. Four seats. Fits golf clubs. Turns every road into an event.", included: ["Insurance", "Delivery", "24/7 Support"] },
   { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&q=85", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
 ];
@@ -632,7 +632,7 @@ export default function MonarcPrive() {
         <div className="ctags">{p.tags.slice(0, 3).map(t => <span key={t} className="ctag">{t}</span>)}</div>
         <div className="cf">
           <div><span className="cp">${p.price.toLocaleString()}</span><div className="cps">{p.beds}bd · {p.baths}ba · Sleeps {p.guests}</div></div>
-          <button className="cc" onClick={() => openModal("book", p)}>Request →</button>
+          <button className="cc" onClick={() => currentUser ? openModal("book", p) : openModal("join")}>Request →</button>
         </div>
       </div>
     </div>
@@ -662,7 +662,7 @@ export default function MonarcPrive() {
   const CarCard = ({ c }) => (
     <div className="card">
       <div className="ciw">
-        <img className="ci" src={c.img} alt={c.name} loading="lazy" />
+        <img className="ci" src={c.img} alt={c.name} loading="lazy" style={{ objectPosition: c.imgPos || "center" }} />
         <span className="cbadge">{c.badge}</span>
       </div>
       <div className="cb">
@@ -1334,7 +1334,7 @@ export default function MonarcPrive() {
                     Welcome back{currentUser.user_metadata?.first_name ? `, ${currentUser.user_metadata.first_name}` : ""}
                   </div>
                   <div style={{ fontSize: ".68rem", color: "var(--taupe)", marginTop: 4, fontWeight: 300 }}>
-                    {memberData ? `${memberData.tier?.charAt(0).toUpperCase() + memberData.tier?.slice(1)} Member · Active until ${new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}` : "Member in good standing"}
+                    {memberData ? `${(memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")} Member · Active until ${new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}` : "Member in good standing"}
                   </div>
                 </div>
                 <div style={{ textAlign: "right" }}>
@@ -1342,7 +1342,7 @@ export default function MonarcPrive() {
                     <div style={{ background: "var(--ink-m)", border: "1px solid rgba(201,169,110,.2)", borderRadius: 3, padding: "14px 20px", position: "relative", overflow: "hidden" }}>
                       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,var(--gold),transparent)" }} />
                       <div style={{ fontSize: ".5rem", letterSpacing: ".28em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 4 }}>◈ Membership</div>
-                      <div style={{ fontFamily: "var(--serif)", fontSize: "1rem", color: "var(--t1)", marginBottom: 2 }}>{memberData.tier?.charAt(0).toUpperCase() + memberData.tier?.slice(1)} Tier</div>
+                      <div style={{ fontFamily: "var(--serif)", fontSize: "1rem", color: "var(--t1)", marginBottom: 2 }}>{(memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")} Tier</div>
                       <div style={{ fontSize: ".56rem", letterSpacing: ".16em", color: "var(--taupe)", fontFamily: "monospace" }}>{memberData.referral_code || "MP-MEMBER"}</div>
                     </div>
                   )}
@@ -1355,7 +1355,7 @@ export default function MonarcPrive() {
                   ["Bookings", memberBookings.length, "total stays"],
                   ["Confirmed", memberBookings.filter(b => b.status === "confirmed").length, "upcoming"],
                   ["Pending", memberBookings.filter(b => b.status === "pending").length, "awaiting approval"],
-                  ["Tier", memberData?.tier?.charAt(0).toUpperCase() + (memberData?.tier?.slice(1) || "Curated"), "membership level"],
+                  ["Tier", (memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated"), "membership level"],
                 ].map(([lbl, val, sub]) => (
                   <div key={lbl} style={{ background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: "16px 18px" }}>
                     <div style={{ fontSize: ".52rem", letterSpacing: ".2em", textTransform: "uppercase", color: "var(--taupe)", marginBottom: 6 }}>{lbl}</div>
@@ -1439,7 +1439,7 @@ export default function MonarcPrive() {
                   {[
                     ["Email", currentUser.email],
                     ["Member Since", memberData?.created_at ? new Date(memberData.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "—"],
-                    ["Membership Tier", (memberData?.tier?.charAt(0).toUpperCase() + (memberData?.tier?.slice(1) || "")) || "Curated"],
+                    ["Membership Tier", (memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")],
                     ["Valid Through", memberData?.expires_at ? new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "—"],
                   ].map(([lbl, val]) => (
                     <div key={lbl} style={{ padding: "10px 14px", background: "rgba(248,245,240,.03)", borderRadius: 2, border: "1px solid rgba(212,201,181,.06)" }}>
@@ -1692,7 +1692,7 @@ export default function MonarcPrive() {
                   <div className="fg"><label className="fl">Last Name</label><input className="fi" placeholder="Last" onChange={field("ln")} /></div>
                 </div>
                 <div className="fg"><label className="fl">Email</label><input className="fi" type="email" placeholder="your@email.com" onChange={field("em")} /></div>
-                <div className="fg"><label className="fl">Phone</label><input className="fi" type="tel" placeholder="+1 (555) 000-0000" onChange={field("ph")} /></div>
+                <div className="fg"><label className="fl">Phone</label><input className="fi" type="tel" placeholder="+1 (555) 000-0000" autoComplete="tel" onChange={field("ph")} /></div>
                 <div className="fg"><label className="fl">Password</label><input className="fi" type="password" placeholder="Min. 8 characters" onChange={field("pw")} /></div>
                 <button className="btnf" onClick={async () => {
                   // Save email to state for later use
@@ -1786,7 +1786,7 @@ export default function MonarcPrive() {
 
                       // 2. Save membership to database
                       const memberRef = "MP-" + Math.random().toString(36).substr(2, 8).toUpperCase();
-                      await db(sb => sb.from("memberships").upsert({
+                      await db(sb => sb.from("memberships").insert({
                         user_id: userId,
                         email, first_name: firstName, last_name: lastName,
                         full_name: fullName, phone,
@@ -1795,7 +1795,7 @@ export default function MonarcPrive() {
                         questionnaire_answers: qAns,
                         expires_at: new Date(Date.now() + 365 * 86400000).toISOString(),
                         referral_code: memberRef,
-                      }, { onConflict: "email" }));
+                      }));
 
                       // 3. Set current user session
                       if (authData?.user) {
