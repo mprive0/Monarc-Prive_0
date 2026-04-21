@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // ── Supabase client ──────────────────────────────────────────
 // ── Hardcoded Supabase connection ───────────────────────────
-const SUPA_URL = "https://vgmxzkedexjxdtjtbbok.supabase.co/rest";
+const SUPA_URL = "https://vgmxzkedexjxdtjtbbok.supabase.co/rest/v1/";
 const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbXh6a2VkZXhqeGR0anRiYm9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjQ1NjUsImV4cCI6MjA5MjIwMDU2NX0.zbCmIPOvIzFRFYTdVsjp1UTFEDl6x1CwqxfaizmwSkw";
 const supabase = createClient(SUPA_URL, SUPA_KEY);
 
