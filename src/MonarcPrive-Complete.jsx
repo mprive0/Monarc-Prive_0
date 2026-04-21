@@ -760,11 +760,11 @@ export default function MonarcPrive() {
         </div>
         <div>
           <div className="ftct">Company</div>
-          <span className="ftl">About Monarc Prive</span>
-          <span className="ftl">Contact Us</span>
+          <span className="ftl" onClick={() => setPage("about")}>About Monarc Prive</span>
+          <span className="ftl" onClick={() => setPage("contact")}>Contact Us</span>
           <span className="ftl" onClick={() => setPage("admin")}>Admin Portal</span>
-          <span className="ftl">Privacy Policy</span>
-          <span className="ftl">Terms of Service</span>
+          <span className="ftl" onClick={() => setPage("privacy")}>Privacy Policy</span>
+          <span className="ftl" onClick={() => setPage("terms")}>Terms of Service</span>
         </div>
       </div>
       <div className="ftbot">
@@ -1458,6 +1458,156 @@ export default function MonarcPrive() {
           )}
         </div>
       )}
+
+      {page === "about" && <>
+        <div className="ph" style={{ height: 320 }}>
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1400&q=85" className="phi" alt="" />
+          <div className="pho" />
+          <div className="phc">
+            <div className="phe">Our Story</div>
+            <h1 className="pht">A new standard for<br /><em>private luxury.</em></h1>
+          </div>
+        </div>
+        <div className="sec" style={{ maxWidth: 860, margin: "0 auto" }}>
+          <div style={{ fontSize: ".54rem", letterSpacing: ".36em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 18 }}>About Monarc Privé</div>
+          <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.8rem,3.5vw,2.8rem)", fontWeight: 300, color: "var(--t1)", lineHeight: 1.15, marginBottom: 28 }}>We built the platform we always wished existed.</h2>
+          <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 24 }}>Monarc Privé was founded with a single conviction: the ultra-luxury travel market deserved something better than public marketplaces, impersonal listings, and reactive service. We set out to build a private club — one where every estate, every partner, and every member interaction is curated to the same uncompromising standard.</p>
+          <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 24 }}>Based in Scottsdale and Paradise Valley, Arizona, we operate at the intersection of hospitality, technology, and taste. Our platform gives discerning travelers access to six exceptional private estates alongside a curated network of Scottsdale's finest restaurants, exotic car providers, world-class golf courses, private aviation operators, luxury spas, and more.</p>
+          <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 40 }}>At the heart of the experience is Sterling — our AI concierge — who learns your preferences and orchestrates every detail before you arrive. Monarc Privé is not a marketplace. It is a membership. And membership has always meant something here.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 1, background: "var(--border)", marginBottom: 48 }}>
+            {[["2024", "Founded in Scottsdale"], ["6", "Private Estates"], ["12", "Luxury Partner Categories"]].map(([val, lbl]) => (
+              <div key={lbl} style={{ background: "var(--ink-m)", padding: "28px 24px", textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--serif)", fontSize: "2.4rem", fontWeight: 300, color: "var(--gold)", marginBottom: 8 }}>{val}</div>
+                <div style={{ fontSize: ".62rem", letterSpacing: ".16em", textTransform: "uppercase", color: "var(--taupe)" }}>{lbl}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: 32, position: "relative", overflow: "hidden", textAlign: "center" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,transparent,var(--gold),transparent)" }} />
+            <div style={{ fontFamily: "var(--serif)", fontSize: "1.6rem", fontWeight: 300, color: "var(--t1)", marginBottom: 12 }}>Ready to experience it?</div>
+            <p style={{ fontSize: ".78rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.8, maxWidth: 440, margin: "0 auto 22px" }}>Membership is limited. Apply today and let Sterling take care of everything else.</p>
+            <button className="btn-g" onClick={() => openModal("join")}>Apply for Membership — $300/yr</button>
+          </div>
+        </div>
+        <Footer />
+      </>}
+
+      {page === "contact" && <>
+        <div className="ph" style={{ height: 280 }}>
+          <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&q=85" className="phi" alt="" />
+          <div className="pho" />
+          <div className="phc">
+            <div className="phe">Get In Touch</div>
+            <h1 className="pht">We would love<br /><em>to hear from you.</em></h1>
+          </div>
+        </div>
+        <div className="sec" style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 40, alignItems: "start" }}>
+            <div>
+              <div style={{ fontSize: ".54rem", letterSpacing: ".36em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 16 }}>Contact Monarc Privé</div>
+              <h2 style={{ fontFamily: "var(--serif)", fontSize: "2rem", fontWeight: 300, color: "var(--t1)", lineHeight: 1.2, marginBottom: 18 }}>How can we help you?</h2>
+              <p style={{ fontSize: ".82rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, marginBottom: 28 }}>Whether you have a question about membership, want to list your property, or simply want to learn more — our team responds to every inquiry personally within 24 hours.</p>
+              {[["Membership Inquiries", "members@monarcprive.com"], ["Partner & Listing", "partners@monarcprive.com"], ["General Questions", "hello@monarcprive.com"], ["Location", "Scottsdale, Arizona 85251"]].map(([lbl, val]) => (
+                <div key={lbl} style={{ display: "flex", gap: 16, padding: "12px 0", borderBottom: "1px solid rgba(212,201,181,.07)" }}>
+                  <div style={{ fontSize: ".56rem", letterSpacing: ".16em", textTransform: "uppercase", color: "var(--taupe)", minWidth: 130, paddingTop: 2, flexShrink: 0 }}>{lbl}</div>
+                  <div style={{ fontSize: ".78rem", color: "var(--t2)", fontWeight: 300 }}>{val}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: 26, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,transparent,var(--gold),transparent)" }} />
+              <div style={{ fontFamily: "var(--serif)", fontSize: "1.15rem", color: "var(--t1)", marginBottom: 18 }}>Send Us a Message</div>
+              <div className="r2">
+                <div className="fg"><label className="fl">First Name</label><input className="fi" placeholder="First" onChange={field("cfn")} /></div>
+                <div className="fg"><label className="fl">Last Name</label><input className="fi" placeholder="Last" onChange={field("cln")} /></div>
+              </div>
+              <div className="fg"><label className="fl">Email</label><input className="fi" type="email" placeholder="your@email.com" onChange={field("cem")} /></div>
+              <div className="fg"><label className="fl">Subject</label>
+                <select className="fis" onChange={field("csub")}>
+                  <option>Membership Inquiry</option>
+                  <option>List My Property</option>
+                  <option>Partner Advertising</option>
+                  <option>Booking Question</option>
+                  <option>General Inquiry</option>
+                </select>
+              </div>
+              <div className="fg"><label className="fl">Message</label><textarea className="fit" rows={4} placeholder="How can we help you?" onChange={field("cmsg")} /></div>
+              <button className="btnf" onClick={() => { showToast("Message sent — we'll be in touch within 24 hours."); setFv({}); }}>Send Message</button>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>}
+
+      {page === "privacy" && <>
+        <div className="ph" style={{ height: 240 }}>
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85" className="phi" alt="" />
+          <div className="pho" />
+          <div className="phc">
+            <div className="phe">Legal</div>
+            <h1 className="pht">Privacy Policy</h1>
+          </div>
+        </div>
+        <div className="sec" style={{ maxWidth: 760, margin: "0 auto" }}>
+          <div style={{ fontSize: ".6rem", color: "var(--taupe)", marginBottom: 32 }}>Last updated: January 1, 2025</div>
+          {[
+            ["1. Information We Collect", "We collect information you provide directly to us, including when you create an account, apply for membership, submit a partner listing, or contact us. This includes name, email address, phone number, payment information, and questionnaire responses. We also automatically collect certain information when you use our platform, including log data, device information, and cookies."],
+            ["2. How We Use Your Information", "We use the information we collect to provide, maintain, and improve our services; process membership applications and payments; communicate with you about your account and our services; and comply with legal obligations. We never sell your personal data to third parties."],
+            ["3. Information Sharing", "We do not sell, trade, or rent your personal information to third parties. We may share your information with service providers who assist us in operating our platform, when required by law, or with your consent. All service providers are bound by confidentiality agreements."],
+            ["4. Data Security", "We implement industry-standard security measures to protect your personal information, including SSL encryption, secure database storage, and access controls. Payment information is processed through Stripe and is never stored on our servers."],
+            ["5. Cookies", "We use cookies and similar tracking technologies to track activity on our platform. You can instruct your browser to refuse all cookies. If you do not accept cookies, some portions of our service may not function properly."],
+            ["6. Your Rights", "You have the right to access, update, or delete your personal information at any time. You may also opt out of marketing communications by following the unsubscribe link in any email. Contact us at privacy@monarcprive.com to exercise these rights."],
+            ["7. Children's Privacy", "Our service is not directed to individuals under the age of 18. We do not knowingly collect personal information from children under 18."],
+            ["8. Changes to This Policy", "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the effective date."],
+            ["9. Contact Us", "If you have questions about this Privacy Policy, contact us at privacy@monarcprive.com or write to Monarc Privé, Scottsdale, Arizona 85251."],
+          ].map(([title, body]) => (
+            <div key={title} style={{ marginBottom: 28, paddingBottom: 28, borderBottom: "1px solid rgba(212,201,181,.07)" }}>
+              <div style={{ fontFamily: "var(--serif)", fontSize: "1.05rem", color: "var(--gold)", marginBottom: 10 }}>{title}</div>
+              <p style={{ fontSize: ".8rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.9 }}>{body}</p>
+            </div>
+          ))}
+          <div style={{ textAlign: "center", paddingTop: 12 }}>
+            <button className="btn-o" onClick={() => setPage("home")}>Return to Site</button>
+          </div>
+        </div>
+        <Footer />
+      </>}
+
+      {page === "terms" && <>
+        <div className="ph" style={{ height: 240 }}>
+          <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85" className="phi" alt="" />
+          <div className="pho" />
+          <div className="phc">
+            <div className="phe">Legal</div>
+            <h1 className="pht">Terms of Service</h1>
+          </div>
+        </div>
+        <div className="sec" style={{ maxWidth: 760, margin: "0 auto" }}>
+          <div style={{ fontSize: ".6rem", color: "var(--taupe)", marginBottom: 32 }}>Last updated: January 1, 2025</div>
+          {[
+            ["1. Acceptance of Terms", "By accessing or using the Monarc Privé platform, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service."],
+            ["2. Membership", "Monarc Privé membership is available to individuals who meet our eligibility requirements and complete the application process. Membership fees are billed annually and are non-refundable except as required by law. Memberships are personal and non-transferable."],
+            ["3. Booking & Reservations", "Estate booking requests are subject to availability and host approval. Submission of a booking request does not guarantee a reservation. Cancellation policies vary by property and will be disclosed at the time of booking."],
+            ["4. Partner Listings", "Partners who list properties, services, or experiences on Monarc Privé agree to provide accurate information and maintain our quality standards. Monarc Privé reserves the right to remove listings that do not meet our standards. Monthly fees are non-refundable once a listing is approved and live."],
+            ["5. Prohibited Conduct", "You agree not to use our platform for any unlawful purpose; impersonate any person or entity; transmit harmful or offensive content; attempt to gain unauthorized access to any portion of the platform; or interfere with the proper functioning of the service."],
+            ["6. Intellectual Property", "All content on the Monarc Privé platform, including text, graphics, logos, and software, is the property of Monarc Privé and is protected by applicable intellectual property laws."],
+            ["7. Limitation of Liability", "Monarc Privé is a platform that connects members with estate owners and service providers. We are not responsible for the quality, safety, or legality of listed properties or services. To the fullest extent permitted by law, Monarc Privé shall not be liable for any indirect, incidental, special, or consequential damages."],
+            ["8. Dispute Resolution", "Any disputes arising from these Terms of Service shall be resolved through binding arbitration in Maricopa County, Arizona, in accordance with the rules of the American Arbitration Association."],
+            ["9. Governing Law", "These Terms of Service shall be governed by the laws of the State of Arizona, without regard to its conflict of law provisions."],
+            ["10. Changes to Terms", "We reserve the right to modify these Terms of Service at any time. Continued use of the service after changes constitutes acceptance of the new terms. Contact us at legal@monarcprive.com with any questions."],
+          ].map(([title, body]) => (
+            <div key={title} style={{ marginBottom: 28, paddingBottom: 28, borderBottom: "1px solid rgba(212,201,181,.07)" }}>
+              <div style={{ fontFamily: "var(--serif)", fontSize: "1.05rem", color: "var(--gold)", marginBottom: 10 }}>{title}</div>
+              <p style={{ fontSize: ".8rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.9 }}>{body}</p>
+            </div>
+          ))}
+          <div style={{ textAlign: "center", paddingTop: 12 }}>
+            <button className="btn-o" onClick={() => setPage("home")}>Return to Site</button>
+          </div>
+        </div>
+        <Footer />
+      </>}
+
 
       {page === "admin" && !adminAuthed && (
         <div style={{ minHeight: "100vh", background: "var(--ink)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
