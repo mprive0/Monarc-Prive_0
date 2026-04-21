@@ -735,7 +735,7 @@ export default function MonarcPrive() {
         </div>
         <div>
           <div className="ftct">For Members</div>
-          <span className="ftl" onClick={() => openModal("join")}>Apply — $300/yr</span>
+          <span className="ftl" onClick={() => openModal("join")}>Apply </span>
           <span className="ftl" onClick={() => openModal("login")}>Member Login</span>
           <span className="ftl" onClick={() => setPage("membership")}>Membership Tiers</span>
           <span className="ftl" onClick={() => setPage("experiences")}>Concierge Services</span>
@@ -1062,7 +1062,7 @@ export default function MonarcPrive() {
           ) : (
             <>
               <button className="nb" onClick={() => openModal("login")}>Sign In</button>
-              <button className="nb cta" onClick={() => openModal("join")}>Join — $300/yr</button>
+              <button className="nb cta" onClick={() => openModal("join")}>Join</button>
             </>
           )}
         </div>
@@ -1142,7 +1142,7 @@ export default function MonarcPrive() {
           <div style={{ fontSize: ".58rem", letterSpacing: ".4em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 14 }}>Limited Memberships</div>
           <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(2rem,4vw,3.4rem)", fontWeight: 300, color: "var(--t1)", marginBottom: 16, lineHeight: 1.1 }}>Everything Scottsdale has to offer,<br /><em style={{ fontStyle: "italic", color: "var(--gold-l)" }}>curated for you</em></h2>
           <p style={{ fontSize: ".86rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, maxWidth: 480, margin: "0 auto 32px" }}>One membership. Six estates. Dozens of luxury partners. AI concierge 24/7.</p>
-          <button className="btn-g" style={{ padding: "17px 44px" }} onClick={() => openModal("join")}>Apply for Membership — $300/yr</button>
+          <button className="btn-g" style={{ padding: "17px 44px" }} onClick={() => openModal("join")}>Apply for Membership</button>
         </div>
         <Footer />
       </>}
@@ -1507,7 +1507,7 @@ export default function MonarcPrive() {
               <div style={{ fontSize: ".54rem", letterSpacing: ".36em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 16 }}>Contact Monarc Privé</div>
               <h2 style={{ fontFamily: "var(--serif)", fontSize: "2rem", fontWeight: 300, color: "var(--t1)", lineHeight: 1.2, marginBottom: 18 }}>How can we help you?</h2>
               <p style={{ fontSize: ".82rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, marginBottom: 28 }}>Whether you have a question about membership, want to list your property, or simply want to learn more — our team responds to every inquiry personally within 24 hours.</p>
-              {[["Membership Inquiries", "members@monarcprive.com"], ["Partner & Listing", "partners@monarcprive.com"], ["General Questions", "hello@monarcprive.com"], ["Location", "Scottsdale, Arizona 85251"]].map(([lbl, val]) => (
+              {[["Membership Inquiries", "members@monarcprive.com"], ["Partner & Listing", "partners@monarcprive.com"], ["General Questions", "info@monarcprive.com"], ["Location", "Scottsdale, Arizona"]].map(([lbl, val]) => (
                 <div key={lbl} style={{ display: "flex", gap: 16, padding: "12px 0", borderBottom: "1px solid rgba(212,201,181,.07)" }}>
                   <div style={{ fontSize: ".56rem", letterSpacing: ".16em", textTransform: "uppercase", color: "var(--taupe)", minWidth: 130, paddingTop: 2, flexShrink: 0 }}>{lbl}</div>
                   <div style={{ fontSize: ".78rem", color: "var(--t2)", fontWeight: 300 }}>{val}</div>
@@ -1559,7 +1559,7 @@ export default function MonarcPrive() {
             ["6. Your Rights", "You have the right to access, update, or delete your personal information at any time. You may also opt out of marketing communications by following the unsubscribe link in any email. Contact us at privacy@monarcprive.com to exercise these rights."],
             ["7. Children's Privacy", "Our service is not directed to individuals under the age of 18. We do not knowingly collect personal information from children under 18."],
             ["8. Changes to This Policy", "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the effective date."],
-            ["9. Contact Us", "If you have questions about this Privacy Policy, contact us at privacy@monarcprive.com or write to Monarc Privé, Scottsdale, Arizona 85251."],
+            ["9. Contact Us", "If you have questions about this Privacy Policy, contact us at privacy@monarcprive.com or write to Monarc Privé, Scottsdale, Arizona."],
           ].map(([title, body]) => (
             <div key={title} style={{ marginBottom: 28, paddingBottom: 28, borderBottom: "1px solid rgba(212,201,181,.07)" }}>
               <div style={{ fontFamily: "var(--serif)", fontSize: "1.05rem", color: "var(--gold)", marginBottom: 10 }}>{title}</div>
