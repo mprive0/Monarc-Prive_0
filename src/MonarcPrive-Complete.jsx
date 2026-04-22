@@ -503,7 +503,7 @@ export default function MonarcPrive() {
   const toggleFav = i => setFavs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
   const sendWelcomeEmail = async (email, firstName, tier = "curated") => {
     const tierNames = { curated: "Curated", private: "Private", founding: "Founding" };
-    const tierPrices = { curated: "$0", private: "Coming Soon", founding: "By Invitation" };
+    const tierPrices = { curated: "Limited Access", private: "Coming Soon", founding: "By Invitation" };
     const API = import.meta.env.VITE_API_URL;
     if (!API) return; // backend not connected yet — skip silently
     try {
@@ -515,7 +515,7 @@ export default function MonarcPrive() {
           name: firstName,
           tier,
           tierName: tierNames[tier] || "Curated",
-          tierPrice: tierPrices[tier] || "$0",
+          tierPrice: tierPrices[tier] || "Limited Access",
         }),
       });
     } catch (e) {
@@ -1217,19 +1217,19 @@ export default function MonarcPrive() {
           {/* Hero */}
           <div style={{ textAlign: "center", padding: "72px 56px 56px" }}>
             <div style={{ fontSize: ".58rem", letterSpacing: ".4em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 14 }}>Exclusive Membership</div>
-            <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(2.2rem,4.5vw,3.8rem)", fontWeight: 300, color: "var(--t1)", lineHeight: 1.1, marginBottom: 16 }}>Not a marketplace.<br /><em style={{ fontStyle: "italic", color: "var(--gold-l)" }}>A private club.</em></h1>
+            <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(2.2rem,4.5vw,3.8rem)", fontWeight: 300, color: "var(--t1)", lineHeight: 1.1, marginBottom: 16 }}>Membership by invitation.<br /><em style={{ fontStyle: "italic", color: "var(--gold-l)" }}>Access without compromise.</em></h1>
             <p style={{ fontSize: ".86rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, maxWidth: 560, margin: "0 auto" }}>One membership every luxury partner — restaurants, exotic cars, golf, spas, aviation, wine, shopping — and a 24/7 AI concierge that knows your preferences before you ask.</p>
           </div>
           {/* Three Tiers */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, background: "var(--border)", marginBottom: 0 }}>
             {[
               {
-                name: "Curated", icon: "◌", price: "$0", period: "/year", highlight: false, badge: null,
-                perks: ["Access to all 6 curated private estates", "Sterling AI concierge — 24/7", "Standard booking window", "Member pricing on all services", "Vetted guest community", "Digital membership card"]
+                name: "Curated", icon: "◌", price: "Limited Access", period: "/year", highlight: false, badge: null,
+                perks: ["Access to curated private estates", "Sterling AI concierge — 24/7", "Standard booking window", "Member pricing on all services", "Vetted guest community", "Digital membership card"]
               },
               {
                 name: "Private", icon: "◈", price: "Coming Soon", period: "/year", highlight: true, badge: "Most Popular",
-                perks: ["Everything in Curated", "48-hour priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Concierge service credits ($200)", "Physical membership card & gift", "Early access to new estates"]
+                perks: ["Everything in Curated", "72-hour priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Concierge service credits ($200)", "Physical membership card & gift", "Early access to new estates"]
               },
               {
                 name: "Founding", icon: "◉", price: "By Invite", period: "", highlight: false, badge: "Limited — 50 Members",
@@ -1874,9 +1874,9 @@ export default function MonarcPrive() {
               <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Step 3 of 3</div><div className="mt">Complete membership</div><div className="ms">Annual access — cancel anytime</div></div>
               <div className="mbd">
                 <div className="ps">
-                  <div className="pr"><span>Monarc Privé Annual Membership</span><span>$0.00</span></div>
-                  <div className="pr"><span>Platform fee</span><span>$0.00</span></div>
-                  <div className="pr pt"><span>Total due today</span><span>$0.00</span></div>
+                  <div className="pr"><span>Monarc Privé Annual Membership</span><span>Limited Access</span></div>
+                  <div className="pr"><span>Platform fee</span><span>Limited Access</span></div>
+                  <div className="pr pt"><span>Total due today</span><span>Limited Access</span></div>
                 </div>
                 {paymentError && (
                   <div style={{ fontSize: ".68rem", color: "var(--red)", padding: "8px 12px", background: "rgba(224,82,82,.08)", border: "1px solid rgba(224,82,82,.2)", borderRadius: 2, marginBottom: 12 }}>
