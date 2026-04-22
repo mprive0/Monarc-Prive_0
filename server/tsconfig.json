@@ -2,13 +2,15 @@
     "compilerOptions": {
         "target": "ES2019",
         "module": "commonjs",
-        "rootDir": "src",
+        "rootDir": ".",
         "outDir": "dist",
         "esModuleInterop": true,
         "strict": false,
         "skipLibCheck": true
     },
     "include": [
-        "src/**/*"
+        "index.ts",
+        "agents/**/*.ts",
+        "webhooks/**/*.ts"
     ]
 }
