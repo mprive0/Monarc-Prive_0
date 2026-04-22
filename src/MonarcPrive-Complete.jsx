@@ -35,7 +35,7 @@ const LUXURY_CARS = [
   { id: 1, name: "Ferrari Roma Spider", category: "Exotic Sports", company: "Arizona Exotics", price: 2800, img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&q=85", badge: "Most Requested", desc: "Open-top Italian perfection. 612hp. The drive Scottsdale deserves.", included: ["Insurance", "Estate Delivery", "Concierge Support"] },
   { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "center 60%", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
   { id: 3, name: "Lamborghini Urus", category: "Super SUV", company: "Arizona Exotics", price: 2400, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=85", badge: "Top Pick", desc: "640hp super SUV. Four seats. Fits golf clubs. Turns every road into an event.", included: ["Insurance", "Delivery", "24/7 Support"] },
-  { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://unsplash.com/photos/a-gray-bentley-car-is-parked-on-the-driveway-BByh--mBLzM?utm_source=chatgpt.com", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
+  { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://images.unsplash.com/photo-1742226110965-4f77742e32a9?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
 ];
 
 const GOLF_VENUES = [
@@ -1224,7 +1224,7 @@ export default function MonarcPrive() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, background: "var(--border)", marginBottom: 0 }}>
             {[
               {
-                name: "Curated", icon: "◌", price: "Limited Access", period: "/year", highlight: false, badge: null,
+                name: "Curated", icon: "◌", price: "Limited Access", period: "", highlight: false, badge: null,
                 perks: ["Access to curated private estates", "Sterling AI concierge — 24/7", "Standard booking window", "Member pricing on all services", "Vetted guest community", "Digital membership card"]
               },
               {
