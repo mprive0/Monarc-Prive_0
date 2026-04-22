@@ -33,9 +33,9 @@ const RESTAURANTS = [
 
 const LUXURY_CARS = [
   { id: 1, name: "Ferrari Roma Spider", category: "Exotic Sports", company: "Arizona Exotics", price: 2800, img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&q=85", badge: "Most Requested", desc: "Open-top Italian perfection. 612hp. The drive Scottsdale deserves.", included: ["Insurance", "Estate Delivery", "Concierge Support"] },
-  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "center", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
+  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "center 60%", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
   { id: 3, name: "Lamborghini Urus", category: "Super SUV", company: "Arizona Exotics", price: 2400, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=85", badge: "Top Pick", desc: "640hp super SUV. Four seats. Fits golf clubs. Turns every road into an event.", included: ["Insurance", "Delivery", "24/7 Support"] },
-  { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&q=85", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
+  { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://unsplash.com/photos/a-gray-bentley-car-is-parked-on-the-driveway-BByh--mBLzM?utm_source=chatgpt.com", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
 ];
 
 const GOLF_VENUES = [
@@ -1228,12 +1228,12 @@ export default function MonarcPrive() {
                 perks: ["Access to curated private estates", "Sterling AI concierge — 24/7", "Standard booking window", "Member pricing on all services", "Vetted guest community", "Digital membership card"]
               },
               {
-                name: "Private", icon: "◈", price: "Coming Soon", period: "/year", highlight: true, badge: "Most Popular",
-                perks: ["Everything in Curated", "Priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Concierge service credits ($200)", "Physical membership card & gift", "Early access to new estates"]
+                name: "Private", icon: "◈", price: "$999", period: "/year", highlight: true, badge: "Most Popular",
+                perks: ["Everything in Curated", "Priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Physical membership card & gift", "Early access to new estates"]
               },
               {
                 name: "Founding", icon: "◉", price: "By Invite", period: "", highlight: false, badge: "Limited Members",
-                perks: ["Everything in Private", "Founding member status forever", "Annual luxury gratitude gift", "Direct founder access & influence", "Co-creation of new estate additions", "Lifetime rate lock — never increases", "Named acknowledgment in platform"]
+                perks: ["Everything in Private", "Founding member status", "Annual luxury gratitude gift", "Direct founder access & influence", "Co-creation of new estate additions", "Lifetime rate lock", "Named acknowledgment in platform"]
               },
             ].map(t => (
               <div key={t.name} style={{ background: "var(--ink-m)", padding: "36px 32px", position: "relative", overflow: "hidden" }}>
@@ -1266,7 +1266,7 @@ export default function MonarcPrive() {
           {/* Comparison note */}
           <div style={{ background: "var(--ink-s)", padding: "28px 56px", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 20, maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-              {[["", "All tiers"], ["AI Concierge 24/7", "Sterling · All tiers"], ["12 Luxury Partners", "Dining · Cars · Golf · Spa · Aviation · More"], ["Total Discretion", "Vetted members only"]].map(([val, sub]) => (
+              {[["", "All tiers"], ["AI Concierge 24/7", "Sterling · All tiers"], ["12 Luxury Categories", "Dining · Cars · Golf · Spa · Aviation · More"], ["Total Discretion", "Vetted members only"]].map(([val, sub]) => (
                 <div key={val}>
                   <div style={{ fontFamily: "var(--serif)", fontSize: "1rem", color: "var(--t1)", fontWeight: 400, marginBottom: 4 }}>{val}</div>
                   <div style={{ fontSize: ".6rem", color: "var(--taupe)", fontWeight: 300 }}>{sub}</div>
