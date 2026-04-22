@@ -103,23 +103,23 @@ const AGENTS = [
   { id: "aria", icon: "◈", name: "Aria", role: "Sales & Revenue", sys: "You are Aria, Sales & Revenue AI Agent for Monarc Prive luxury platform in Scottsdale AZ. Sharp CRO level. Specific actionable revenue intelligence. All 12 partner categories. Concise." },
   { id: "celeste", icon: "◉", name: "Celeste", role: "Marketing & Brand", sys: "You are Celeste, Brand & Marketing AI Agent for Monarc Prive. Luxury copy and strategy. Conde Nast meets performance marketer. Concise." },
   { id: "sterling", icon: "◌", name: "Sterling", role: "Guest Concierge", sys: "You are Sterling, ultra-luxury AI concierge for Monarc Prive Scottsdale. Know every estate, restaurant, car rental, golf course, spa, aviation, wine, shopping service. Four Seasons level. Warm and effortlessly helpful. Concise." },
-  { id: "atlas", icon: "◎", name: "Atlas", role: "Operations", sys: "You are Atlas, Operations AI Agent for Monarc Prive. Monitor 6 estates plus all partner operations. COO level. Flag risks. Direct and precise." },
+  { id: "atlas", icon: "◎", name: "Atlas", role: "Operations", sys: "You are Atlas, Operations AI Agent for Monarc Prive. Monitor estates plus all partner operations. COO level. Flag risks. Direct and precise." },
   { id: "orion", icon: "◍", name: "Orion", role: "Analytics", sys: "You are Orion, Analytics AI Agent for Monarc Prive. Track all 12 revenue streams. Data into insight. Always answer: what does this mean and what should we do. Concise." },
 ];
 
 const PARTNER_STREAMS = [
-  { id: "property", icon: "◈", label: "List Property", price: "$25/mo", desc: "List your luxury estate to our members" },
-  { id: "agent", icon: "◉", label: "Agent Advertising", price: "$50/mo", desc: "Advertise your real estate brand" },
-  { id: "restaurant", icon: "🍽", label: "Restaurant", price: "$75/mo", desc: "Promote your restaurant to UHNW members" },
-  { id: "golf", icon: "⛳", label: "Golf & Clubs", price: "$125/mo", desc: "Promote tee times and club access" },
-  { id: "cars", icon: "🚗", label: "Luxury Cars", price: "$150/mo", desc: "List exotic and luxury vehicle rentals" },
-  { id: "medspa", icon: "💆", label: "Med Spa & Beauty", price: "$75/mo", desc: "IV therapy, aesthetics and wellness" },
+  { id: "property", icon: "◈", label: "List Property", price: "$250/mo", desc: "List your luxury estate to our members" },
+  { id: "agent", icon: "◉", label: "Agent Advertising", price: "$250/mo", desc: "Advertise your real estate brand" },
+  { id: "restaurant", icon: "🍽", label: "Restaurant", price: "$250/mo", desc: "Promote your restaurant to UHNW members" },
+  { id: "golf", icon: "⛳", label: "Golf & Clubs", price: "$250/mo", desc: "Promote tee times and club access" },
+  { id: "cars", icon: "🚗", label: "Luxury Cars", price: "$250/mo", desc: "List exotic and luxury vehicle rentals" },
+  { id: "medspa", icon: "💆", label: "Med Spa & Beauty", price: "$250/mo", desc: "IV therapy, aesthetics and wellness" },
   { id: "aviation", icon: "✈", label: "Private Aviation", price: "$250/mo", desc: "Jet charters and air travel services" },
-  { id: "yacht", icon: "🛥", label: "Yacht & Charters", price: "$200/mo", desc: "Watercraft and boat experiences" },
-  { id: "shopping", icon: "💎", label: "Luxury Shopping", price: "$100/mo", desc: "Boutiques, jewelers and personal stylists" },
-  { id: "wine", icon: "🍷", label: "Wine & Spirits", price: "$100/mo", desc: "Tastings, rare bottles and delivery" },
-  { id: "events", icon: "🎪", label: "Private Events", price: "$150/mo", desc: "Venues, entertainment and production" },
-  { id: "experience", icon: "◌", label: "Experiences", price: "$100/mo", desc: "Outdoor, wellness and unique activities" },
+  { id: "yacht", icon: "🛥", label: "Yacht & Charters", price: "$250/mo", desc: "Watercraft and boat experiences" },
+  { id: "shopping", icon: "💎", label: "Luxury Shopping", price: "$250/mo", desc: "Boutiques, jewelers and personal stylists" },
+  { id: "wine", icon: "🍷", label: "Wine & Spirits", price: "$250/mo", desc: "Tastings, rare bottles and delivery" },
+  { id: "events", icon: "🎪", label: "Private Events", price: "$250/mo", desc: "Venues, entertainment and production" },
+  { id: "experience", icon: "◌", label: "Experiences", price: "$250/mo", desc: "Outdoor, wellness and unique activities" },
 ];
 
 
@@ -760,11 +760,11 @@ export default function MonarcPrive() {
         </div>
         <div>
           <div className="ftct">List Your Business</div>
-          <span className="ftl" onClick={() => setPage("partners")}>List Estate — $25/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Agent Ad — $50/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Restaurant — $75/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Golf Club — $125/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Luxury Cars — $150/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>List Estate — $250/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Agent Ad — $250/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Restaurant — $250/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Golf Club — $250/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Luxury Cars — $250/mo</span>
           <span className="ftl" onClick={() => setPage("partners")}>Aviation — $250/mo</span>
         </div>
         <div>
@@ -1201,14 +1201,14 @@ export default function MonarcPrive() {
       {page === "wine" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Wine · Rare Spirits · Private Tastings</div><h1 className="pht">Drink something<br /><em>worth remembering.</em></h1></div></div>
         <div className="sec"><div className="g3">{WINE_DATA.map(w => <LuxCard key={w.id} item={w} />)}</div>
-          <PartnerCTA msg="Wine, spirits, or private tasting experiences?" btn="List Your Service — $100/mo" stream="wine" /></div>
+          <PartnerCTA msg="Wine, spirits, or private tasting experiences?" btn="List Your Service — $250/mo" stream="wine" /></div>
         <Footer />
       </>}
 
       {page === "shopping" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Luxury Shopping · Art · Jewelry</div><h1 className="pht">Acquire something<br /><em>exceptional.</em></h1></div></div>
         <div className="sec"><div className="g3">{SHOPPING_DATA.map(s => <LuxCard key={s.id} item={s} />)}</div>
-          <PartnerCTA msg="Luxury boutique, jeweler, gallery, or stylist?" btn="List Your Business — $100/mo" stream="shopping" /></div>
+          <PartnerCTA msg="Luxury boutique, jeweler, gallery, or stylist?" btn="List Your Business — $250/mo" stream="shopping" /></div>
         <Footer />
       </>}
 
@@ -1266,7 +1266,7 @@ export default function MonarcPrive() {
           {/* Comparison note */}
           <div style={{ background: "var(--ink-s)", padding: "28px 56px", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 20, maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-              {[["6 Private Estates", "All tiers"], ["AI Concierge 24/7", "Sterling · All tiers"], ["12 Luxury Partners", "Dining · Cars · Golf · Spa · Aviation · More"], ["Total Discretion", "Vetted members only"]].map(([val, sub]) => (
+              {[["", "All tiers"], ["AI Concierge 24/7", "Sterling · All tiers"], ["12 Luxury Partners", "Dining · Cars · Golf · Spa · Aviation · More"], ["Total Discretion", "Vetted members only"]].map(([val, sub]) => (
                 <div key={val}>
                   <div style={{ fontFamily: "var(--serif)", fontSize: "1rem", color: "var(--t1)", fontWeight: 400, marginBottom: 4 }}>{val}</div>
                   <div style={{ fontSize: ".6rem", color: "var(--taupe)", fontWeight: 300 }}>{sub}</div>
@@ -1484,7 +1484,7 @@ export default function MonarcPrive() {
           <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 24 }}>Based in Scottsdale and Paradise Valley, Arizona, we operate at the intersection of hospitality, technology, and taste. Our platform gives discerning travelers access to six exceptional private estates alongside a curated network of Scottsdale's finest restaurants, exotic car providers, world-class golf courses, private aviation operators, luxury spas, and more.</p>
           <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 40 }}>At the heart of the experience is Sterling — our AI concierge — who learns your preferences and orchestrates every detail before you arrive. Monarc Privé is not a marketplace. It is a membership. And membership has always meant something here.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 1, background: "var(--border)", marginBottom: 48 }}>
-            {[["2024", "Founded in Scottsdale"], ["6", "Private Estates"], ["12", "Luxury Partner Categories"]].map(([val, lbl]) => (
+            {[["2024", "Founded in Scottsdale"], [ "Private Estates"], ["12", "Luxury Partner Categories"]].map(([val, lbl]) => (
               <div key={lbl} style={{ background: "var(--ink-m)", padding: "28px 24px", textAlign: "center" }}>
                 <div style={{ fontFamily: "var(--serif)", fontSize: "2.4rem", fontWeight: 300, color: "var(--gold)", marginBottom: 8 }}>{val}</div>
                 <div style={{ fontSize: ".62rem", letterSpacing: ".16em", textTransform: "uppercase", color: "var(--taupe)" }}>{lbl}</div>
