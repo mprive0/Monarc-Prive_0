@@ -109,15 +109,15 @@ const AGENTS = [
 
 const PARTNER_STREAMS = [
   { id: "property", icon: "◈", label: "List Property", price: "$250/mo", desc: "List your luxury estate to our members" },
-  { id: "agent", icon: "◉", label: "Agent Advertising", price: "$250/mo", desc: "Advertise your real estate brand" },
-  { id: "restaurant", icon: "🍽", label: "Restaurant", price: "$250/mo", desc: "Promote your restaurant to UHNW members" },
-  { id: "golf", icon: "⛳", label: "Golf & Clubs", price: "$250/mo", desc: "Promote tee times and club access" },
+  { id: "agent", icon: "◉", label: "Agent Advertising", price: "$350/mo", desc: "Advertise your real estate brand" },
+  { id: "restaurant", icon: "🍽", label: "Restaurant", price: "$350/mo", desc: "Promote your restaurant to UHNW members" },
+  { id: "golf", icon: "⛳", label: "Golf & Clubs", price: "$599/mo", desc: "Promote tee times and club access" },
   { id: "cars", icon: "🚗", label: "Luxury Cars", price: "$250/mo", desc: "List exotic and luxury vehicle rentals" },
   { id: "medspa", icon: "💆", label: "Med Spa & Beauty", price: "$250/mo", desc: "IV therapy, aesthetics and wellness" },
-  { id: "aviation", icon: "✈", label: "Private Aviation", price: "$250/mo", desc: "Jet charters and air travel services" },
-  { id: "yacht", icon: "🛥", label: "Yacht & Charters", price: "$250/mo", desc: "Watercraft and boat experiences" },
+  { id: "aviation", icon: "✈", label: "Private Aviation", price: "$499/mo", desc: "Jet charters and air travel services" },
+  { id: "yacht", icon: "🛥", label: "Yacht & Charters", price: "$499/mo", desc: "Watercraft and boat experiences" },
   { id: "shopping", icon: "💎", label: "Luxury Shopping", price: "$250/mo", desc: "Boutiques, jewelers and personal stylists" },
-  { id: "wine", icon: "🍷", label: "Wine & Spirits", price: "$250/mo", desc: "Tastings, rare bottles and delivery" },
+  { id: "wine", icon: "🍷", label: "Wine & Spirits", price: "350/mo", desc: "Tastings, rare bottles and delivery" },
   { id: "events", icon: "🎪", label: "Private Events", price: "$250/mo", desc: "Venues, entertainment and production" },
   { id: "experience", icon: "◌", label: "Experiences", price: "$250/mo", desc: "Outdoor, wellness and unique activities" },
 ];
@@ -503,7 +503,7 @@ export default function MonarcPrive() {
   const toggleFav = i => setFavs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
   const sendWelcomeEmail = async (email, firstName, tier = "curated") => {
     const tierNames = { curated: "Curated", private: "Private", founding: "Founding" };
-    const tierPrices = { curated: "Limited Access", private: "Coming Soon", founding: "By Invitation" };
+    const tierPrices = { curated: "Limited Access", private: "By Invitation", founding: "By Invitation" };
     const API = import.meta.env.VITE_API_URL;
     if (!API) return; // backend not connected yet — skip silently
     try {
@@ -760,12 +760,12 @@ export default function MonarcPrive() {
         </div>
         <div>
           <div className="ftct">List Your Business</div>
-          <span className="ftl" onClick={() => setPage("partners")}>List Estate — $250/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Agent Ad — $250/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Restaurant — $250/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Golf Club — $250/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Luxury Cars — $250/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Aviation — $250/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>List Estate </span>
+          <span className="ftl" onClick={() => setPage("partners")}>Agent Ad </span>
+          <span className="ftl" onClick={() => setPage("partners")}>Restaurant </span>
+          <span className="ftl" onClick={() => setPage("partners")}>Golf Club </span>
+          <span className="ftl" onClick={() => setPage("partners")}>Luxury Cars</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Aviation </span>
         </div>
         <div>
           <div className="ftct">Company</div>
@@ -1159,49 +1159,49 @@ export default function MonarcPrive() {
       {page === "restaurants" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Curated Dining · Member Access</div><h1 className="pht">Scottsdale finest tables.<br /><em>Reserved for you.</em></h1></div></div>
         <div className="sec"><div className="g3">{RESTAURANTS.map(r => <RestCard key={r.id} r={r} />)}</div>
-          <PartnerCTA msg="Own a luxury restaurant?" btn="List Your Restaurant — $75/mo" stream="restaurant" /></div>
+          <PartnerCTA msg="Own a luxury restaurant?" btn="List Your Restaurant — $350/mo" stream="restaurant" /></div>
         <Footer />
       </>}
 
       {page === "cars" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Exotic & Luxury Vehicles</div><h1 className="pht">Drive something<br /><em>extraordinary.</em></h1></div></div>
         <div className="sec"><div className="g4">{LUXURY_CARS.map(c => <CarCard key={c.id} c={c} />)}</div>
-          <PartnerCTA msg="Operate a luxury or exotic car rental?" btn="List Your Fleet — $150/mo" stream="cars" /></div>
+          <PartnerCTA msg="Operate a luxury or exotic car rental?" btn="List Your Fleet — $250/mo" stream="cars" /></div>
         <Footer />
       </>}
 
       {page === "golf" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">World-Class Golf · Scottsdale</div><h1 className="pht">The golf capital.<br /><em>Played properly.</em></h1></div></div>
         <div className="sec"><div className="g4">{GOLF_VENUES.map(g => <LuxCard key={g.id} item={g} />)}</div>
-          <PartnerCTA msg="Run a golf club, course, or caddie service?" btn="List Your Club — $125/mo" stream="golf" /></div>
+          <PartnerCTA msg="Run a golf club, course, or caddie service?" btn="List Your Club — $599/mo" stream="golf" /></div>
         <Footer />
       </>}
 
       {page === "experiences" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Curated Experiences</div><h1 className="pht">Beyond the estate.<br /><em>Beyond the ordinary.</em></h1></div></div>
         <div className="sec"><div className="g3">{EXPERIENCES_DATA.map(e => <ExpCard key={e.id} e={e} />)}</div>
-          <PartnerCTA msg="Offer an extraordinary experience?" btn="List Your Experience — $100/mo" stream="experience" /></div>
+          <PartnerCTA msg="Offer an extraordinary experience?" btn="List Your Experience — $250/mo" stream="experience" /></div>
         <Footer />
       </>}
 
       {page === "medspa" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Spa · Wellness · Medical Aesthetics</div><h1 className="pht">Restoration.<br /><em>In-villa or in-spa.</em></h1></div></div>
         <div className="sec"><div className="g3">{MED_SPAS.map(m => <LuxCard key={m.id} item={m} />)}</div>
-          <PartnerCTA msg="Run a med spa, luxury spa, or wellness clinic?" btn="List Your Spa — $75/mo" stream="medspa" /></div>
+          <PartnerCTA msg="Run a med spa, luxury spa, or wellness clinic?" btn="List Your Spa — $250/mo" stream="medspa" /></div>
         <Footer />
       </>}
 
       {page === "aviation" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Private Aviation · Scottsdale Airport</div><h1 className="pht">Fly private.<br /><em>Land anywhere.</em></h1></div></div>
         <div className="sec"><div className="g3">{AVIATION_DATA.map(a => <LuxCard key={a.id} item={a} />)}</div>
-          <PartnerCTA msg="Offer private aviation or helicopter services?" btn="List Your Service — $250/mo" stream="aviation" /></div>
+          <PartnerCTA msg="Offer private aviation or helicopter services?" btn="List Your Service — $499/mo" stream="aviation" /></div>
         <Footer />
       </>}
 
       {page === "wine" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Wine · Rare Spirits · Private Tastings</div><h1 className="pht">Drink something<br /><em>worth remembering.</em></h1></div></div>
         <div className="sec"><div className="g3">{WINE_DATA.map(w => <LuxCard key={w.id} item={w} />)}</div>
-          <PartnerCTA msg="Wine, spirits, or private tasting experiences?" btn="List Your Service — $250/mo" stream="wine" /></div>
+          <PartnerCTA msg="Wine, spirits, or private tasting experiences?" btn="List Your Service — $350/mo" stream="wine" /></div>
         <Footer />
       </>}
 
@@ -1229,10 +1229,10 @@ export default function MonarcPrive() {
               },
               {
                 name: "Private", icon: "◈", price: "Coming Soon", period: "/year", highlight: true, badge: "Most Popular",
-                perks: ["Everything in Curated", "72-hour priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Concierge service credits ($200)", "Physical membership card & gift", "Early access to new estates"]
+                perks: ["Everything in Curated", "Priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Concierge service credits ($200)", "Physical membership card & gift", "Early access to new estates"]
               },
               {
-                name: "Founding", icon: "◉", price: "By Invite", period: "", highlight: false, badge: "Limited — 50 Members",
+                name: "Founding", icon: "◉", price: "By Invite", period: "", highlight: false, badge: "Limited Members",
                 perks: ["Everything in Private", "Founding member status forever", "Annual luxury gratitude gift", "Direct founder access & influence", "Co-creation of new estate additions", "Lifetime rate lock — never increases", "Named acknowledgment in platform"]
               },
             ].map(t => (
@@ -1300,19 +1300,7 @@ export default function MonarcPrive() {
                 </div>
               ))}
             </div>
-            <div style={{ background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.15)", borderRadius: 3, padding: 24, marginTop: 8 }}>
-              <div style={{ fontFamily: "var(--serif)", fontSize: "1.2rem", color: "var(--t1)", marginBottom: 14 }}>Revenue Potential</div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10 }}>
-                {[["10 Properties", "$250/mo", "+3%+3% booking fees"], ["10 Restaurants", "$750/mo", "flat rate"], ["10 Golf Clubs", "$1,250/mo", "flat rate"], ["5 Aviation Ops", "$1,250/mo", "flat rate"]].map(([l, v, s]) => (
-                  <div key={l} style={{ textAlign: "center", background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 2, padding: 14 }}>
-                    <div style={{ fontFamily: "var(--serif)", fontSize: "1.2rem", color: "var(--gold)", fontWeight: 300 }}>{v}</div>
-                    <div style={{ fontSize: ".56rem", letterSpacing: ".14em", textTransform: "uppercase", color: "var(--taupe)", margin: "4px 0 2px" }}>{l}</div>
-                    <div style={{ fontSize: ".58rem", color: "var(--t3)", fontWeight: 300 }}>{s}</div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ textAlign: "center", marginTop: 16, fontSize: ".8rem", color: "var(--t2)", fontWeight: 300 }}> 12 categories = <strong style={{ color: "var(--gold-l)" }}></strong> </div>
-            </div>
+            
           </div>
         )}
         {PARTNER_STREAMS.map(s => pTab === s.id && <div key={s.id} className="sec"><PartnerForm streamId={s.id} /></div>)}
