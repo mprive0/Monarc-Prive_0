@@ -104,7 +104,7 @@ const AGENTS = [
   { id: "celeste", icon: "◉", name: "Celeste", role: "Marketing & Brand", sys: "You are Celeste, Brand & Marketing AI Agent for Monarc Prive. Luxury copy and strategy. Conde Nast meets performance marketer. Concise." },
   { id: "sterling", icon: "◌", name: "Sterling", role: "Guest Concierge", sys: "You are Sterling, ultra-luxury AI concierge for Monarc Prive Scottsdale. Know every estate, restaurant, car rental, golf course, spa, aviation, wine, shopping service. Four Seasons level. Warm and effortlessly helpful. Concise." },
   { id: "atlas", icon: "◎", name: "Atlas", role: "Operations", sys: "You are Atlas, Operations AI Agent for Monarc Prive. Monitor estates plus all partner operations. COO level. Flag risks. Direct and precise." },
-  { id: "orion", icon: "◍", name: "Orion", role: "Analytics", sys: "You are Orion, Analytics AI Agent for Monarc Prive. Track all 12 revenue streams. Data into insight. Always answer: what does this mean and what should we do. Concise." },
+  { id: "orion", icon: "◍", name: "Orion", role: "Analytics", sys: "You are Orion, Analytics AI Agent for Monarc Prive. Data into insight. Always answer: what does this mean and what should we do. Concise." },
 ];
 
 const PARTNER_STREAMS = [
@@ -792,13 +792,13 @@ export default function MonarcPrive() {
   const PartnerForm = ({ streamId }) => {
     const stream = PARTNER_STREAMS.find(s => s.id === streamId);
     if (!stream) return null;
-    const perks = [[stream.price, "Monthly flat fee — no hidden costs"], ["UHNW Audience", "Members earn $500K+ annually"], ["Cancel Anytime", "No contracts or long-term commitments"], ["24-48hr Review", "Team reviews every listing personally"], ["Premium Placement", "Featured above general search"]];
+    const perks = [[stream.price, "Monthly flat fee — no hidden costs"], ["UHNW Audience", "Top -Tier Members"], ["Cancel Anytime", "No contracts or long-term commitments"], ["24-48hr Review", "Team reviews every listing personally"], ["Premium Placement", "Featured above general search"]];
     return (
       <div className="pf-wrap">
         <div>
           <div style={{ fontSize: ".56rem", letterSpacing: ".36em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 12 }}>{stream.icon} {stream.label}</div>
           <h2 style={{ fontFamily: "var(--serif)", fontSize: "2rem", fontWeight: 300, color: "var(--t1)", marginBottom: 14, lineHeight: 1.2 }}>List with Monarc Prive.<br />Reach the right people.</h2>
-          <p style={{ fontSize: ".8rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.8, marginBottom: 22 }}>Our members are high-net-worth individuals spending $2,000-$6,000 per night on their estates. They are actively looking for exactly what you offer. Your listing puts you in front of them exclusively.</p>
+          <p style={{ fontSize: ".8rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.8, marginBottom: 22 }}>Our members are actively looking for exactly what you offer. Your listing puts you in front of them exclusively.</p>
           <div>
             {perks.map(([val, lbl]) => (
               <div key={lbl} style={{ display: "flex", gap: 14, padding: "9px 0", borderBottom: "1px solid rgba(212,201,181,.07)", alignItems: "flex-start" }}>
@@ -1289,7 +1289,7 @@ export default function MonarcPrive() {
         </div>
         {pTab === "overview" && (
           <div className="sec">
-            <div className="sh" style={{ marginBottom: 22 }}><div className="st">Partner Programs</div><span style={{ fontSize: ".56rem", color: "var(--taupe)" }}>12 revenue streams</span></div>
+            <div className="sh" style={{ marginBottom: 22 }}><div className="st">Partner Programs</div><span style={{ fontSize: ".56rem", color: "var(--taupe)" }}></span></div>
             <div className="psg">
               {PARTNER_STREAMS.map(s => (
                 <div key={s.id} className="psc" onClick={() => setPTab(s.id)}>
@@ -1311,7 +1311,7 @@ export default function MonarcPrive() {
                   </div>
                 ))}
               </div>
-              <div style={{ textAlign: "center", marginTop: 16, fontSize: ".8rem", color: "var(--t2)", fontWeight: 300 }}>10 partners per category × 12 categories = <strong style={{ color: "var(--gold-l)" }}>$12,750+/month</strong> in recurring partner fees alone</div>
+              <div style={{ textAlign: "center", marginTop: 16, fontSize: ".8rem", color: "var(--t2)", fontWeight: 300 }}> 12 categories = <strong style={{ color: "var(--gold-l)" }}></strong> </div>
             </div>
           </div>
         )}
