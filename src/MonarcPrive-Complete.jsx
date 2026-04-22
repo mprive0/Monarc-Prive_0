@@ -1228,7 +1228,7 @@ export default function MonarcPrive() {
                 perks: ["Access to curated private estates", "Sterling AI concierge — 24/7", "Standard booking window", "Member pricing on all services", "Vetted guest community", "Digital membership card"]
               },
               {
-                name: "Private", icon: "◈", price: "$999", period: "/year", highlight: true, badge: "Most Popular",
+                name: "Private", icon: "◈", price: "$2,500", period: "/year", highlight: true, badge: "Most Popular",
                 perks: ["Everything in Curated", "Priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Physical membership card & gift", "Early access to new estates"]
               },
               {
