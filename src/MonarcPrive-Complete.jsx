@@ -33,7 +33,7 @@ const RESTAURANTS = [
 
 const LUXURY_CARS = [
   { id: 1, name: "Ferrari Roma Spider", category: "Exotic Sports", company: "Arizona Exotics", price: 2800, img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&q=85", badge: "Most Requested", desc: "Open-top Italian perfection. 612hp. The drive Scottsdale deserves.", included: ["Insurance", "Estate Delivery", "Concierge Support"] },
-  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "bottom", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
+  { id: 2, name: "Rolls-Royce Cullinan", category: "Ultra-Luxury SUV", company: "Scottsdale Luxury Fleet", price: 3200, img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=700&q=85", imgPos: "center", badge: "Member Favorite", desc: "The world's most capable luxury SUV. Starlight headliner. Champagne fridge. Effortless.", included: ["Chauffeur Available", "Insurance", "Airport Pickup"] },
   { id: 3, name: "Lamborghini Urus", category: "Super SUV", company: "Arizona Exotics", price: 2400, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=85", badge: "Top Pick", desc: "640hp super SUV. Four seats. Fits golf clubs. Turns every road into an event.", included: ["Insurance", "Delivery", "24/7 Support"] },
   { id: 4, name: "Bentley Continental GT", category: "Grand Tourer", company: "Scottsdale Luxury Fleet", price: 1800, img: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=700&q=85", badge: "Classic Choice", desc: "Hand-crafted British grand touring. 626hp. The perfect car for a desert sunset drive.", included: ["Insurance", "Estate Delivery", "Concierge"] },
 ];
@@ -503,7 +503,7 @@ export default function MonarcPrive() {
   const toggleFav = i => setFavs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
   const sendWelcomeEmail = async (email, firstName, tier = "curated") => {
     const tierNames = { curated: "Curated", private: "Private", founding: "Founding" };
-    const tierPrices = { curated: "$300", private: "$750", founding: "By Invitation" };
+    const tierPrices = { curated: "$0", private: "Coming Soon", founding: "By Invitation" };
     const API = import.meta.env.VITE_API_URL;
     if (!API) return; // backend not connected yet — skip silently
     try {
@@ -515,7 +515,7 @@ export default function MonarcPrive() {
           name: firstName,
           tier,
           tierName: tierNames[tier] || "Curated",
-          tierPrice: tierPrices[tier] || "$300",
+          tierPrice: tierPrices[tier] || "$0",
         }),
       });
     } catch (e) {
@@ -681,23 +681,32 @@ export default function MonarcPrive() {
     </div>
   );
 
-  const LuxCard = ({ item, onClick }) => (
-    <div className="card" onClick={onClick || (() => openModal("join"))}>
-      <div className="ciw">
-        <img className="ci" src={item.img} alt={item.name} loading="lazy" />
-        <span className="cbadge">{item.badge}</span>
-      </div>
-      <div className="cb">
-        <div className="cn">{item.name}</div>
-        <div style={{ fontSize: ".58rem", letterSpacing: ".14em", textTransform: "uppercase", color: "var(--taupe)", marginBottom: 5 }}>{item.type || item.category}</div>
-        <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 8 }}>{item.desc}</div>
-        <div className="cf">
-          <div><div className="cp" style={{ fontSize: ".95rem" }}>{item.price || item.green_fee}</div><div className="cps">{item.area || ""}</div></div>
-          <button className="cc" onClick={e => { e.stopPropagation(); currentUser ? openModal("concierge", { name: item.name, type: item.type || item.category, price: item.price }) : openModal("join"); }}>Book →</button>
+  const LuxCard = ({ item, onClick }) => {
+    const handleClick = () => {
+      if (currentUser) {
+        openModal("concierge", { name: item.name, type: item.type || item.category, price: item.price });
+      } else {
+        openModal("join");
+      }
+    };
+    return (
+      <div className="card" onClick={onClick || handleClick}>
+        <div className="ciw">
+          <img className="ci" src={item.img} alt={item.name} loading="lazy" />
+          <span className="cbadge">{item.badge}</span>
+        </div>
+        <div className="cb">
+          <div className="cn">{item.name}</div>
+          <div style={{ fontSize: ".58rem", letterSpacing: ".14em", textTransform: "uppercase", color: "var(--taupe)", marginBottom: 5 }}>{item.type || item.category}</div>
+          <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 8 }}>{item.desc}</div>
+          <div className="cf">
+            <div><div className="cp" style={{ fontSize: ".95rem" }}>{item.price || item.green_fee}</div><div className="cps">{item.area || ""}</div></div>
+            <button className="cc" onClick={e => { e.stopPropagation(); handleClick(); }}>Book →</button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const ExpCard = ({ e }) => (
     <div className="card">
@@ -721,7 +730,7 @@ export default function MonarcPrive() {
   const PartnerCTA = ({ msg, btn, stream }) => (
     <div style={{ marginTop: 32, background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: 26, textAlign: "center" }}>
       <div style={{ fontFamily: "var(--serif)", fontSize: "1.2rem", color: "var(--t1)", marginBottom: 8 }}>{msg}</div>
-      <div style={{ fontSize: ".76rem", color: "var(--t3)", fontWeight: 300, marginBottom: 18 }}>Reach Monarc Prive members spending $2,000-$6,000/night on estates who are actively looking for exactly what you offer.</div>
+      <div style={{ fontSize: ".76rem", color: "var(--t3)", fontWeight: 300, marginBottom: 18 }}>Reach Monarc Prive members who are actively looking for exactly what you offer.</div>
       <button className="btn-g" onClick={() => { setPage("partners"); setPTab(stream); }}>{btn}</button>
     </div>
   );
@@ -1141,7 +1150,7 @@ export default function MonarcPrive() {
         <div className="sec" style={{ textAlign: "center" }}>
           <div style={{ fontSize: ".58rem", letterSpacing: ".4em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 14 }}>Limited Memberships</div>
           <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(2rem,4vw,3.4rem)", fontWeight: 300, color: "var(--t1)", marginBottom: 16, lineHeight: 1.1 }}>Everything Scottsdale has to offer,<br /><em style={{ fontStyle: "italic", color: "var(--gold-l)" }}>curated for you</em></h2>
-          <p style={{ fontSize: ".86rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, maxWidth: 480, margin: "0 auto 32px" }}>One membership. Six estates. Dozens of luxury partners. AI concierge 24/7.</p>
+          <p style={{ fontSize: ".86rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, maxWidth: 480, margin: "0 auto 32px" }}>One membership. Dozens of luxury partners. AI concierge 24/7.</p>
           <button className="btn-g" style={{ padding: "17px 44px" }} onClick={() => openModal("join")}>Apply for Membership</button>
         </div>
         <Footer />
@@ -1209,17 +1218,17 @@ export default function MonarcPrive() {
           <div style={{ textAlign: "center", padding: "72px 56px 56px" }}>
             <div style={{ fontSize: ".58rem", letterSpacing: ".4em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 14 }}>Exclusive Membership</div>
             <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(2.2rem,4.5vw,3.8rem)", fontWeight: 300, color: "var(--t1)", lineHeight: 1.1, marginBottom: 16 }}>Not a marketplace.<br /><em style={{ fontStyle: "italic", color: "var(--gold-l)" }}>A private club.</em></h1>
-            <p style={{ fontSize: ".86rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, maxWidth: 560, margin: "0 auto" }}>One membership unlocks 6 private estates, every luxury partner — restaurants, exotic cars, golf, spas, aviation, wine, shopping — and a 24/7 AI concierge that knows your preferences before you ask.</p>
+            <p style={{ fontSize: ".86rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, maxWidth: 560, margin: "0 auto" }}>One membership every luxury partner — restaurants, exotic cars, golf, spas, aviation, wine, shopping — and a 24/7 AI concierge that knows your preferences before you ask.</p>
           </div>
           {/* Three Tiers */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, background: "var(--border)", marginBottom: 0 }}>
             {[
               {
-                name: "Curated", icon: "◌", price: "$300", period: "/year", highlight: false, badge: null,
+                name: "Curated", icon: "◌", price: "$0", period: "/year", highlight: false, badge: null,
                 perks: ["Access to all 6 curated private estates", "Sterling AI concierge — 24/7", "Standard booking window", "Member pricing on all services", "Vetted guest community", "Digital membership card"]
               },
               {
-                name: "Private", icon: "◈", price: "$750", period: "/year", highlight: true, badge: "Most Popular",
+                name: "Private", icon: "◈", price: "Coming Soon", period: "/year", highlight: true, badge: "Most Popular",
                 perks: ["Everything in Curated", "48-hour priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Concierge service credits ($200)", "Physical membership card & gift", "Early access to new estates"]
               },
               {
@@ -1486,7 +1495,7 @@ export default function MonarcPrive() {
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,transparent,var(--gold),transparent)" }} />
             <div style={{ fontFamily: "var(--serif)", fontSize: "1.6rem", fontWeight: 300, color: "var(--t1)", marginBottom: 12 }}>Ready to experience it?</div>
             <p style={{ fontSize: ".78rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.8, maxWidth: 440, margin: "0 auto 22px" }}>Membership is limited. Apply today and let Sterling take care of everything else.</p>
-            <button className="btn-g" onClick={() => openModal("join")}>Apply for Membership — $300/yr</button>
+            <button className="btn-g" onClick={() => openModal("join")}>Apply for Membership </button>
           </div>
         </div>
         <Footer />
@@ -1728,18 +1737,7 @@ export default function MonarcPrive() {
                   </tr>
                 ))}</tbody>
               </table></div>}
-              {aSection === "revenue" && <>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginBottom: 18 }}>
-                  {[["Memberships", "$14,100", "47 members × $300"], ["Prop Listings", "$150", "6 × $25/mo"], ["Agent Ads", "$600", "12 × $50/mo"], ["Restaurants", "$750", "10 × $75/mo"], ["Golf Clubs", "$625", "5 × $125/mo"], ["Luxury Cars", "$450", "3 × $150/mo"], ["Experiences", "$800", "8 × $100/mo"], ["Aviation", "$500", "2 × $250/mo"]].map(([l, v, s]) => (
-                    <div key={l} className="sc2"><div className="slbl">{l}</div><div className="sval" style={{ fontSize: "1.2rem", color: "var(--gold)" }}>{v}</div><div style={{ fontSize: ".58rem", color: "var(--t3)", marginTop: 3, fontWeight: 300 }}>{s}</div></div>
-                  ))}
-                </div>
-                <div className="sg">
-                  {[["Total MRR", "$17,975", "All 12 streams combined"], ["Annual Run Rate", "$215K", "Subscriptions only"], ["Booking GMV", "$153K", "This month confirmed"], ["Platform Revenue", "$19K+", "MRR + 6% booking fees"]].map(([l, v, s]) => (
-                    <div key={l} className="sc2"><div className="slbl">{l}</div><div className="sval">{v}</div><div style={{ fontSize: ".58rem", color: "var(--green)", marginTop: 4 }}>↑ {s}</div></div>
-                  ))}
-                </div>
-              </>}
+              
               {aSection === "members" && <div className="tbl"><table>
                 <thead><tr><th>Member</th><th>Email</th><th>Tier</th><th>Since</th><th>Bookings</th><th>Actions</th></tr></thead>
                 <tbody>{[
@@ -1876,9 +1874,9 @@ export default function MonarcPrive() {
               <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Step 3 of 3</div><div className="mt">Complete membership</div><div className="ms">Annual access — cancel anytime</div></div>
               <div className="mbd">
                 <div className="ps">
-                  <div className="pr"><span>Monarc Privé Annual Membership</span><span>$300.00</span></div>
+                  <div className="pr"><span>Monarc Privé Annual Membership</span><span>$0.00</span></div>
                   <div className="pr"><span>Platform fee</span><span>$0.00</span></div>
-                  <div className="pr pt"><span>Total due today</span><span>$300.00</span></div>
+                  <div className="pr pt"><span>Total due today</span><span>$0.00</span></div>
                 </div>
                 {paymentError && (
                   <div style={{ fontSize: ".68rem", color: "var(--red)", padding: "8px 12px", background: "rgba(224,82,82,.08)", border: "1px solid rgba(224,82,82,.2)", borderRadius: 2, marginBottom: 12 }}>
@@ -1887,7 +1885,7 @@ export default function MonarcPrive() {
                 )}
                 <div className="fg"><label className="fl">Cardholder Name</label><input className="fi" placeholder="Name on card" onChange={field("cn")} /></div>
                 <div className="fg"><label className="fl">Card Number</label>
-                  <input className="fi" placeholder="4242 4242 4242 4242" maxLength={19}
+                  <input className="fi" placeholder="" maxLength={19}
                     onChange={e => {
                       let v = e.target.value.replace(/\D/g, "").substring(0, 16);
                       v = v.replace(/(.{4})/g, "$1 ").trim();
@@ -1978,7 +1976,7 @@ export default function MonarcPrive() {
                     setPaymentError(err.message || "Something went wrong. Please try again.");
                   }
                 }}>
-                  {stripeLoading ? "Activating..." : "Activate Membership — $300"}
+                  {stripeLoading ? "Activating..." : "Activate Membership"}
                 </button>
               </div>
             </>}
