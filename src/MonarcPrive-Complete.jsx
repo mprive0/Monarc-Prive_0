@@ -792,7 +792,7 @@ export default function MonarcPrive() {
   const PartnerForm = ({ streamId }) => {
     const stream = PARTNER_STREAMS.find(s => s.id === streamId);
     if (!stream) return null;
-    const perks = [[stream.price, "Monthly flat fee — no hidden costs"], ["UHNW Audience", "Top -Tier Members"], ["Cancel Anytime", "No contracts or long-term commitments"], ["24-48hr Review", "Team reviews every listing personally"], ["Premium Placement", "Featured above general search"]];
+    const perks = [[stream.price, "Monthly flat fee — no hidden costs"], ["UHNW Audience", "Verified Members"], ["Cancel Anytime", "No contracts or long-term commitments"], ["24-48hr Review", "Team reviews every listing personally"], ["Premium Placement", "Featured above general search"]];
     return (
       <div className="pf-wrap">
         <div>
@@ -1159,42 +1159,42 @@ export default function MonarcPrive() {
       {page === "restaurants" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Curated Dining · Member Access</div><h1 className="pht">Scottsdale finest tables.<br /><em>Reserved for you.</em></h1></div></div>
         <div className="sec"><div className="g3">{RESTAURANTS.map(r => <RestCard key={r.id} r={r} />)}</div>
-          <PartnerCTA msg="Own a luxury restaurant?" btn="List Your Restaurant — $350/mo" stream="restaurant" /></div>
+          <PartnerCTA msg="Own a luxury restaurant?" btn="List Your Restaurant " stream="restaurant" /></div>
         <Footer />
       </>}
 
       {page === "cars" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Exotic & Luxury Vehicles</div><h1 className="pht">Drive something<br /><em>extraordinary.</em></h1></div></div>
         <div className="sec"><div className="g4">{LUXURY_CARS.map(c => <CarCard key={c.id} c={c} />)}</div>
-          <PartnerCTA msg="Operate a luxury or exotic car rental?" btn="List Your Fleet — $250/mo" stream="cars" /></div>
+          <PartnerCTA msg="Operate a luxury or exotic car rental?" btn="List Your Fleet " stream="cars" /></div>
         <Footer />
       </>}
 
       {page === "golf" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">World-Class Golf · Scottsdale</div><h1 className="pht">The golf capital.<br /><em>Played properly.</em></h1></div></div>
         <div className="sec"><div className="g4">{GOLF_VENUES.map(g => <LuxCard key={g.id} item={g} />)}</div>
-          <PartnerCTA msg="Run a golf club, course, or caddie service?" btn="List Your Club — $599/mo" stream="golf" /></div>
+          <PartnerCTA msg="Host a golf club, course, or caddie service?" btn="List Your Club " stream="golf" /></div>
         <Footer />
       </>}
 
       {page === "experiences" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Curated Experiences</div><h1 className="pht">Beyond the estate.<br /><em>Beyond the ordinary.</em></h1></div></div>
         <div className="sec"><div className="g3">{EXPERIENCES_DATA.map(e => <ExpCard key={e.id} e={e} />)}</div>
-          <PartnerCTA msg="Offer an extraordinary experience?" btn="List Your Experience — $250/mo" stream="experience" /></div>
+          <PartnerCTA msg="Offer an extraordinary experience?" btn="List Your Experience " stream="experience" /></div>
         <Footer />
       </>}
 
       {page === "medspa" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Spa · Wellness · Medical Aesthetics</div><h1 className="pht">Restoration.<br /><em>In-villa or in-spa.</em></h1></div></div>
         <div className="sec"><div className="g3">{MED_SPAS.map(m => <LuxCard key={m.id} item={m} />)}</div>
-          <PartnerCTA msg="Run a med spa, luxury spa, or wellness clinic?" btn="List Your Spa — $250/mo" stream="medspa" /></div>
+          <PartnerCTA msg="Operate a med spa, luxury spa, or wellness clinic?" btn="List Your Spa " stream="medspa" /></div>
         <Footer />
       </>}
 
       {page === "aviation" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Private Aviation · Scottsdale Airport</div><h1 className="pht">Fly private.<br /><em>Land anywhere.</em></h1></div></div>
         <div className="sec"><div className="g3">{AVIATION_DATA.map(a => <LuxCard key={a.id} item={a} />)}</div>
-          <PartnerCTA msg="Offer private aviation or helicopter services?" btn="List Your Service — $499/mo" stream="aviation" /></div>
+          <PartnerCTA msg="Offer private aviation or helicopter services?" btn="List Your Service " stream="aviation" /></div>
         <Footer />
       </>}
 
@@ -1208,7 +1208,7 @@ export default function MonarcPrive() {
       {page === "shopping" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Luxury Shopping · Art · Jewelry</div><h1 className="pht">Acquire something<br /><em>exceptional.</em></h1></div></div>
         <div className="sec"><div className="g3">{SHOPPING_DATA.map(s => <LuxCard key={s.id} item={s} />)}</div>
-          <PartnerCTA msg="Luxury boutique, jeweler, gallery, or stylist?" btn="List Your Business — $250/mo" stream="shopping" /></div>
+          <PartnerCTA msg="Luxury boutique, jeweler, gallery, or stylist?" btn="List Your Business " stream="shopping" /></div>
         <Footer />
       </>}
 
