@@ -200,7 +200,7 @@ export default function ConciergeWidget({ guestName, bookingId, apiUrl }) {
   const [typing, setTyping] = useState(false);
   const [unread, setUnread] = useState(1);
   const endRef = useRef(null);
-  const BASE_URL = apiUrl || "https://your-backend.onrender.com";
+  const BASE_URL = apiUrl || "https://monarc-api.onrender.com";
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });

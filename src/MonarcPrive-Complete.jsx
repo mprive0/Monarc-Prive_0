@@ -638,8 +638,10 @@ export default function MonarcPrive() {
     </div>
   );
 
-  const RestCard = ({ r }) => (
-    <div className="card">
+  const RestCard = ({ r }) => {
+    const handleClick = () => currentUser ? openModal("concierge", { name: r.name, type: "Dining Reservation", price: r.price }) : openModal("join");
+    return (
+      <div className="card" onClick={handleClick}>
       <div className="ciw" style={{ paddingTop: "52%" }}>
         <img className="ci" src={r.img} alt={r.name} loading="lazy" />
         <span className="cbadge">{r.badge}</span>
@@ -659,8 +661,10 @@ export default function MonarcPrive() {
     </div>
   );
 
-  const CarCard = ({ c }) => (
-    <div className="card">
+    const CarCard = ({ c }) => {
+      const handleClick = () => currentUser ? openModal("concierge", { name: c.name, type: "Luxury Car Rental", price: `$${c.price.toLocaleString()}/day` }) : openModal("join");
+      return (
+        <div className="card" onClick={handleClick}>
       <div className="ciw">
         <img className="ci" src={c.img} alt={c.name} loading="lazy" style={{ objectPosition: c.imgPos || "center" }} />
         <span className="cbadge">{c.badge}</span>
@@ -708,8 +712,10 @@ export default function MonarcPrive() {
     );
   };
 
-  const ExpCard = ({ e }) => (
-    <div className="card">
+      const ExpCard = ({ e }) => {
+        const handleClick = () => currentUser ? openModal("concierge", { name: e.name, type: e.category, price: `$${e.price.toLocaleString()} per ${e.per}` }) : openModal("join");
+        return (
+          <div className="card" onClick={handleClick}>
       <div className="ciw">
         <img className="ci" src={e.img} alt={e.name} loading="lazy" />
         <span className="cbadge">{e.badge}</span>
@@ -1864,7 +1870,7 @@ export default function MonarcPrive() {
                 <div className="ps">
                   <div className="pr"><span>Monarc Privé Annual Membership</span><span>Limited Access</span></div>
                   <div className="pr"><span>Platform fee</span><span>Limited Access</span></div>
-                  <div className="pr pt"><span>Total due today</span><span>Limited Access</span></div>
+                  <div className="pr pt"><span>Total due today</span><span>$0</span></div>
                 </div>
                 {paymentError && (
                   <div style={{ fontSize: ".68rem", color: "var(--red)", padding: "8px 12px", background: "rgba(224,82,82,.08)", border: "1px solid rgba(224,82,82,.2)", borderRadius: 2, marginBottom: 12 }}>
