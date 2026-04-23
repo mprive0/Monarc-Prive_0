@@ -659,12 +659,12 @@ export default function MonarcPrive() {
         </div>
       </div>
     </div>
-  );
+  );}
 
-    const CarCard = ({ c }) => {
-      const handleClick = () => currentUser ? openModal("concierge", { name: c.name, type: "Luxury Car Rental", price: `$${c.price.toLocaleString()}/day` }) : openModal("join");
-      return (
-        <div className="card" onClick={handleClick}>
+  const CarCard = ({ c }) => {
+    const handleClick = () => currentUser ? openModal("concierge", { name: c.name, type: "Luxury Car Rental", price: `$${c.price.toLocaleString()}/day` }) : openModal("join");
+    return (
+      <div className="card" onClick={handleClick}>
       <div className="ciw">
         <img className="ci" src={c.img} alt={c.name} loading="lazy" style={{ objectPosition: c.imgPos || "center" }} />
         <span className="cbadge">{c.badge}</span>
@@ -683,7 +683,7 @@ export default function MonarcPrive() {
         </div>
       </div>
     </div>
-  );
+  );}
 
   const LuxCard = ({ item, onClick }) => {
     const handleClick = () => {
@@ -712,10 +712,10 @@ export default function MonarcPrive() {
     );
   };
 
-      const ExpCard = ({ e }) => {
-        const handleClick = () => currentUser ? openModal("concierge", { name: e.name, type: e.category, price: `$${e.price.toLocaleString()} per ${e.per}` }) : openModal("join");
-        return (
-          <div className="card" onClick={handleClick}>
+  const ExpCard = ({ e }) => {
+    const handleClick = () => currentUser ? openModal("concierge", { name: e.name, type: e.category, price: `$${e.price.toLocaleString()} per ${e.per}` }) : openModal("join");
+    return (
+      <div className="card" onClick={handleClick}>
       <div className="ciw">
         <img className="ci" src={e.img} alt={e.name} loading="lazy" />
         <span className="cbadge">{e.badge}</span>
@@ -731,7 +731,7 @@ export default function MonarcPrive() {
         </div>
       </div>
     </div>
-  );
+  );}
 
   const PartnerCTA = ({ msg, btn, stream }) => (
     <div style={{ marginTop: 32, background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: 26, textAlign: "center" }}>
