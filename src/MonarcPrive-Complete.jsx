@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { createClient } from "@supabase/supabase-js";
 
+
 // ── Supabase client ──────────────────────────────────────────
 // ── Hardcoded Supabase connection ───────────────────────────
 const SUPA_URL = "https://vgmxzkedexjxdtjtbbok.supabase.co";
