@@ -21,12 +21,12 @@ const PROPERTIES = [
 ];
 
 const RESTAURANTS = [
-  { id: 1, name: "Nobu Scottsdale", cuisine: "Japanese \u00b7 Sushi \u00b7 New American", chef: "Nobu Matsuhisa", area: "Scottsdale Fashion Square", price: "$$$$", signature: "Black Cod Miso \u00b7 Wagyu Omakase", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=85", badge: "Member Favorite", desc: "The legendary Nobu experience. Omakase available for private dining rooms seating up to 20." },
-  { id: 2, name: "Maple & Ash", cuisine: "Wood-Fired \u00b7 Steakhouse", chef: "Danny Grant", area: "Old Town Scottsdale", price: "$$$$", signature: "Wagyu Tomahawk \u00b7 Wood-Fired Everything", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=700&q=85", badge: "Top Rated", desc: "Chicago's most celebrated steakhouse now in Scottsdale. Wood-fired, theatrical, unforgettable." },
-  { id: 3, name: "Bourbon Steak", cuisine: "American Steakhouse", chef: "Michael Mina", area: "JW Marriott Desert Ridge", price: "$$$$", signature: "Butter-Poached Lobster \u00b7 Wagyu Strip", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=700&q=85", badge: "Chef's Table", desc: "Michael Mina's flagship steakhouse. Butter-poached everything. Private dining available." },
-  { id: 4, name: "FnB", cuisine: "Modern American \u00b7 Farm-to-Table", chef: "Charleen Badman", area: "Old Town Scottsdale", price: "$$$", signature: "Seasonal Vegetable Feast \u00b7 Arizona Wine List", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700&q=85", badge: "James Beard Award", desc: "James Beard nominated. Farm-to-table excellence with the best Arizona wine list in the state." },
-  { id: 5, name: "Virt\u00f9 Honest Craft", cuisine: "Mediterranean \u00b7 Seafood", chef: "Gio Osso", area: "Old Town Scottsdale", price: "$$$", signature: "Whole Branzino \u00b7 Handmade Pasta", img: "https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=700&q=85", badge: "Critic's Pick", desc: "Intimate, honest, extraordinary. Mediterranean craft with Arizona soul. Reservations essential." },
-  { id: 6, name: "The Global Ambassador", cuisine: "Multi-Concept \u00b7 Rooftop", chef: "James Beard Nominees", area: "Arcadia", price: "$$$$", signature: "Rooftop Bar \u00b7 Private Events", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=85", badge: "New & Notable", desc: "Scottsdale's most talked-about new hotel and restaurant complex. Multiple concepts, all exceptional." },
+  { id: 1, name: "Nobu Scottsdale", cuisine: "Japanese · Sushi · New American", chef: "Nobu Matsuhisa", area: "Scottsdale Fashion Square", price: "$$$$", signature: "Black Cod Miso · Wagyu Omakase", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=85", badge: "Member Favorite", desc: "The legendary Nobu experience. Omakase available for private dining rooms seating up to 20." },
+  { id: 2, name: "Maple & Ash", cuisine: "Wood-Fired · Steakhouse", chef: "Danny Grant", area: "Old Town Scottsdale", price: "$$$$", signature: "Wagyu Tomahawk · Wood-Fired Everything", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=700&q=85", badge: "Top Rated", desc: "Chicago's most celebrated steakhouse now in Scottsdale. Wood-fired, theatrical, unforgettable." },
+  { id: 3, name: "Bourbon Steak", cuisine: "American Steakhouse", chef: "Michael Mina", area: "JW Marriott Desert Ridge", price: "$$$$", signature: "Butter-Poached Lobster · Wagyu Strip", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=700&q=85", badge: "Chef's Table", desc: "Michael Mina's flagship steakhouse. Butter-poached everything. Private dining available." },
+  { id: 4, name: "FnB", cuisine: "Modern American · Farm-to-Table", chef: "Charleen Badman", area: "Old Town Scottsdale", price: "$$$", signature: "Seasonal Vegetable Feast · Arizona Wine List", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700&q=85", badge: "James Beard Award", desc: "James Beard nominated. Farm-to-table excellence with the best Arizona wine list in the state." },
+  { id: 5, name: "Virtù Honest Craft", cuisine: "Mediterranean · Seafood", chef: "Gio Osso", area: "Old Town Scottsdale", price: "$$$", signature: "Whole Branzino · Handmade Pasta", img: "https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=700&q=85", badge: "Critic's Pick", desc: "Intimate, honest, extraordinary. Mediterranean craft with Arizona soul. Reservations essential." },
+  { id: 6, name: "The Global Ambassador", cuisine: "Multi-Concept · Rooftop", chef: "James Beard Nominees", area: "Arcadia", price: "$$$$", signature: "Rooftop Bar · Private Events", img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=85", badge: "New & Notable", desc: "Scottsdale's most talked-about new hotel and restaurant complex. Multiple concepts, all exceptional." },
 ];
 
 const LUXURY_CARS = [
@@ -37,34 +37,34 @@ const LUXURY_CARS = [
 ];
 
 const GOLF_VENUES = [
-  { id: 1, name: "TPC Scottsdale", type: "Championship Course", area: "North Scottsdale", price: "$350\u2013750/round", img: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=700&q=85", badge: "PGA Tour Venue", desc: "Home of the Waste Management Phoenix Open. The Stadium Course. Bucket list round in Scottsdale." },
-  { id: 2, name: "Troon North", type: "Desert Signature Course", area: "North Scottsdale", price: "$250\u2013500/round", img: "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=700&q=85", badge: "Top 100 US", desc: "Two Tom Weiskopf masterpieces carved through the Sonoran Desert. Pinnacle and Monument courses." },
-  { id: 3, name: "Desert Highlands", type: "Private Club", area: "North Scottsdale", price: "Member Access Only", img: "https://images.unsplash.com/photo-1592919505780-303950717480?w=700&q=85", badge: "Private Access", desc: "Jack Nicklaus Signature course. We arrange exclusive guest access for Monarc Priv\u00e9 members." },
-  { id: 4, name: "We-Ko-Pa Golf Club", type: "Native American Course", area: "Scottsdale", price: "$175\u2013350/round", img: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=700&q=85", badge: "Scenic", desc: "Two courses carved through pristine desert. No homes. No roads. Pure golf." },
+  { id: 1, name: "TPC Scottsdale", type: "Championship Course", area: "North Scottsdale", price: "$350–750/round", img: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=700&q=85", badge: "PGA Tour Venue", desc: "Home of the Waste Management Phoenix Open. The Stadium Course. Bucket list round in Scottsdale." },
+  { id: 2, name: "Troon North", type: "Desert Signature Course", area: "North Scottsdale", price: "$250–500/round", img: "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=700&q=85", badge: "Top 100 US", desc: "Two Tom Weiskopf masterpieces carved through the Sonoran Desert. Pinnacle and Monument courses." },
+  { id: 3, name: "Desert Highlands", type: "Private Club", area: "North Scottsdale", price: "Member Access Only", img: "https://images.unsplash.com/photo-1592919505780-303950717480?w=700&q=85", badge: "Private Access", desc: "Jack Nicklaus Signature course. We arrange exclusive guest access for Monarc Privé members." },
+  { id: 4, name: "We-Ko-Pa Golf Club", type: "Native American Course", area: "Scottsdale", price: "$175–350/round", img: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=700&q=85", badge: "Scenic", desc: "Two courses carved through pristine desert. No homes. No roads. Pure golf." },
 ];
 
 const MED_SPAS = [
-  { id: 1, name: "REVIVE IV & Aesthetics", type: "IV Therapy \u00b7 Aesthetics", area: "Scottsdale", price: "From $195", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=700&q=85", badge: "In-Villa Available", desc: "In-villa IV therapy, vitamin infusions, NAD+, Myers Cocktail, Botox and fillers by board-certified providers." },
-  { id: 2, name: "The Spa at Sanctuary", type: "Luxury Spa \u00b7 Forbes 5-Star", area: "Paradise Valley", price: "From $250", img: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=700&q=85", badge: "Forbes 5-Star", desc: "Forbes Five-Star awarded. Desert-inspired treatments. In-villa services available for Monarc Priv\u00e9 members." },
-  { id: 3, name: "Modern Luxe Aesthetics", type: "Medical Aesthetics", area: "Old Town Scottsdale", price: "From $300", img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&q=85", badge: "VIP Access", desc: "Board-certified physicians. Natural results. In-villa consultations available for Monarc Priv\u00e9 members." },
+  { id: 1, name: "REVIVE IV & Aesthetics", type: "IV Therapy · Aesthetics", area: "Scottsdale", price: "From $195", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=700&q=85", badge: "In-Villa Available", desc: "In-villa IV therapy, vitamin infusions, NAD+, Myers Cocktail, Botox and fillers by board-certified providers." },
+  { id: 2, name: "The Spa at Sanctuary", type: "Luxury Spa · Forbes 5-Star", area: "Paradise Valley", price: "From $250", img: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=700&q=85", badge: "Forbes 5-Star", desc: "Forbes Five-Star awarded. Desert-inspired treatments. In-villa services available for Monarc Privé members." },
+  { id: 3, name: "Modern Luxe Aesthetics", type: "Medical Aesthetics", area: "Old Town Scottsdale", price: "From $300", img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&q=85", badge: "VIP Access", desc: "Board-certified physicians. Natural results. In-villa consultations available for Monarc Privé members." },
 ];
 
 const AVIATION_DATA = [
-  { id: 1, name: "Wheels Up Private", type: "Jet Card \u00b7 On-Demand Charter", area: "Scottsdale Airport (SDL)", price: "From $12,500/hr", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&q=85", badge: "Most Popular", desc: "On-demand private aviation. Light to heavy jets. 24-hour booking. Based at Scottsdale Airport." },
-  { id: 2, name: "NetJets Arizona", type: "Fractional Ownership \u00b7 Charter", area: "Scottsdale Airport (SDL)", price: "From $8,500/hr", img: "https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=700&q=85", badge: "Elite Fleet", desc: "The world's largest private aviation company. Any aircraft, any time, anywhere." },
-  { id: 3, name: "Maverick Helicopters", type: "Helicopter Tours \u00b7 Transfers", area: "Scottsdale Airport", price: "From $1,800/flight", img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=700&q=85", badge: "Scenic Tours", desc: "Grand Canyon, Sedona, and city helicopter tours. Airport transfers and sunset experiences." },
+  { id: 1, name: "Wheels Up Private", type: "Jet Card · On-Demand Charter", area: "Scottsdale Airport (SDL)", price: "From $12,500/hr", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&q=85", badge: "Most Popular", desc: "On-demand private aviation. Light to heavy jets. 24-hour booking. Based at Scottsdale Airport." },
+  { id: 2, name: "NetJets Arizona", type: "Fractional Ownership · Charter", area: "Scottsdale Airport (SDL)", price: "From $8,500/hr", img: "https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=700&q=85", badge: "Elite Fleet", desc: "The world's largest private aviation company. Any aircraft, any time, anywhere." },
+  { id: 3, name: "Maverick Helicopters", type: "Helicopter Tours · Transfers", area: "Scottsdale Airport", price: "From $1,800/flight", img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=700&q=85", badge: "Scenic Tours", desc: "Grand Canyon, Sedona, and city helicopter tours. Airport transfers and sunset experiences." },
 ];
 
 const WINE_DATA = [
-  { id: 1, name: "Scottsdale Cellar", type: "Rare Wine \u00b7 Private Tasting", area: "Old Town Scottsdale", price: "From $350/person", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=700&q=85", badge: "Sommelier Led", desc: "Private in-villa wine tastings led by a Master Sommelier. Rare bottles curated to your preferences." },
+  { id: 1, name: "Scottsdale Cellar", type: "Rare Wine · Private Tasting", area: "Old Town Scottsdale", price: "From $350/person", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=700&q=85", badge: "Sommelier Led", desc: "Private in-villa wine tastings led by a Master Sommelier. Rare bottles curated to your preferences." },
   { id: 2, name: "Arizona Craft Spirits", type: "Private Distillery Tour", area: "Cave Creek", price: "From $280/person", img: "https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=700&q=85", badge: "Exclusive Access", desc: "Private after-hours distillery tours with barrel tasting and custom bottle blending." },
   { id: 3, name: "The Rare Bottle Club", type: "Rare Spirits Delivery", area: "All Scottsdale", price: "From $500/delivery", img: "https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=700&q=85", badge: "Estate Delivery", desc: "Rare and allocated whiskey, cognac, and wine delivered to your estate. Pappy Van Winkle available." },
 ];
 
 const SHOPPING_DATA = [
-  { id: 1, name: "Elan Personal Styling", type: "Personal Shopper \u00b7 Styling", area: "Scottsdale Fashion Square", price: "From $500/session", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&q=85", badge: "By Appointment", desc: "Private styling sessions at Scottsdale Fashion Square. Hermes, Chanel, Louis Vuitton. After-hours access." },
-  { id: 2, name: "Desert Jewels Fine", type: "Custom Jewelry \u00b7 Estate Pieces", area: "Old Town Scottsdale", price: "From $1,000", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=700&q=85", badge: "Bespoke", desc: "Custom jewelry design and estate piece acquisition. In-villa consultations for significant purchases." },
-  { id: 3, name: "Art Scottsdale Gallery", type: "Fine Art \u00b7 Acquisition", area: "Old Town Scottsdale", price: "Custom", img: "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=700&q=85", badge: "Collector Access", desc: "Private after-hours gallery access. Artist introductions. Acquisition consulting for serious collectors." },
+  { id: 1, name: "Elan Personal Styling", type: "Personal Shopper · Styling", area: "Scottsdale Fashion Square", price: "From $500/session", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&q=85", badge: "By Appointment", desc: "Private styling sessions at Scottsdale Fashion Square. Hermes, Chanel, Louis Vuitton. After-hours access." },
+  { id: 2, name: "Desert Jewels Fine", type: "Custom Jewelry · Estate Pieces", area: "Old Town Scottsdale", price: "From $1,000", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=700&q=85", badge: "Bespoke", desc: "Custom jewelry design and estate piece acquisition. In-villa consultations for significant purchases." },
+  { id: 3, name: "Art Scottsdale Gallery", type: "Fine Art · Acquisition", area: "Old Town Scottsdale", price: "Custom", img: "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=700&q=85", badge: "Collector Access", desc: "Private after-hours gallery access. Artist introductions. Acquisition consulting for serious collectors." },
 ];
 
 const EXPERIENCES_DATA = [
@@ -77,7 +77,7 @@ const EXPERIENCES_DATA = [
 ];
 
 const REVIEWS = [
-  { name: "Victoria Ashworth", title: "Private Equity Partner, New York", text: "Monarc Priv\u00e9 redefined what a private stay means. The AI concierge had our chef preferences and champagne waiting before we landed. Nothing else compares.", img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80", prop: "Casa del Cielo" },
+  { name: "Victoria Ashworth", title: "Private Equity Partner, New York", text: "Monarc Privé redefined what a private stay means. The AI concierge had our chef preferences and champagne waiting before we landed. Nothing else compares.", img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80", prop: "Casa del Cielo" },
   { name: "James Holloway III", title: "Founder & CEO, Holloway Capital", text: "I've stayed at every ultra-luxury property in Scottsdale. Nothing touches the level of curation and discretion Monarc delivers. Worth every penny.", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80", prop: "The Camelback Retreat" },
   { name: "Sophia Laurent", title: "Art Collector & Philanthropist", text: "We hosted our foundation gathering at The Ironwood Estate. Every single detail was handled with the taste I simply cannot find elsewhere.", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80", prop: "The Ironwood Estate" },
   { name: "Marcus Chen", title: "Managing Director, Pacific Rim Ventures", text: "The Lamborghini was at the estate when we arrived. Dinner at Nobu was arranged for 12. Sterling handled everything flawlessly. This is the standard.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80", prop: "Monolith Modern" },
@@ -98,26 +98,26 @@ const QUESTIONS = [
 ];
 
 const AGENTS = [
-  { id: "aria", icon: "\u25c8", name: "Aria", role: "Sales & Revenue", sys: "You are Aria, Sales & Revenue AI Agent for Monarc Prive luxury platform in Scottsdale AZ. Sharp CRO level. Specific actionable revenue intelligence. All 12 partner categories. Concise." },
-  { id: "celeste", icon: "\u25c9", name: "Celeste", role: "Marketing & Brand", sys: "You are Celeste, Brand & Marketing AI Agent for Monarc Prive. Luxury copy and strategy. Conde Nast meets performance marketer. Concise." },
-  { id: "sterling", icon: "\u25cc", name: "Sterling", role: "Guest Concierge", sys: "You are Sterling, ultra-luxury AI concierge for Monarc Prive Scottsdale. Know every estate, restaurant, car rental, golf course, spa, aviation, wine, shopping service. Four Seasons level. Warm and effortlessly helpful. Concise." },
-  { id: "atlas", icon: "\u25ce", name: "Atlas", role: "Operations", sys: "You are Atlas, Operations AI Agent for Monarc Prive. Monitor 6 estates plus all partner operations. COO level. Flag risks. Direct and precise." },
-  { id: "orion", icon: "\u25cd", name: "Orion", role: "Analytics", sys: "You are Orion, Analytics AI Agent for Monarc Prive. Track all 12 revenue streams. Data into insight. Always answer: what does this mean and what should we do. Concise." },
+  { id: "aria", icon: "◈", name: "Aria", role: "Sales & Revenue", sys: "You are Aria, Sales & Revenue AI Agent for Monarc Prive luxury platform in Scottsdale AZ. Sharp CRO level. Specific actionable revenue intelligence. All 12 partner categories. Concise." },
+  { id: "celeste", icon: "◉", name: "Celeste", role: "Marketing & Brand", sys: "You are Celeste, Brand & Marketing AI Agent for Monarc Prive. Luxury copy and strategy. Conde Nast meets performance marketer. Concise." },
+  { id: "sterling", icon: "◌", name: "Sterling", role: "Guest Concierge", sys: "You are Sterling, ultra-luxury AI concierge for Monarc Prive Scottsdale. Know every estate, restaurant, car rental, golf course, spa, aviation, wine, shopping service. Four Seasons level. Warm and effortlessly helpful. Concise." },
+  { id: "atlas", icon: "◎", name: "Atlas", role: "Operations", sys: "You are Atlas, Operations AI Agent for Monarc Prive. Monitor 6 estates plus all partner operations. COO level. Flag risks. Direct and precise." },
+  { id: "orion", icon: "◍", name: "Orion", role: "Analytics", sys: "You are Orion, Analytics AI Agent for Monarc Prive. Track all 12 revenue streams. Data into insight. Always answer: what does this mean and what should we do. Concise." },
 ];
 
 const PARTNER_STREAMS = [
-  { id: "property", icon: "\u25c8", label: "List Property", price: "$25/mo", desc: "List your luxury estate to our members" },
-  { id: "agent", icon: "\u25c9", label: "Agent Advertising", price: "$50/mo", desc: "Advertise your real estate brand" },
-  { id: "restaurant", icon: "\ud83c\udf7d", label: "Restaurant", price: "$75/mo", desc: "Promote your restaurant to UHNW members" },
-  { id: "golf", icon: "\u26f3", label: "Golf & Clubs", price: "$125/mo", desc: "Promote tee times and club access" },
-  { id: "cars", icon: "\ud83d\ude97", label: "Luxury Cars", price: "$150/mo", desc: "List exotic and luxury vehicle rentals" },
-  { id: "medspa", icon: "\ud83d\udc86", label: "Med Spa & Beauty", price: "$75/mo", desc: "IV therapy, aesthetics and wellness" },
-  { id: "aviation", icon: "\u2708", label: "Private Aviation", price: "$250/mo", desc: "Jet charters and air travel services" },
-  { id: "yacht", icon: "\ud83d\udee5", label: "Yacht & Charters", price: "$200/mo", desc: "Watercraft and boat experiences" },
-  { id: "shopping", icon: "\ud83d\udc8e", label: "Luxury Shopping", price: "$100/mo", desc: "Boutiques, jewelers and personal stylists" },
-  { id: "wine", icon: "\ud83c\udf77", label: "Wine & Spirits", price: "$100/mo", desc: "Tastings, rare bottles and delivery" },
-  { id: "events", icon: "\ud83c\udfaa", label: "Private Events", price: "$150/mo", desc: "Venues, entertainment and production" },
-  { id: "experience", icon: "\u25cc", label: "Experiences", price: "$100/mo", desc: "Outdoor, wellness and unique activities" },
+  { id: "property", icon: "◈", label: "List Property", price: "$25/mo", desc: "List your luxury estate to our members" },
+  { id: "agent", icon: "◉", label: "Agent Advertising", price: "$50/mo", desc: "Advertise your real estate brand" },
+  { id: "restaurant", icon: "🍽", label: "Restaurant", price: "$75/mo", desc: "Promote your restaurant to UHNW members" },
+  { id: "golf", icon: "⛳", label: "Golf & Clubs", price: "$125/mo", desc: "Promote tee times and club access" },
+  { id: "cars", icon: "🚗", label: "Luxury Cars", price: "$150/mo", desc: "List exotic and luxury vehicle rentals" },
+  { id: "medspa", icon: "💆", label: "Med Spa & Beauty", price: "$75/mo", desc: "IV therapy, aesthetics and wellness" },
+  { id: "aviation", icon: "✈", label: "Private Aviation", price: "$250/mo", desc: "Jet charters and air travel services" },
+  { id: "yacht", icon: "🛥", label: "Yacht & Charters", price: "$200/mo", desc: "Watercraft and boat experiences" },
+  { id: "shopping", icon: "💎", label: "Luxury Shopping", price: "$100/mo", desc: "Boutiques, jewelers and personal stylists" },
+  { id: "wine", icon: "🍷", label: "Wine & Spirits", price: "$100/mo", desc: "Tastings, rare bottles and delivery" },
+  { id: "events", icon: "🎪", label: "Private Events", price: "$150/mo", desc: "Venues, entertainment and production" },
+  { id: "experience", icon: "◌", label: "Experiences", price: "$100/mo", desc: "Outdoor, wellness and unique activities" },
 ];
 
 const CSS = `
@@ -399,13 +399,13 @@ export default function MonarcPrive() {
   const [paymentError, setPaymentError] = useState("");
   const [toast, setToast] = useState(null);
   const [pending, setPending] = useState([
-    { id: 1, type: "property", name: "Villa Castellan", detail: "R. Mercer \u00b7 PV \u00b7 $3,200/nt", submitted: "2h ago" },
-    { id: 2, type: "agent", name: "Theodore Walsh", detail: "Douglas Elliman \u00b7 $180M+", submitted: "4h ago" },
-    { id: 3, type: "restaurant", name: "Saffron Kitchen", detail: "Mediterranean \u00b7 Old Town", submitted: "5h ago" },
-    { id: 4, type: "cars", name: "PV Exotic Rentals", detail: "Ferrari \u00b7 Lamborghini Fleet", submitted: "6h ago" },
-    { id: 5, type: "golf", name: "Silverado Golf Club", detail: "Championship \u00b7 N. Scottsdale", submitted: "7h ago" },
-    { id: 6, type: "medspa", name: "Azure Wellness Studio", detail: "IV Therapy \u00b7 In-Villa", submitted: "8h ago" },
-    { id: 7, type: "experience", name: "Sunrise Hot Air Balloon", detail: "AZ Balloon Co \u00b7 3hrs", submitted: "9h ago" },
+    { id: 1, type: "property", name: "Villa Castellan", detail: "R. Mercer · PV · $3,200/nt", submitted: "2h ago" },
+    { id: 2, type: "agent", name: "Theodore Walsh", detail: "Douglas Elliman · $180M+", submitted: "4h ago" },
+    { id: 3, type: "restaurant", name: "Saffron Kitchen", detail: "Mediterranean · Old Town", submitted: "5h ago" },
+    { id: 4, type: "cars", name: "PV Exotic Rentals", detail: "Ferrari · Lamborghini Fleet", submitted: "6h ago" },
+    { id: 5, type: "golf", name: "Silverado Golf Club", detail: "Championship · N. Scottsdale", submitted: "7h ago" },
+    { id: 6, type: "medspa", name: "Azure Wellness Studio", detail: "IV Therapy · In-Villa", submitted: "8h ago" },
+    { id: 7, type: "experience", name: "Sunrise Hot Air Balloon", detail: "AZ Balloon Co · 3hrs", submitted: "9h ago" },
   ]);
   const [bookings, setBookings] = useState([
     { ref: "MP-4A7B9C", prop: "The Ironwood Estate", guest: "Victoria Ashworth", total: "$16,800", status: "confirmed" },
@@ -497,7 +497,7 @@ export default function MonarcPrive() {
     const table = tableMap[item.type];
     if (table && item.dbId) await db(sb => sb.from(table).update({ status: action === "approve" ? "active" : "rejected", reviewed_at: new Date().toISOString() }).eq("id", item.dbId));
     setPending(p => p.filter(x => x.id !== id));
-    showToast(action === "approve" ? `\u2713 ${item.name} approved and now live` : `${item.name} rejected`, action === "approve" ? "success" : "error");
+    showToast(action === "approve" ? `✓ ${item.name} approved and now live` : `${item.name} rejected`, action === "approve" ? "success" : "error");
   };
 
   const approveBooking = async (ref) => {
@@ -563,15 +563,15 @@ export default function MonarcPrive() {
       <div className="ciw">
         <img className="ci" src={p.img} alt={p.name} loading="lazy" />
         <span className="cbadge">{p.badge}</span>
-        <button className={`cfav${favs.has(idx) ? " on" : ""}`} onClick={() => toggleFav(idx)}>\u2665</button>
+        <button className={`cfav${favs.has(idx) ? " on" : ""}`} onClick={e => { e.stopPropagation(); toggleFav(idx); }}>♥</button>
       </div>
       <div className="cb">
         <div className="cn">{p.name}</div>
         <div className="ca">{p.area}</div>
         <div className="ctags">{p.tags.slice(0, 3).map(t => <span key={t} className="ctag">{t}</span>)}</div>
         <div className="cf">
-          <div><span className="cp">${p.price.toLocaleString()}</span><div className="cps">{p.beds}bd \u00b7 {p.baths}ba \u00b7 Sleeps {p.guests}</div></div>
-          <button className="cc" onClick={() => currentUser ? openModal("book", p) : openModal("join")}>Request \u2192</button>
+          <div><span className="cp">${p.price.toLocaleString()}</span><div className="cps">{p.beds}bd · {p.baths}ba · Sleeps {p.guests}</div></div>
+          <button className="cc" onClick={() => currentUser ? openModal("book", p) : openModal("join")}>Request →</button>
         </div>
       </div>
     </div>
@@ -591,10 +591,10 @@ export default function MonarcPrive() {
           <div style={{ fontSize: ".6rem", letterSpacing: ".1em", color: "var(--taupe)", marginBottom: 4 }}>{r.cuisine}</div>
           {r.chef && <div style={{ fontSize: ".64rem", color: "var(--gold-l)", fontWeight: 300, marginBottom: 6 }}>Chef: {r.chef}</div>}
           <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 8 }}>{r.desc}</div>
-          <div style={{ fontSize: ".62rem", color: "var(--t2)", fontStyle: "italic", marginBottom: 10 }}>\u2726 {r.signature}</div>
+          <div style={{ fontSize: ".62rem", color: "var(--t2)", fontStyle: "italic", marginBottom: 10 }}>✦ {r.signature}</div>
           <div className="cf">
             <span style={{ fontSize: ".6rem", color: "var(--taupe)", fontWeight: 300 }}>{r.area}</span>
-            <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: r.name, type: "Dining Reservation", price: r.price }) : openModal("join")}>Reserve \u2192</button>
+            <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: r.name, type: "Dining Reservation", price: r.price }) : openModal("join")}>Reserve →</button>
           </div>
         </div>
       </div>
@@ -615,11 +615,11 @@ export default function MonarcPrive() {
           <div style={{ fontSize: ".64rem", color: "var(--gold-l)", fontWeight: 300, marginBottom: 6 }}>{c.company}</div>
           <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 8 }}>{c.desc}</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
-            {c.included.map(i => <span key={i} style={{ fontSize: ".52rem", letterSpacing: ".08em", color: "var(--green)", border: "1px solid rgba(91,175,132,.2)", padding: "2px 7px", borderRadius: 2 }}>\u2713 {i}</span>)}
+            {c.included.map(i => <span key={i} style={{ fontSize: ".52rem", letterSpacing: ".08em", color: "var(--green)", border: "1px solid rgba(91,175,132,.2)", padding: "2px 7px", borderRadius: 2 }}>✓ {i}</span>)}
           </div>
           <div className="cf">
             <div><span className="cp">${c.price.toLocaleString()}</span><div className="cps">per day</div></div>
-            <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: c.name, type: "Luxury Car Rental", price: `$${c.price.toLocaleString()}/day` }) : openModal("join")}>Reserve \u2192</button>
+            <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: c.name, type: "Luxury Car Rental", price: `$${c.price.toLocaleString()}/day` }) : openModal("join")}>Reserve →</button>
           </div>
         </div>
       </div>
@@ -647,7 +647,7 @@ export default function MonarcPrive() {
           <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 8 }}>{item.desc}</div>
           <div className="cf">
             <div><div className="cp" style={{ fontSize: ".95rem" }}>{item.price || item.green_fee}</div><div className="cps">{item.area || ""}</div></div>
-            <button className="cc" onClick={e => { e.stopPropagation(); handleClick(); }}>Book \u2192</button>
+            <button className="cc" onClick={e => { e.stopPropagation(); handleClick(); }}>Book →</button>
           </div>
         </div>
       </div>
@@ -668,8 +668,8 @@ export default function MonarcPrive() {
           <div style={{ fontSize: ".62rem", color: "var(--gold-l)", fontWeight: 300, marginBottom: 6 }}>by {e.host}</div>
           <div style={{ fontSize: ".7rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.6, marginBottom: 10 }}>{e.desc}</div>
           <div className="cf">
-            <div><div className="cp">${e.price.toLocaleString()}</div><div className="cps">per {e.per} \u00b7 {e.duration}</div></div>
-            <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: e.name, type: e.category, price: `$${e.price.toLocaleString()} per ${e.per}` }) : openModal("join")}>Book \u2192</button>
+            <div><div className="cp">${e.price.toLocaleString()}</div><div className="cps">per {e.per} · {e.duration}</div></div>
+            <button className="cc" onClick={() => currentUser ? openModal("concierge", { name: e.name, type: e.category, price: `$${e.price.toLocaleString()} per ${e.per}` }) : openModal("join")}>Book →</button>
           </div>
         </div>
       </div>
@@ -688,7 +688,7 @@ export default function MonarcPrive() {
     <footer className="ft">
       <div className="ftg">
         <div>
-          <div className="ftb">Monarc<span>\u00b7</span>Prive</div>
+          <div className="ftb">Monarc<span>·</span>Prive</div>
           <p className="fttag">An exclusive membership platform for Scottsdale's most discerning travelers. Private estates, luxury dining, exotic cars, world-class golf, private aviation, AI concierge 24/7.</p>
         </div>
         <div>
@@ -709,12 +709,12 @@ export default function MonarcPrive() {
         </div>
         <div>
           <div className="ftct">List Your Business</div>
-          <span className="ftl" onClick={() => setPage("partners")}>List Estate \u2014 $25/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Agent Ad \u2014 $50/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Restaurant \u2014 $75/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Golf Club \u2014 $125/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Luxury Cars \u2014 $150/mo</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Aviation \u2014 $250/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>List Estate — $25/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Agent Ad — $50/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Restaurant — $75/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Golf Club — $125/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Luxury Cars — $150/mo</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Aviation — $250/mo</span>
         </div>
         <div>
           <div className="ftct">Company</div>
@@ -726,7 +726,7 @@ export default function MonarcPrive() {
         </div>
       </div>
       <div className="ftbot">
-        <div className="ftcopy">\u00a9 {new Date().getFullYear()} Monarc Prive \u00b7 Scottsdale, Arizona \u00b7 All rights reserved</div>
+        <div className="ftcopy">© {new Date().getFullYear()} Monarc Prive · Scottsdale, Arizona · All rights reserved</div>
         <div className="ftleg">
           <span className="ftll">Privacy Policy</span>
           <span className="ftll">Terms of Service</span>
@@ -740,7 +740,7 @@ export default function MonarcPrive() {
   const PartnerForm = ({ streamId }) => {
     const stream = PARTNER_STREAMS.find(s => s.id === streamId);
     if (!stream) return null;
-    const perks = [[stream.price, "Monthly flat fee \u2014 no hidden costs"], ["UHNW Audience", "Members earn $500K+ annually"], ["Cancel Anytime", "No contracts or long-term commitments"], ["24-48hr Review", "Team reviews every listing personally"], ["Premium Placement", "Featured above general search"]];
+    const perks = [[stream.price, "Monthly flat fee — no hidden costs"], ["UHNW Audience", "Members earn $500K+ annually"], ["Cancel Anytime", "No contracts or long-term commitments"], ["24-48hr Review", "Team reviews every listing personally"], ["Premium Placement", "Featured above general search"]];
     return (
       <div className="pf-wrap">
         <div>
@@ -799,7 +799,7 @@ export default function MonarcPrive() {
           {streamId === "restaurant" && <>
             <div className="fg"><label className="fl">Restaurant Name</label><input className="fi" placeholder="Your restaurant name" onChange={field("rn")} /></div>
             <div className="r2">
-              <div className="fg"><label className="fl">Cuisine Type</label><input className="fi" placeholder="e.g. Japanese \u00b7 Contemporary" onChange={field("rc")} /></div>
+              <div className="fg"><label className="fl">Cuisine Type</label><input className="fi" placeholder="e.g. Japanese · Contemporary" onChange={field("rc")} /></div>
               <div className="fg"><label className="fl">Price Range</label><select className="fis" onChange={field("rp")}><option>$$</option><option>$$$</option><option>$$$$</option></select></div>
             </div>
             <div className="r2">
@@ -898,7 +898,7 @@ export default function MonarcPrive() {
             };
             if (table) await db(sb => sb.from(table).insert(record));
             openModal("success-listing", { stream });
-          }}>Submit Application \u2014 {stream.price} \u2192</button>
+          }}>Submit Application — {stream.price} →</button>
           <div style={{ fontSize: ".6rem", color: "var(--taupe)", textAlign: "center", marginTop: 10, lineHeight: 1.6 }}>Reviewed within 24-48 hours. Billing starts upon approval. Cancel anytime.</div>
         </div>
       </div>
@@ -909,14 +909,14 @@ export default function MonarcPrive() {
     <>
       <style>{CSS}</style>
       <nav className="nav">
-        <div className="nav-logo" onClick={() => setPage("home")}>Monarc<span>\u00b7</span>Prive</div>
+        <div className="nav-logo" onClick={() => setPage("home")}>Monarc<span>·</span>Prive</div>
         <div className="nav-links">
           {NavItems.map(n => <div key={n.id} className={`nl${page === n.id ? " on" : ""}`} onClick={() => setPage(n.id)}>{n.label}</div>)}
         </div>
         <div className="nav-right">
           {currentUser ? (
             <>
-              <button className="nb" onClick={() => setPage("portal")} style={{ color: "var(--gold)", borderColor: "rgba(201,169,110,.3)" }}>\u25c8 My Portal</button>
+              <button className="nb" onClick={() => setPage("portal")} style={{ color: "var(--gold)", borderColor: "rgba(201,169,110,.3)" }}>◈ My Portal</button>
               <button className="nb" onClick={signOut}>Sign Out</button>
             </>
           ) : (
@@ -933,7 +933,7 @@ export default function MonarcPrive() {
           {HERO_IMGS.map((src, i) => <img key={i} className="hi" src={src} alt="" style={{ opacity: i === heroIdx ? 1 : 0, zIndex: i === heroIdx ? 1 : 0 }} />)}
           <div className="hg" />
           <div className="hc">
-            <div className="he">Scottsdale \u00b7 Paradise Valley \u00b7 Members Only</div>
+            <div className="he">Scottsdale · Paradise Valley · Members Only</div>
             <h1 className="hh">Privacy as an<br /><em>art form</em></h1>
             <div className="ha">
               <button className="btn-g" onClick={() => openModal("join")}>Request Membership</button>
@@ -943,19 +943,19 @@ export default function MonarcPrive() {
           <div className="hdots">{HERO_IMGS.map((_, i) => <div key={i} className={`hd${i === heroIdx ? " on" : ""}`} onClick={() => setHeroIdx(i)} />)}</div>
         </div>
         <div className="sec sec-d">
-          <div className="sh"><div className="st">Featured Estates</div><span className="sl" onClick={() => setPage("home")}>All 6 \u2192</span></div>
+          <div className="sh"><div className="st">Featured Estates</div><span className="sl" onClick={() => setPage("home")}>All 6 →</span></div>
           <div className="g3">{PROPERTIES.slice(0, 3).map((p, i) => <PropCard key={p.id} p={p} idx={i} />)}</div>
         </div>
         <div className="sec">
-          <div className="sh"><div className="st">Curated Dining</div><span className="sl" onClick={() => setPage("restaurants")}>All restaurants \u2192</span></div>
+          <div className="sh"><div className="st">Curated Dining</div><span className="sl" onClick={() => setPage("restaurants")}>All restaurants →</span></div>
           <div className="g3">{RESTAURANTS.slice(0, 3).map(r => <RestCard key={r.id} r={r} />)}</div>
         </div>
         <div className="sec sec-d">
-          <div className="sh"><div className="st">Exotic & Luxury Cars</div><span className="sl" onClick={() => setPage("cars")}>All vehicles \u2192</span></div>
+          <div className="sh"><div className="st">Exotic & Luxury Cars</div><span className="sl" onClick={() => setPage("cars")}>All vehicles →</span></div>
           <div className="g4">{LUXURY_CARS.map(c => <CarCard key={c.id} c={c} />)}</div>
         </div>
         <div className="sec">
-          <div className="sh"><div className="st">World-Class Golf</div><span className="sl" onClick={() => setPage("golf")}>All courses \u2192</span></div>
+          <div className="sh"><div className="st">World-Class Golf</div><span className="sl" onClick={() => setPage("golf")}>All courses →</span></div>
           <div className="g4">{GOLF_VENUES.map(g => <LuxCard key={g.id} item={g} />)}</div>
         </div>
         <div className="sec sec-d">
@@ -964,15 +964,15 @@ export default function MonarcPrive() {
               <div style={{ fontSize: ".52rem", letterSpacing: ".36em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 8 }}>Monarc Prive Concierge</div>
               <div style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.5rem,3vw,2.2rem)", fontWeight: 300, color: "var(--t1)", lineHeight: 1.2 }}>Private chef. Exotic car. Helicopter to the Grand Canyon.<br /><em style={{ fontStyle: "italic", color: "var(--gold-l)" }}>All arranged before you land.</em></div>
             </div>
-            <button className="btn-g" style={{ whiteSpace: "nowrap", flexShrink: 0 }}>Explore Concierge \u2192</button>
+            <button className="btn-g" style={{ whiteSpace: "nowrap", flexShrink: 0 }}>Explore Concierge →</button>
           </div>
         </div>
         <div className="sec">
-          <div className="sh"><div className="st">Private Aviation</div><span className="sl" onClick={() => setPage("aviation")}>All operators \u2192</span></div>
+          <div className="sh"><div className="st">Private Aviation</div><span className="sl" onClick={() => setPage("aviation")}>All operators →</span></div>
           <div className="g3">{AVIATION_DATA.map(a => <LuxCard key={a.id} item={a} />)}</div>
         </div>
         <div className="sec sec-d">
-          <div className="sh"><div className="st">Med Spa & Wellness</div><span className="sl" onClick={() => setPage("medspa")}>All spas \u2192</span></div>
+          <div className="sh"><div className="st">Med Spa & Wellness</div><span className="sl" onClick={() => setPage("medspa")}>All spas →</span></div>
           <div className="g3">{MED_SPAS.map(m => <LuxCard key={m.id} item={m} />)}</div>
         </div>
         <div className="sec">
@@ -982,12 +982,12 @@ export default function MonarcPrive() {
         <div className="sec sec-d">
           <div className="sh">
             <div className="st">Member Voices</div>
-            <div style={{ textAlign: "right" }}><div style={{ fontFamily: "var(--serif)", fontSize: "1.8rem", fontWeight: 300, color: "var(--gold)" }}>5.0</div><div style={{ fontSize: ".56rem", letterSpacing: ".14em", textTransform: "uppercase", color: "var(--taupe)" }}>\u2605\u2605\u2605\u2605\u2605 \u00b7 147 reviews</div></div>
+            <div style={{ textAlign: "right" }}><div style={{ fontFamily: "var(--serif)", fontSize: "1.8rem", fontWeight: 300, color: "var(--gold)" }}>5.0</div><div style={{ fontSize: ".56rem", letterSpacing: ".14em", textTransform: "uppercase", color: "var(--taupe)" }}>★★★★★ · 147 reviews</div></div>
           </div>
           <div className="revg">
             {REVIEWS.map(r => (
               <div key={r.name} className="revc">
-                <div className="revs">\u2605\u2605\u2605\u2605\u2605</div>
+                <div className="revs">★★★★★</div>
                 <div className="revt">"{r.text}"</div>
                 <div className="revauth"><img src={r.img} alt={r.name} className="revav" loading="lazy" /><div><div className="revn">{r.name}</div><div className="revr">{r.title}</div></div></div>
                 <div className="revp">{r.prop}</div>
@@ -1005,50 +1005,50 @@ export default function MonarcPrive() {
       </>}
 
       {page === "restaurants" && <>
-        <div className="ph"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Curated Dining \u00b7 Member Access</div><h1 className="pht">Scottsdale finest tables.<br /><em>Reserved for you.</em></h1></div></div>
-        <div className="sec"><div className="g3">{RESTAURANTS.map(r => <RestCard key={r.id} r={r} />)}</div><PartnerCTA msg="Own a luxury restaurant?" btn="List Your Restaurant \u2014 $75/mo" stream="restaurant" /></div>
+        <div className="ph"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Curated Dining · Member Access</div><h1 className="pht">Scottsdale finest tables.<br /><em>Reserved for you.</em></h1></div></div>
+        <div className="sec"><div className="g3">{RESTAURANTS.map(r => <RestCard key={r.id} r={r} />)}</div><PartnerCTA msg="Own a luxury restaurant?" btn="List Your Restaurant — $75/mo" stream="restaurant" /></div>
         <Footer />
       </>}
 
       {page === "cars" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Exotic & Luxury Vehicles</div><h1 className="pht">Drive something<br /><em>extraordinary.</em></h1></div></div>
-        <div className="sec"><div className="g4">{LUXURY_CARS.map(c => <CarCard key={c.id} c={c} />)}</div><PartnerCTA msg="Operate a luxury or exotic car rental?" btn="List Your Fleet \u2014 $150/mo" stream="cars" /></div>
+        <div className="sec"><div className="g4">{LUXURY_CARS.map(c => <CarCard key={c.id} c={c} />)}</div><PartnerCTA msg="Operate a luxury or exotic car rental?" btn="List Your Fleet — $150/mo" stream="cars" /></div>
         <Footer />
       </>}
 
       {page === "golf" && <>
-        <div className="ph"><img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">World-Class Golf \u00b7 Scottsdale</div><h1 className="pht">The golf capital.<br /><em>Played properly.</em></h1></div></div>
-        <div className="sec"><div className="g4">{GOLF_VENUES.map(g => <LuxCard key={g.id} item={g} />)}</div><PartnerCTA msg="Run a golf club, course, or caddie service?" btn="List Your Club \u2014 $125/mo" stream="golf" /></div>
+        <div className="ph"><img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">World-Class Golf · Scottsdale</div><h1 className="pht">The golf capital.<br /><em>Played properly.</em></h1></div></div>
+        <div className="sec"><div className="g4">{GOLF_VENUES.map(g => <LuxCard key={g.id} item={g} />)}</div><PartnerCTA msg="Run a golf club, course, or caddie service?" btn="List Your Club — $125/mo" stream="golf" /></div>
         <Footer />
       </>}
 
       {page === "experiences" && <>
         <div className="ph"><img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Curated Experiences</div><h1 className="pht">Beyond the estate.<br /><em>Beyond the ordinary.</em></h1></div></div>
-        <div className="sec"><div className="g3">{EXPERIENCES_DATA.map(e => <ExpCard key={e.id} e={e} />)}</div><PartnerCTA msg="Offer an extraordinary experience?" btn="List Your Experience \u2014 $100/mo" stream="experience" /></div>
+        <div className="sec"><div className="g3">{EXPERIENCES_DATA.map(e => <ExpCard key={e.id} e={e} />)}</div><PartnerCTA msg="Offer an extraordinary experience?" btn="List Your Experience — $100/mo" stream="experience" /></div>
         <Footer />
       </>}
 
       {page === "medspa" && <>
-        <div className="ph"><img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Spa \u00b7 Wellness \u00b7 Medical Aesthetics</div><h1 className="pht">Restoration.<br /><em>In-villa or in-spa.</em></h1></div></div>
-        <div className="sec"><div className="g3">{MED_SPAS.map(m => <LuxCard key={m.id} item={m} />)}</div><PartnerCTA msg="Run a med spa, luxury spa, or wellness clinic?" btn="List Your Spa \u2014 $75/mo" stream="medspa" /></div>
+        <div className="ph"><img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Spa · Wellness · Medical Aesthetics</div><h1 className="pht">Restoration.<br /><em>In-villa or in-spa.</em></h1></div></div>
+        <div className="sec"><div className="g3">{MED_SPAS.map(m => <LuxCard key={m.id} item={m} />)}</div><PartnerCTA msg="Run a med spa, luxury spa, or wellness clinic?" btn="List Your Spa — $75/mo" stream="medspa" /></div>
         <Footer />
       </>}
 
       {page === "aviation" && <>
-        <div className="ph"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Private Aviation \u00b7 Scottsdale Airport</div><h1 className="pht">Fly private.<br /><em>Land anywhere.</em></h1></div></div>
-        <div className="sec"><div className="g3">{AVIATION_DATA.map(a => <LuxCard key={a.id} item={a} />)}</div><PartnerCTA msg="Offer private aviation or helicopter services?" btn="List Your Service \u2014 $250/mo" stream="aviation" /></div>
+        <div className="ph"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Private Aviation · Scottsdale Airport</div><h1 className="pht">Fly private.<br /><em>Land anywhere.</em></h1></div></div>
+        <div className="sec"><div className="g3">{AVIATION_DATA.map(a => <LuxCard key={a.id} item={a} />)}</div><PartnerCTA msg="Offer private aviation or helicopter services?" btn="List Your Service — $250/mo" stream="aviation" /></div>
         <Footer />
       </>}
 
       {page === "wine" && <>
-        <div className="ph"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Wine \u00b7 Rare Spirits \u00b7 Private Tastings</div><h1 className="pht">Drink something<br /><em>worth remembering.</em></h1></div></div>
-        <div className="sec"><div className="g3">{WINE_DATA.map(w => <LuxCard key={w.id} item={w} />)}</div><PartnerCTA msg="Wine, spirits, or private tasting experiences?" btn="List Your Service \u2014 $100/mo" stream="wine" /></div>
+        <div className="ph"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Wine · Rare Spirits · Private Tastings</div><h1 className="pht">Drink something<br /><em>worth remembering.</em></h1></div></div>
+        <div className="sec"><div className="g3">{WINE_DATA.map(w => <LuxCard key={w.id} item={w} />)}</div><PartnerCTA msg="Wine, spirits, or private tasting experiences?" btn="List Your Service — $100/mo" stream="wine" /></div>
         <Footer />
       </>}
 
       {page === "shopping" && <>
-        <div className="ph"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Luxury Shopping \u00b7 Art \u00b7 Jewelry</div><h1 className="pht">Acquire something<br /><em>exceptional.</em></h1></div></div>
-        <div className="sec"><div className="g3">{SHOPPING_DATA.map(s => <LuxCard key={s.id} item={s} />)}</div><PartnerCTA msg="Luxury boutique, jeweler, gallery, or stylist?" btn="List Your Business \u2014 $100/mo" stream="shopping" /></div>
+        <div className="ph"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Luxury Shopping · Art · Jewelry</div><h1 className="pht">Acquire something<br /><em>exceptional.</em></h1></div></div>
+        <div className="sec"><div className="g3">{SHOPPING_DATA.map(s => <LuxCard key={s.id} item={s} />)}</div><PartnerCTA msg="Luxury boutique, jeweler, gallery, or stylist?" btn="List Your Business — $100/mo" stream="shopping" /></div>
         <Footer />
       </>}
 
@@ -1057,13 +1057,13 @@ export default function MonarcPrive() {
           <div style={{ textAlign: "center", padding: "72px 56px 56px" }}>
             <div style={{ fontSize: ".58rem", letterSpacing: ".4em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 14 }}>Exclusive Membership</div>
             <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(2.2rem,4.5vw,3.8rem)", fontWeight: 300, color: "var(--t1)", lineHeight: 1.1, marginBottom: 16 }}>Not a marketplace.<br /><em style={{ fontStyle: "italic", color: "var(--gold-l)" }}>A private club.</em></h1>
-            <p style={{ fontSize: ".86rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, maxWidth: 560, margin: "0 auto" }}>One membership unlocks 6 private estates, every luxury partner \u2014 restaurants, exotic cars, golf, spas, aviation, wine, shopping \u2014 and a 24/7 AI concierge that knows your preferences before you ask.</p>
+            <p style={{ fontSize: ".86rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, maxWidth: 560, margin: "0 auto" }}>One membership unlocks 6 private estates, every luxury partner — restaurants, exotic cars, golf, spas, aviation, wine, shopping — and a 24/7 AI concierge that knows your preferences before you ask.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, background: "var(--border)", marginBottom: 0 }}>
             {[
-              { name: "Curated", icon: "\u25cc", price: "$300", period: "/year", highlight: false, badge: null, perks: ["Access to all 6 curated private estates", "Sterling AI concierge \u2014 24/7", "Standard booking window", "Member pricing on all services", "Vetted guest community", "Digital membership card"] },
-              { name: "Private", icon: "\u25c8", price: "$750", period: "/year", highlight: true, badge: "Most Popular", perks: ["Everything in Curated", "48-hour priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Concierge service credits ($200)", "Physical membership card & gift", "Early access to new estates"] },
-              { name: "Founding", icon: "\u25c9", price: "By Invite", period: "", highlight: false, badge: "Limited \u2014 50 Members", perks: ["Everything in Private", "Founding member status forever", "Annual luxury gratitude gift", "Direct founder access & influence", "Co-creation of new estate additions", "Lifetime rate lock \u2014 never increases", "Named acknowledgment in platform"] },
+              { name: "Curated", icon: "◌", price: "$300", period: "/year", highlight: false, badge: null, perks: ["Access to all 6 curated private estates", "Sterling AI concierge — 24/7", "Standard booking window", "Member pricing on all services", "Vetted guest community", "Digital membership card"] },
+              { name: "Private", icon: "◈", price: "$750", period: "/year", highlight: true, badge: "Most Popular", perks: ["Everything in Curated", "48-hour priority access window", "Dedicated account manager", "Exclusive member events & invitations", "Concierge service credits ($200)", "Physical membership card & gift", "Early access to new estates"] },
+              { name: "Founding", icon: "◉", price: "By Invite", period: "", highlight: false, badge: "Limited — 50 Members", perks: ["Everything in Private", "Founding member status forever", "Annual luxury gratitude gift", "Direct founder access & influence", "Co-creation of new estate additions", "Lifetime rate lock — never increases", "Named acknowledgment in platform"] },
             ].map(t => (
               <div key={t.name} style={{ background: "var(--ink-m)", padding: "36px 32px", position: "relative", overflow: "hidden" }}>
                 {t.highlight && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,transparent,var(--gold),transparent)" }} />}
@@ -1077,7 +1077,7 @@ export default function MonarcPrive() {
                 <ul style={{ listStyle: "none", marginBottom: 26, borderTop: "1px solid rgba(212,201,181,.08)", paddingTop: 18 }}>
                   {t.perks.map(p => (
                     <li key={p} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "6px 0", borderBottom: "1px solid rgba(212,201,181,.05)", fontSize: ".72rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.5 }}>
-                      <span style={{ color: "var(--gold)", flexShrink: 0, marginTop: 1 }}>\u2014</span>{p}
+                      <span style={{ color: "var(--gold)", flexShrink: 0, marginTop: 1 }}>—</span>{p}
                     </li>
                   ))}
                 </ul>
@@ -1091,7 +1091,7 @@ export default function MonarcPrive() {
           </div>
           <div style={{ background: "var(--ink-s)", padding: "28px 56px", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 20, maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-              {[["6 Private Estates", "All tiers"], ["AI Concierge 24/7", "Sterling \u00b7 All tiers"], ["12 Luxury Partners", "Dining \u00b7 Cars \u00b7 Golf \u00b7 Spa \u00b7 Aviation \u00b7 More"], ["Total Discretion", "Vetted members only"]].map(([val, sub]) => (
+              {[["6 Private Estates", "All tiers"], ["AI Concierge 24/7", "Sterling · All tiers"], ["12 Luxury Partners", "Dining · Cars · Golf · Spa · Aviation · More"], ["Total Discretion", "Vetted members only"]].map(([val, sub]) => (
                 <div key={val}><div style={{ fontFamily: "var(--serif)", fontSize: "1rem", color: "var(--t1)", fontWeight: 400, marginBottom: 4 }}>{val}</div><div style={{ fontSize: ".6rem", color: "var(--taupe)", fontWeight: 300 }}>{sub}</div></div>
               ))}
             </div>
@@ -1104,7 +1104,7 @@ export default function MonarcPrive() {
       </>}
 
       {page === "partners" && <>
-        <div className="ph"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Partner Hub \u00b7 12 Revenue Streams</div><h1 className="pht">List. Advertise.<br /><em>Earn.</em></h1></div></div>
+        <div className="ph"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Partner Hub · 12 Revenue Streams</div><h1 className="pht">List. Advertise.<br /><em>Earn.</em></h1></div></div>
         <div className="ptabs">
           <div className={`ptab${pTab === "overview" ? " on" : ""}`} onClick={() => setPTab("overview")}>Overview</div>
           {PARTNER_STREAMS.map(s => <div key={s.id} className={`ptab${pTab === s.id ? " on" : ""}`} onClick={() => setPTab(s.id)}>{s.icon} {s.label}</div>)}
@@ -1133,7 +1133,7 @@ export default function MonarcPrive() {
                   </div>
                 ))}
               </div>
-              <div style={{ textAlign: "center", marginTop: 16, fontSize: ".8rem", color: "var(--t2)", fontWeight: 300 }}>10 partners per category \u00d7 12 categories = <strong style={{ color: "var(--gold-l)" }}>$12,750+/month</strong> in recurring partner fees alone</div>
+              <div style={{ textAlign: "center", marginTop: 16, fontSize: ".8rem", color: "var(--t2)", fontWeight: 300 }}>10 partners per category × 12 categories = <strong style={{ color: "var(--gold-l)" }}>$12,750+/month</strong> in recurring partner fees alone</div>
             </div>
           </div>
         )}
@@ -1161,14 +1161,14 @@ export default function MonarcPrive() {
                   <div style={{ fontSize: ".54rem", letterSpacing: ".38em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 6 }}>Member Portal</div>
                   <div style={{ fontFamily: "var(--serif)", fontSize: "2rem", fontWeight: 300, color: "var(--t1)" }}>Welcome back{currentUser.user_metadata?.first_name ? `, ${currentUser.user_metadata.first_name}` : ""}</div>
                   <div style={{ fontSize: ".68rem", color: "var(--taupe)", marginTop: 4, fontWeight: 300 }}>
-                    {memberData ? `${(memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")} Member \u00b7 Active until ${new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}` : "Member in good standing"}
+                    {memberData ? `${(memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")} Member · Active until ${new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}` : "Member in good standing"}
                   </div>
                 </div>
                 <div style={{ textAlign: "right" }}>
                   {memberData && (
                     <div style={{ background: "var(--ink-m)", border: "1px solid rgba(201,169,110,.2)", borderRadius: 3, padding: "14px 20px", position: "relative", overflow: "hidden" }}>
                       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,var(--gold),transparent)" }} />
-                      <div style={{ fontSize: ".5rem", letterSpacing: ".28em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 4 }}>\u25c8 Membership</div>
+                      <div style={{ fontSize: ".5rem", letterSpacing: ".28em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 4 }}>◈ Membership</div>
                       <div style={{ fontFamily: "var(--serif)", fontSize: "1rem", color: "var(--t1)", marginBottom: 2 }}>{(memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")} Tier</div>
                       <div style={{ fontSize: ".56rem", letterSpacing: ".16em", color: "var(--taupe)", fontFamily: "monospace" }}>{memberData.referral_code || "MP-MEMBER"}</div>
                     </div>
@@ -1192,7 +1192,7 @@ export default function MonarcPrive() {
               <div style={{ marginBottom: 36 }}>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 16 }}>
                   <div style={{ fontFamily: "var(--serif)", fontSize: "1.4rem", fontWeight: 300, color: "var(--t1)" }}>My Bookings</div>
-                  <button className="btn-g" style={{ padding: "10px 22px", fontSize: ".56rem" }} onClick={() => setPage("home")}>Book Another Estate \u2192</button>
+                  <button className="btn-g" style={{ padding: "10px 22px", fontSize: ".56rem" }} onClick={() => setPage("home")}>Book Another Estate →</button>
                 </div>
                 {memberBookings.length === 0 ? (
                   <div style={{ background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: "48px 32px", textAlign: "center" }}>
@@ -1213,10 +1213,10 @@ export default function MonarcPrive() {
                           <tr key={b.id || i} style={{ borderBottom: "1px solid rgba(212,201,181,.05)" }}>
                             <td style={{ padding: "12px 16px", fontFamily: "monospace", fontSize: ".68rem", color: "var(--gold)" }}>{b.reference || "MP-" + String(b.id || "").slice(0, 8).toUpperCase()}</td>
                             <td style={{ padding: "12px 16px", fontSize: ".74rem", color: "var(--t1)", fontWeight: 400 }}>{PROPERTIES.find(p => p.id === b.property_id)?.name || "Estate"}</td>
-                            <td style={{ padding: "12px 16px", fontSize: ".7rem", color: "var(--t2)" }}>{b.check_in ? new Date(b.check_in).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "\u2014"}</td>
-                            <td style={{ padding: "12px 16px", fontSize: ".7rem", color: "var(--t2)" }}>{b.check_out ? new Date(b.check_out).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "\u2014"}</td>
-                            <td style={{ padding: "12px 16px", fontSize: ".7rem", color: "var(--t2)" }}>{b.num_guests || "\u2014"}</td>
-                            <td style={{ padding: "12px 16px", fontFamily: "var(--serif)", color: "var(--t1)" }}>{b.total ? `$${Number(b.total).toLocaleString()}` : "\u2014"}</td>
+                            <td style={{ padding: "12px 16px", fontSize: ".7rem", color: "var(--t2)" }}>{b.check_in ? new Date(b.check_in).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—"}</td>
+                            <td style={{ padding: "12px 16px", fontSize: ".7rem", color: "var(--t2)" }}>{b.check_out ? new Date(b.check_out).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—"}</td>
+                            <td style={{ padding: "12px 16px", fontSize: ".7rem", color: "var(--t2)" }}>{b.num_guests || "—"}</td>
+                            <td style={{ padding: "12px 16px", fontFamily: "var(--serif)", color: "var(--t1)" }}>{b.total ? `$${Number(b.total).toLocaleString()}` : "—"}</td>
                             <td style={{ padding: "12px 16px" }}>
                               <span style={{ fontSize: ".5rem", letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 600, padding: "3px 8px", borderRadius: 2, background: b.status === "confirmed" ? "rgba(91,175,132,.1)" : b.status === "pending" ? "rgba(232,168,56,.1)" : "rgba(224,82,82,.1)", border: `1px solid ${b.status === "confirmed" ? "rgba(91,175,132,.25)" : b.status === "pending" ? "rgba(232,168,56,.25)" : "rgba(224,82,82,.2)"}`, color: b.status === "confirmed" ? "var(--green)" : b.status === "pending" ? "var(--amber)" : "var(--red)" }}>{b.status || "pending"}</span>
                             </td>
@@ -1229,9 +1229,9 @@ export default function MonarcPrive() {
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 32 }}>
                 {[
-                  { icon: "\u25cc", title: "Chat with Sterling", desc: "Your AI concierge is ready to arrange anything \u2014 chef, car, golf, spa.", action: () => { setPage("admin"); setASection("agents_ai"); setAgent("sterling"); } },
-                  { icon: "\u25c8", title: "Browse Estates", desc: "All six private estates available for your next stay.", action: () => setPage("home") },
-                  { icon: "\ud83c\udf7d", title: "Explore Dining", desc: "Priority reservations at Scottsdale's finest restaurants.", action: () => setPage("restaurants") },
+                  { icon: "◌", title: "Chat with Sterling", desc: "Your AI concierge is ready to arrange anything — chef, car, golf, spa.", action: () => { setPage("admin"); setASection("agents_ai"); setAgent("sterling"); } },
+                  { icon: "◈", title: "Browse Estates", desc: "All six private estates available for your next stay.", action: () => setPage("home") },
+                  { icon: "🍽", title: "Explore Dining", desc: "Priority reservations at Scottsdale's finest restaurants.", action: () => setPage("restaurants") },
                 ].map(item => (
                   <div key={item.title} style={{ background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: 22, cursor: "pointer", transition: "border-color .18s" }}
                     onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(201,169,110,.32)"}
@@ -1248,13 +1248,13 @@ export default function MonarcPrive() {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
                   {[
                     ["Email", currentUser.email],
-                    ["Member Since", memberData?.created_at ? new Date(memberData.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "\u2014"],
+                    ["Member Since", memberData?.created_at ? new Date(memberData.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "—"],
                     ["Membership Tier", (memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")],
-                    ["Valid Through", memberData?.expires_at ? new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "\u2014"],
+                    ["Valid Through", memberData?.expires_at ? new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "—"],
                   ].map(([lbl, val]) => (
                     <div key={lbl} style={{ padding: "10px 14px", background: "rgba(248,245,240,.03)", borderRadius: 2, border: "1px solid rgba(212,201,181,.06)" }}>
                       <div style={{ fontSize: ".52rem", letterSpacing: ".18em", textTransform: "uppercase", color: "var(--taupe)", marginBottom: 4 }}>{lbl}</div>
-                      <div style={{ fontSize: ".78rem", color: "var(--t1)", fontWeight: 300 }}>{val || "\u2014"}</div>
+                      <div style={{ fontSize: ".78rem", color: "var(--t1)", fontWeight: 300 }}>{val || "—"}</div>
                     </div>
                   ))}
                 </div>
@@ -1274,9 +1274,9 @@ export default function MonarcPrive() {
         </div>
         <div className="sec" style={{ maxWidth: 860, margin: "0 auto" }}>
           <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.8rem,3.5vw,2.8rem)", fontWeight: 300, color: "var(--t1)", lineHeight: 1.15, marginBottom: 28 }}>We built the platform we always wished existed.</h2>
-          <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 24 }}>Monarc Priv\u00e9 was founded with a single conviction: the ultra-luxury travel market deserved something better than public marketplaces, impersonal listings, and reactive service.</p>
+          <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 24 }}>Monarc Privé was founded with a single conviction: the ultra-luxury travel market deserved something better than public marketplaces, impersonal listings, and reactive service.</p>
           <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 24 }}>Based in Scottsdale and Paradise Valley, Arizona, we operate at the intersection of hospitality, technology, and taste. Our platform gives discerning travelers access to six exceptional private estates alongside a curated network of Scottsdale's finest restaurants, exotic car providers, world-class golf courses, private aviation operators, luxury spas, and more.</p>
-          <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 40 }}>At the heart of the experience is Sterling \u2014 our AI concierge \u2014 who learns your preferences and orchestrates every detail before you arrive.</p>
+          <p style={{ fontSize: ".86rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.95, marginBottom: 40 }}>At the heart of the experience is Sterling — our AI concierge — who learns your preferences and orchestrates every detail before you arrive.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 1, background: "var(--border)", marginBottom: 48 }}>
             {[["2024", "Founded in Scottsdale"], ["6", "Private Estates"], ["12", "Luxury Partner Categories"]].map(([val, lbl]) => (
               <div key={lbl} style={{ background: "var(--ink-m)", padding: "28px 24px", textAlign: "center" }}>
@@ -1289,7 +1289,7 @@ export default function MonarcPrive() {
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,transparent,var(--gold),transparent)" }} />
             <div style={{ fontFamily: "var(--serif)", fontSize: "1.6rem", fontWeight: 300, color: "var(--t1)", marginBottom: 12 }}>Ready to experience it?</div>
             <p style={{ fontSize: ".78rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.8, maxWidth: 440, margin: "0 auto 22px" }}>Membership is limited. Apply today and let Sterling take care of everything else.</p>
-            <button className="btn-g" onClick={() => openModal("join")}>Apply for Membership \u2014 $300/yr</button>
+            <button className="btn-g" onClick={() => openModal("join")}>Apply for Membership — $300/yr</button>
           </div>
         </div>
         <Footer />
@@ -1304,7 +1304,7 @@ export default function MonarcPrive() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 40, alignItems: "start" }}>
             <div>
               <h2 style={{ fontFamily: "var(--serif)", fontSize: "2rem", fontWeight: 300, color: "var(--t1)", lineHeight: 1.2, marginBottom: 18 }}>How can we help you?</h2>
-              <p style={{ fontSize: ".82rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, marginBottom: 28 }}>Whether you have a question about membership, want to list your property, or simply want to learn more \u2014 our team responds within 24 hours.</p>
+              <p style={{ fontSize: ".82rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, marginBottom: 28 }}>Whether you have a question about membership, want to list your property, or simply want to learn more — our team responds within 24 hours.</p>
               {[["Membership Inquiries", "members@monarcprive.com"], ["Partner & Listing", "partners@monarcprive.com"], ["General Questions", "info@monarcprive.com"], ["Location", "Scottsdale, Arizona"]].map(([lbl, val]) => (
                 <div key={lbl} style={{ display: "flex", gap: 16, padding: "12px 0", borderBottom: "1px solid rgba(212,201,181,.07)" }}>
                   <div style={{ fontSize: ".56rem", letterSpacing: ".16em", textTransform: "uppercase", color: "var(--taupe)", minWidth: 130, paddingTop: 2, flexShrink: 0 }}>{lbl}</div>
@@ -1326,7 +1326,7 @@ export default function MonarcPrive() {
                 </select>
               </div>
               <div className="fg"><label className="fl">Message</label><textarea className="fit" rows={4} placeholder="How can we help you?" onChange={field("cmsg")} /></div>
-              <button className="btnf" onClick={() => { showToast("Message sent \u2014 we'll be in touch within 24 hours."); setFv({}); }}>Send Message</button>
+              <button className="btnf" onClick={() => { showToast("Message sent — we'll be in touch within 24 hours."); setFv({}); }}>Send Message</button>
             </div>
           </div>
         </div>
@@ -1337,7 +1337,7 @@ export default function MonarcPrive() {
         <div className="ph" style={{ height: 240 }}><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Legal</div><h1 className="pht">Privacy Policy</h1></div></div>
         <div className="sec" style={{ maxWidth: 760, margin: "0 auto" }}>
           <div style={{ fontSize: ".6rem", color: "var(--taupe)", marginBottom: 32 }}>Last updated: January 1, 2025</div>
-          {[["1. Information We Collect", "We collect information you provide directly to us, including when you create an account, apply for membership, submit a partner listing, or contact us. We never sell your personal data to third parties."], ["2. Data Security", "We implement industry-standard security measures including SSL encryption, secure database storage, and access controls. Payment information is processed through Stripe and is never stored on our servers."], ["3. Your Rights", "You have the right to access, update, or delete your personal information at any time. Contact us at privacy@monarcprive.com to exercise these rights."], ["4. Contact Us", "If you have questions about this Privacy Policy, contact us at privacy@monarcprive.com or write to Monarc Priv\u00e9, Scottsdale, Arizona."]].map(([title, body]) => (
+          {[["1. Information We Collect", "We collect information you provide directly to us, including when you create an account, apply for membership, submit a partner listing, or contact us. We never sell your personal data to third parties."], ["2. Data Security", "We implement industry-standard security measures including SSL encryption, secure database storage, and access controls. Payment information is processed through Stripe and is never stored on our servers."], ["3. Your Rights", "You have the right to access, update, or delete your personal information at any time. Contact us at privacy@monarcprive.com to exercise these rights."], ["4. Contact Us", "If you have questions about this Privacy Policy, contact us at privacy@monarcprive.com or write to Monarc Privé, Scottsdale, Arizona."]].map(([title, body]) => (
             <div key={title} style={{ marginBottom: 28, paddingBottom: 28, borderBottom: "1px solid rgba(212,201,181,.07)" }}>
               <div style={{ fontFamily: "var(--serif)", fontSize: "1.05rem", color: "var(--gold)", marginBottom: 10 }}>{title}</div>
               <p style={{ fontSize: ".8rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.9 }}>{body}</p>
@@ -1352,7 +1352,7 @@ export default function MonarcPrive() {
         <div className="ph" style={{ height: 240 }}><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85" className="phi" alt="" /><div className="pho" /><div className="phc"><div className="phe">Legal</div><h1 className="pht">Terms of Service</h1></div></div>
         <div className="sec" style={{ maxWidth: 760, margin: "0 auto" }}>
           <div style={{ fontSize: ".6rem", color: "var(--taupe)", marginBottom: 32 }}>Last updated: January 1, 2025</div>
-          {[["1. Acceptance of Terms", "By accessing or using the Monarc Priv\u00e9 platform, you agree to be bound by these Terms of Service."], ["2. Membership", "Membership fees are billed annually and are non-refundable except as required by law. Memberships are personal and non-transferable."], ["3. Booking & Reservations", "Estate booking requests are subject to availability and host approval. Submission of a booking request does not guarantee a reservation."], ["4. Governing Law", "These Terms of Service shall be governed by the laws of the State of Arizona. Contact us at legal@monarcprive.com with any questions."]].map(([title, body]) => (
+          {[["1. Acceptance of Terms", "By accessing or using the Monarc Privé platform, you agree to be bound by these Terms of Service."], ["2. Membership", "Membership fees are billed annually and are non-refundable except as required by law. Memberships are personal and non-transferable."], ["3. Booking & Reservations", "Estate booking requests are subject to availability and host approval. Submission of a booking request does not guarantee a reservation."], ["4. Governing Law", "These Terms of Service shall be governed by the laws of the State of Arizona. Contact us at legal@monarcprive.com with any questions."]].map(([title, body]) => (
             <div key={title} style={{ marginBottom: 28, paddingBottom: 28, borderBottom: "1px solid rgba(212,201,181,.07)" }}>
               <div style={{ fontFamily: "var(--serif)", fontSize: "1.05rem", color: "var(--gold)", marginBottom: 10 }}>{title}</div>
               <p style={{ fontSize: ".8rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.9 }}>{body}</p>
@@ -1369,7 +1369,7 @@ export default function MonarcPrive() {
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,transparent,var(--gold),transparent)" }} />
             <div style={{ padding: "28px 30px 24px" }}>
               <div style={{ textAlign: "center", marginBottom: 24 }}>
-                <div style={{ fontFamily: "var(--serif)", fontSize: "1.4rem", fontWeight: 300, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--t1)", marginBottom: 4 }}>Monarc<span style={{ color: "var(--gold)" }}>\u00b7</span>Priv\u00e9</div>
+                <div style={{ fontFamily: "var(--serif)", fontSize: "1.4rem", fontWeight: 300, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--t1)", marginBottom: 4 }}>Monarc<span style={{ color: "var(--gold)" }}>·</span>Privé</div>
                 <div style={{ fontSize: ".52rem", letterSpacing: ".3em", textTransform: "uppercase", color: "var(--taupe)" }}>Admin Portal</div>
               </div>
               <div style={{ fontSize: ".56rem", letterSpacing: ".2em", textTransform: "uppercase", color: "var(--taupe)", display: "block", marginBottom: 7, fontWeight: 500 }}>Access Password</div>
@@ -1381,7 +1381,7 @@ export default function MonarcPrive() {
               {adminPwError && <div style={{ fontSize: ".62rem", color: "var(--red)", marginBottom: 12 }}>Incorrect password. Try again.</div>}
               <button onClick={() => { if (adminPwInput === ADMIN_PASSWORD) { setAdminAuthed(true); setAdminPwInput(""); } else { setAdminPwError(true); setAdminPwInput(""); } }}
                 style={{ width: "100%", background: "var(--gold)", color: "var(--ink)", fontSize: ".58rem", letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 600, fontFamily: "var(--sans)", padding: 13, border: "none", cursor: "pointer", borderRadius: 2 }}>Enter Admin Portal</button>
-              <button onClick={() => setPage("home")} style={{ width: "100%", background: "none", border: "1px solid var(--border)", color: "var(--t3)", fontSize: ".56rem", letterSpacing: ".18em", textTransform: "uppercase", fontFamily: "var(--sans)", padding: 10, cursor: "pointer", borderRadius: 2, marginTop: 8 }}>\u2190 Return to Site</button>
+              <button onClick={() => setPage("home")} style={{ width: "100%", background: "none", border: "1px solid var(--border)", color: "var(--t3)", fontSize: ".56rem", letterSpacing: ".18em", textTransform: "uppercase", fontFamily: "var(--sans)", padding: 10, cursor: "pointer", borderRadius: 2, marginTop: 8 }}>← Return to Site</button>
             </div>
           </div>
         </div>
@@ -1390,10 +1390,10 @@ export default function MonarcPrive() {
       {page === "admin" && adminAuthed && (
         <div className="adm">
           <aside className="aside">
-            <div className="aside-logo"><div className="aside-wm">Monarc<span>\u00b7</span>Prive</div><div className="aside-sub">Admin Dashboard</div></div>
+            <div className="aside-logo"><div className="aside-wm">Monarc<span>·</span>Prive</div><div className="aside-sub">Admin Dashboard</div></div>
             <div className="asec">
               <div className="albl">Navigation</div>
-              {[["overview", "\u25c8", "Overview"], ["listings", "\u25c9", "Listing Approvals"], ["bookings", "\u25cc", "Bookings"], ["members", "\u25ce", "Members"], ["revenue", "\u25cd", "Revenue"], ["agents_ai", "\u2726", "AI Agents"]].map(([id, icon, label]) => (
+              {[["overview", "◈", "Overview"], ["listings", "◉", "Listing Approvals"], ["bookings", "◌", "Bookings"], ["members", "◎", "Members"], ["revenue", "◍", "Revenue"], ["agents_ai", "✦", "AI Agents"]].map(([id, icon, label]) => (
                 <div key={id} className={`ait${aSection === id ? " on" : ""}`} onClick={() => { setASection(id); if (id === "listings") loadAdminPending(); }}>
                   <span className="ait-i">{icon}</span>
                   <span className="ait-t">{label}</span>
@@ -1409,20 +1409,20 @@ export default function MonarcPrive() {
                 <div style={{ fontSize: ".56rem", letterSpacing: ".14em", textTransform: "uppercase", color: "var(--t3)", marginTop: 2 }}>{new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}</div>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <button className="nb" onClick={() => setPage("home")}>\u2190 Back to Site</button>
+                <button className="nb" onClick={() => setPage("home")}>← Back to Site</button>
                 <button className="nb" onClick={() => { setAdminAuthed(false); setPage("home"); }} style={{ borderColor: "rgba(224,82,82,.2)", color: "var(--red)" }}>Sign Out</button>
               </div>
             </div>
             <div className="adm-body">
               {aSection === "overview" && <>
                 <div className="sg">
-                  {[["Members", "47", "\u2191 +3 this week", "up"], ["Bookings", "23", "\u2191 +2 today", "up"], ["Monthly MRR", "$17,975", "\u2191 +18%", "up"], ["Pending", pending.length, pending.length > 0 ? "Action required" : "All clear", pending.length > 0 ? "am" : "up"]].map(([l, v, c, d]) => (
+                  {[["Members", "47", "↑ +3 this week", "up"], ["Bookings", "23", "↑ +2 today", "up"], ["Monthly MRR", "$17,975", "↑ +18%", "up"], ["Pending", pending.length, pending.length > 0 ? "Action required" : "All clear", pending.length > 0 ? "am" : "up"]].map(([l, v, c, d]) => (
                     <div key={l} className="sc2"><div className="slbl">{l}</div><div className="sval">{v}</div><div className={`schg ${d}`}>{c}</div></div>
                   ))}
                 </div>
                 {pending.length > 0 && <div style={{ background: "rgba(232,168,56,.05)", border: "1px solid rgba(232,168,56,.2)", borderRadius: 3, padding: "13px 17px", marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <div><div style={{ fontSize: ".66rem", color: "var(--amber)", fontWeight: 500, marginBottom: 3 }}>\u26a0 Action Required</div><div style={{ fontSize: ".72rem", color: "var(--t2)", fontWeight: 300 }}>{pending.length} partner listings awaiting review</div></div>
-                  <button className="nb" style={{ borderColor: "rgba(232,168,56,.3)", color: "var(--amber)" }} onClick={() => setASection("listings")}>Review \u2192</button>
+                  <div><div style={{ fontSize: ".66rem", color: "var(--amber)", fontWeight: 500, marginBottom: 3 }}>⚠ Action Required</div><div style={{ fontSize: ".72rem", color: "var(--t2)", fontWeight: 300 }}>{pending.length} partner listings awaiting review</div></div>
+                  <button className="nb" style={{ borderColor: "rgba(232,168,56,.3)", color: "var(--amber)" }} onClick={() => setASection("listings")}>Review →</button>
                 </div>}
                 <div style={{ fontFamily: "var(--serif)", fontSize: "1.1rem", color: "var(--t1)", marginBottom: 11 }}>Recent Bookings</div>
                 <div className="tbl"><table>
@@ -1449,7 +1449,7 @@ export default function MonarcPrive() {
                         <td className="tdn">{l.name}</td>
                         <td style={{ fontSize: ".66rem", color: "var(--t3)" }}>{l.detail}</td>
                         <td style={{ fontSize: ".64rem", color: "var(--t3)" }}>{l.submitted}</td>
-                        <td><div className="abr"><button className="ab app" onClick={() => approvePending(l.id)}>\u2713 Approve</button><button className="ab rej" onClick={() => approvePending(l.id)}>\u2715 Reject</button><button className="ab view">Review</button></div></td>
+                        <td><div className="abr"><button className="ab app" onClick={() => approvePending(l.id)}>✓ Approve</button><button className="ab rej" onClick={() => approvePending(l.id)}>✕ Reject</button><button className="ab view">Review</button></div></td>
                       </tr>
                     ))}</tbody>
                   </table></div>
@@ -1470,13 +1470,13 @@ export default function MonarcPrive() {
               </table></div>}
               {aSection === "revenue" && <>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginBottom: 18 }}>
-                  {[["Memberships", "$14,100", "47 members \u00d7 $300"], ["Prop Listings", "$150", "6 \u00d7 $25/mo"], ["Agent Ads", "$600", "12 \u00d7 $50/mo"], ["Restaurants", "$750", "10 \u00d7 $75/mo"], ["Golf Clubs", "$625", "5 \u00d7 $125/mo"], ["Luxury Cars", "$450", "3 \u00d7 $150/mo"], ["Experiences", "$800", "8 \u00d7 $100/mo"], ["Aviation", "$500", "2 \u00d7 $250/mo"]].map(([l, v, s]) => (
+                  {[["Memberships", "$14,100", "47 members × $300"], ["Prop Listings", "$150", "6 × $25/mo"], ["Agent Ads", "$600", "12 × $50/mo"], ["Restaurants", "$750", "10 × $75/mo"], ["Golf Clubs", "$625", "5 × $125/mo"], ["Luxury Cars", "$450", "3 × $150/mo"], ["Experiences", "$800", "8 × $100/mo"], ["Aviation", "$500", "2 × $250/mo"]].map(([l, v, s]) => (
                     <div key={l} className="sc2"><div className="slbl">{l}</div><div className="sval" style={{ fontSize: "1.2rem", color: "var(--gold)" }}>{v}</div><div style={{ fontSize: ".58rem", color: "var(--t3)", marginTop: 3, fontWeight: 300 }}>{s}</div></div>
                   ))}
                 </div>
                 <div className="sg">
                   {[["Total MRR", "$17,975", "All 12 streams combined"], ["Annual Run Rate", "$215K", "Subscriptions only"], ["Booking GMV", "$153K", "This month confirmed"], ["Platform Revenue", "$19K+", "MRR + 6% booking fees"]].map(([l, v, s]) => (
-                    <div key={l} className="sc2"><div className="slbl">{l}</div><div className="sval">{v}</div><div style={{ fontSize: ".58rem", color: "var(--green)", marginTop: 4 }}>\u2191 {s}</div></div>
+                    <div key={l} className="sc2"><div className="slbl">{l}</div><div className="sval">{v}</div><div style={{ fontSize: ".58rem", color: "var(--green)", marginTop: 4 }}>↑ {s}</div></div>
                   ))}
                 </div>
               </>}
@@ -1514,12 +1514,12 @@ export default function MonarcPrive() {
                     <span style={{ fontSize: ".95rem", color: "var(--gold)" }}>{curAgent?.icon}</span>
                     <span style={{ fontFamily: "var(--serif)", fontSize: ".9rem", color: "var(--t1)" }}>{curAgent?.name}</span>
                     <span style={{ fontSize: ".54rem", color: "var(--gold)", letterSpacing: ".1em" }}>{curAgent?.role}</span>
-                    <span style={{ marginLeft: "auto", fontSize: ".5rem", color: "var(--green)", display: "flex", alignItems: "center", gap: 3 }}><span className="sdot" />Live AI \u00b7 Add VITE_ANTHROPIC_API_KEY in Vercel</span>
+                    <span style={{ marginLeft: "auto", fontSize: ".5rem", color: "var(--green)", display: "flex", alignItems: "center", gap: 3 }}><span className="sdot" />Live AI · Add VITE_ANTHROPIC_API_KEY in Vercel</span>
                   </div>
                   <div className="chat-msgs">
                     {(chatH[agent] || []).map((m, i) => (
                       <div key={i} className={`cmsg${m.role === "user" ? " u" : ""}`}>
-                        <div className="cav">{m.role === "assistant" ? curAgent?.icon : "\u2299"}</div>
+                        <div className="cav">{m.role === "assistant" ? curAgent?.icon : "⊙"}</div>
                         <div className={`cbub ${m.role === "assistant" ? "a" : "u"}`}>{m.content}</div>
                       </div>
                     ))}
@@ -1531,7 +1531,7 @@ export default function MonarcPrive() {
                   </div>
                   <div className="cia">
                     <input className="ci2" placeholder={`Message ${curAgent?.name}...`} value={cInp} onChange={e => setCInp(e.target.value)} onKeyDown={e => e.key === "Enter" && sendChat(cInp)} />
-                    <button className="csend" onClick={() => sendChat(cInp)} disabled={!cInp.trim() || cTyping}>\u2191</button>
+                    <button className="csend" onClick={() => sendChat(cInp)} disabled={!cInp.trim() || cTyping}>↑</button>
                   </div>
                 </div>
               </>}
@@ -1544,10 +1544,10 @@ export default function MonarcPrive() {
         <div className="mov" onClick={() => !["success", "success-listing"].includes(modal) && closeModal()}>
           <div className="mb" onClick={e => e.stopPropagation()}>
             {modal === "login" && <>
-              <div className="mh"><button className="mc" onClick={closeModal}>\u2715</button><div className="me">Monarc Prive</div><div className="mt">Welcome back</div><div className="ms">Sign in to your member account</div></div>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Monarc Prive</div><div className="mt">Welcome back</div><div className="ms">Sign in to your member account</div></div>
               <div className="mbd">
                 <div className="fg"><label className="fl">Email</label><input className="fi" type="email" placeholder="your@email.com" onChange={field("em")} /></div>
-                <div className="fg"><label className="fl">Password</label><input className="fi" type="password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" onChange={field("pw")} /></div>
+                <div className="fg"><label className="fl">Password</label><input className="fi" type="password" placeholder="••••••••" onChange={field("pw")} /></div>
                 <div id="login-error" style={{ display: "none", fontSize: ".68rem", color: "var(--red)", marginBottom: 10, padding: "8px 10px", background: "rgba(224,82,82,.08)", border: "1px solid rgba(224,82,82,.2)", borderRadius: 2 }}></div>
                 <button className="btnf" onClick={async () => {
                   if (!supabase) { closeModal(); return; }
@@ -1560,14 +1560,14 @@ export default function MonarcPrive() {
                     setCurrentUser(data.user);
                     if (data.user) loadMemberData(data.user);
                     closeModal(); setPage("portal");
-                    showToast("Welcome back to Monarc Priv\u00e9");
+                    showToast("Welcome back to Monarc Privé");
                   }
                 }}>Sign In</button>
                 <div className="sw">No account? <span onClick={() => openModal("join")}>Apply for membership</span></div>
               </div>
             </>}
             {modal === "join" && <>
-              <div className="mh"><button className="mc" onClick={closeModal}>\u2715</button><div className="me">Membership Application</div><div className="mt">Create your account</div><div className="ms">Step 1 of 3</div></div>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Membership Application</div><div className="mt">Create your account</div><div className="ms">Step 1 of 3</div></div>
               <div className="mbd">
                 <div className="r2">
                   <div className="fg"><label className="fl">First Name</label><input className="fi" placeholder="First" onChange={field("fn")} /></div>
@@ -1576,12 +1576,12 @@ export default function MonarcPrive() {
                 <div className="fg"><label className="fl">Email</label><input className="fi" type="email" placeholder="your@email.com" onChange={field("em")} /></div>
                 <div className="fg"><label className="fl">Phone</label><input className="fi" type="tel" placeholder="+1 (555) 000-0000" autoComplete="tel" onChange={field("ph")} /></div>
                 <div className="fg"><label className="fl">Password</label><input className="fi" type="password" placeholder="Min. 8 characters" onChange={field("pw")} /></div>
-                <button className="btnf" onClick={() => { setFv(p => ({ ...p, _signupReady: true })); openModal("questionnaire"); }}>Continue to Questions \u2192</button>
+                <button className="btnf" onClick={() => { setFv(p => ({ ...p, _signupReady: true })); openModal("questionnaire"); }}>Continue to Questions →</button>
                 <div className="sw">Already a member? <span onClick={() => openModal("login")}>Sign in</span></div>
               </div>
             </>}
             {modal === "questionnaire" && <>
-              <div className="mh"><button className="mc" onClick={closeModal}>\u2715</button><div className="me">Step 2 of 3</div><div className="mt">A few quick questions</div><div className="ms">So we can personalize your experience</div></div>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Step 2 of 3</div><div className="mt">A few quick questions</div><div className="ms">So we can personalize your experience</div></div>
               <div className="mbd">
                 <div className="qp">{QUESTIONS.map((_, i) => <div key={i} className={`qd${i <= qStep ? " on" : ""}`} />)}</div>
                 <div className="qq">{QUESTIONS[qStep].q}</div>
@@ -1595,16 +1595,16 @@ export default function MonarcPrive() {
                   </div>
                 ))}</div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginTop: 13 }}>
-                  <button onClick={() => qStep > 0 && setQStep(s => s - 1)} style={{ background: "none", border: "none", color: "var(--taupe)", fontSize: ".58rem", letterSpacing: ".15em", textTransform: "uppercase", cursor: "pointer", fontFamily: "var(--sans)", opacity: qStep > 0 ? 1 : 0 }}>\u2190 Back</button>
+                  <button onClick={() => qStep > 0 && setQStep(s => s - 1)} style={{ background: "none", border: "none", color: "var(--taupe)", fontSize: ".58rem", letterSpacing: ".15em", textTransform: "uppercase", cursor: "pointer", fontFamily: "var(--sans)", opacity: qStep > 0 ? 1 : 0 }}>← Back</button>
                   <span style={{ fontSize: ".56rem", letterSpacing: ".15em", textTransform: "uppercase", color: "var(--taupe)" }}>{qStep + 1} of {QUESTIONS.length}</span>
                 </div>
               </div>
             </>}
             {modal === "payment" && <>
-              <div className="mh"><button className="mc" onClick={closeModal}>\u2715</button><div className="me">Step 3 of 3</div><div className="mt">Complete membership</div><div className="ms">Annual access \u2014 cancel anytime</div></div>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Step 3 of 3</div><div className="mt">Complete membership</div><div className="ms">Annual access — cancel anytime</div></div>
               <div className="mbd">
                 <div className="ps">
-                  <div className="pr"><span>Monarc Priv\u00e9 Annual Membership</span><span>$300.00</span></div>
+                  <div className="pr"><span>Monarc Privé Annual Membership</span><span>$300.00</span></div>
                   <div className="pr"><span>Platform fee</span><span>$0.00</span></div>
                   <div className="pr pt"><span>Total due today</span><span>$300.00</span></div>
                 </div>
@@ -1615,10 +1615,10 @@ export default function MonarcPrive() {
                 </div>
                 <div className="r2">
                   <div className="fg"><label className="fl">Expiry</label><input className="fi" placeholder="MM / YY" maxLength={7} onChange={e => { let v = e.target.value.replace(/\D/g, ""); if (v.length >= 2) v = v.substring(0, 2) + " / " + v.substring(2, 4); e.target.value = v; field("exp")(e); }} /></div>
-                  <div className="fg"><label className="fl">CVC</label><input className="fi" placeholder="\u2022\u2022\u2022" maxLength={4} onChange={field("cvc")} /></div>
+                  <div className="fg"><label className="fl">CVC</label><input className="fi" placeholder="•••" maxLength={4} onChange={field("cvc")} /></div>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 7, margin: "10px 0 4px", fontSize: ".54rem", letterSpacing: ".12em", textTransform: "uppercase", color: "var(--taupe)" }}><span style={{ color: "var(--green)" }}>\u25cf</span>256-bit SSL \u00b7 Stripe Secured</div>
-                <div style={{ fontSize: ".62rem", color: "var(--t3)", marginBottom: 12, fontWeight: 300, lineHeight: 1.6 }}>Test card: 4242 4242 4242 4242 \u00b7 Any future expiry \u00b7 Any CVC</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 7, margin: "10px 0 4px", fontSize: ".54rem", letterSpacing: ".12em", textTransform: "uppercase", color: "var(--taupe)" }}><span style={{ color: "var(--green)" }}>●</span>256-bit SSL · Stripe Secured</div>
+                <div style={{ fontSize: ".62rem", color: "var(--t3)", marginBottom: 12, fontWeight: 300, lineHeight: 1.6 }}>Test card: 4242 4242 4242 4242 · Any future expiry · Any CVC</div>
                 <button className="btnf" style={{ marginTop: 4 }} disabled={stripeLoading} onClick={async () => {
                   setStripeLoading(true); setPaymentError("");
                   const email = fv.em || "", firstName = fv.fn || "", lastName = fv.ln || "", phone = fv.ph || "", password = fv.pw || "", fullName = `${firstName} ${lastName}`.trim();
@@ -1633,13 +1633,13 @@ export default function MonarcPrive() {
                     await sendWelcomeEmail(email, firstName, "curated");
                     setStripeLoading(false);
                     openModal("success");
-                    showToast(`Welcome to Monarc Priv\u00e9, ${firstName}! Your membership is active.`);
+                    showToast(`Welcome to Monarc Privé, ${firstName}! Your membership is active.`);
                   } catch (err) { setStripeLoading(false); setPaymentError(err.message || "Something went wrong. Please try again."); }
-                }}>{stripeLoading ? "Activating..." : "Activate Membership \u2014 $300"}</button>
+                }}>{stripeLoading ? "Activating..." : "Activate Membership — $300"}</button>
               </div>
             </>}
             {modal === "concierge" && <>
-              <div className="mh"><button className="mc" onClick={closeModal}>\u2715</button><div className="me">Concierge Request</div><div className="mt">{mData.name}</div><div className="ms">{mData.type} \u00b7 {mData.price}</div></div>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Concierge Request</div><div className="mt">{mData.name}</div><div className="ms">{mData.type} · {mData.price}</div></div>
               <div className="mbd">
                 <div style={{ fontSize: ".76rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, marginBottom: 18, padding: "12px 14px", background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.12)", borderRadius: 2 }}>
                   Sterling, your AI concierge, will confirm availability and arrange all details within 2 hours of your request.
@@ -1650,12 +1650,12 @@ export default function MonarcPrive() {
                 <button className="btnf" onClick={async () => {
                   await db(sb => sb.from("concierge_requests").insert({ guest_id: currentUser?.id || null, service_type: mData.type || mData.name, description: mData.name, requested_date: fv.cdate || null, num_guests: parseInt(fv.cguests) || 1, special_notes: fv.cnote || "", status: "requested" }));
                   closeModal();
-                  showToast(`Request submitted \u2014 Sterling will confirm your ${mData.name} within 2 hours.`);
+                  showToast(`Request submitted — Sterling will confirm your ${mData.name} within 2 hours.`);
                 }}>Submit Request</button>
               </div>
             </>}
             {modal === "book" && <>
-              <div className="mh"><button className="mc" onClick={closeModal}>\u2715</button><div className="me">Booking Request</div><div className="mt">{mData.name || "Request to Book"}</div><div className="ms">{mData.area} \u00b7 ${mData.price?.toLocaleString()}/night</div></div>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Booking Request</div><div className="mt">{mData.name || "Request to Book"}</div><div className="ms">{mData.area} · ${mData.price?.toLocaleString()}/night</div></div>
               <div className="mbd">
                 <div className="r2">
                   <div className="fg"><label className="fl">Check-in</label><input className="fi" type="date" onChange={field("ci")} /></div>
@@ -1698,16 +1698,16 @@ export default function MonarcPrive() {
               <div className="mh"><div className="me">Monarc Prive</div></div>
               <div className="mbd">
                 <div className="sc">
-                  <span className="si">\u25c8</span>
+                  <span className="si">◈</span>
                   <div className="stit">Welcome to Monarc Prive</div>
                   <p className="ssub">Your membership is active. You now have access to all 6 estates, our full luxury partner network, and your AI concierge Sterling is ready.</p>
                   <div className="sref">MP-{Math.random().toString(36).substr(2, 8).toUpperCase()}</div>
-                  <button className="btnf" onClick={() => { closeModal(); setPage("portal"); }}>Enter Your Member Portal \u2192</button>
+                  <button className="btnf" onClick={() => { closeModal(); setPage("portal"); }}>Enter Your Member Portal →</button>
                 </div>
               </div>
             </>}
             {modal === "invite" && <>
-              <div className="mh"><button className="mc" onClick={closeModal}>\u2715</button><div className="me">Founding Membership</div><div className="mt">Request an Invitation</div><div className="ms">Limited to 50 founding members worldwide</div></div>
+              <div className="mh"><button className="mc" onClick={closeModal}>✕</button><div className="me">Founding Membership</div><div className="mt">Request an Invitation</div><div className="ms">Limited to 50 founding members worldwide</div></div>
               <div className="mbd">
                 <div style={{ background: "rgba(201,169,110,.06)", border: "1px solid rgba(201,169,110,.15)", borderRadius: 2, padding: 14, marginBottom: 18, fontSize: ".74rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.7 }}>Founding membership is by invitation only. Our team will review your application personally within 48 hours.</div>
                 <div className="r2">
@@ -1716,7 +1716,7 @@ export default function MonarcPrive() {
                 </div>
                 <div className="fg"><label className="fl">Email</label><input className="fi" type="email" placeholder="your@email.com" onChange={field("em")} /></div>
                 <div className="fg"><label className="fl">Phone</label><input className="fi" type="tel" placeholder="+1 (555) 000-0000" onChange={field("ph")} /></div>
-                <div className="fg"><label className="fl">How did you hear about Monarc Priv\u00e9?</label><input className="fi" placeholder="Referral, social media, etc." onChange={field("ref")} /></div>
+                <div className="fg"><label className="fl">How did you hear about Monarc Privé?</label><input className="fi" placeholder="Referral, social media, etc." onChange={field("ref")} /></div>
                 <div className="fg"><label className="fl">Tell us about yourself (optional)</label><textarea className="fit" rows={3} placeholder="Your background, travel habits, what brings you to Scottsdale..." onChange={field("bio")} /></div>
                 <button className="btnf" onClick={async () => {
                   await db(sb => sb.from("invitation_requests").insert({ first_name: fv.fn || "", last_name: fv.ln || "", email: fv.em || "", phone: fv.ph || "", referral: fv.ref || "", bio: fv.bio || "", status: "pending" }));
@@ -1728,10 +1728,10 @@ export default function MonarcPrive() {
               <div className="mh"><div className="me">Monarc Prive</div></div>
               <div className="mbd">
                 <div className="sc">
-                  <span className="si">\u25c8</span>
+                  <span className="si">◈</span>
                   <div className="stit">Application Submitted</div>
                   <p className="ssub">Your {mData.stream?.label || "listing"} application has been received. Our team will review within 24-48 hours. Billing of {mData.stream?.price || "the monthly fee"} begins upon approval.</p>
-                  <div className="sref">REF \u00b7 MP-{Math.random().toString(36).substr(2, 8).toUpperCase()}</div>
+                  <div className="sref">REF · MP-{Math.random().toString(36).substr(2, 8).toUpperCase()}</div>
                   <button className="btnf" onClick={closeModal}>Done</button>
                 </div>
               </div>
@@ -1742,9 +1742,9 @@ export default function MonarcPrive() {
 
       {toast && (
         <div style={{ position: "fixed", bottom: 24, right: 24, zIndex: 9999, background: "var(--ink-s)", border: `1px solid ${toast.type === "error" ? "rgba(224,82,82,.28)" : "rgba(91,175,132,.3)"}`, borderRadius: 3, padding: "13px 18px", display: "flex", alignItems: "center", gap: 12, minWidth: 280, maxWidth: 400, boxShadow: "0 8px 32px rgba(0,0,0,.4)", animation: "slideDown .3s cubic-bezier(.22,.68,0,1.2)" }}>
-          <span style={{ fontSize: "1rem", flexShrink: 0 }}>{toast.type === "error" ? "\u2715" : "\u2713"}</span>
+          <span style={{ fontSize: "1rem", flexShrink: 0 }}>{toast.type === "error" ? "✕" : "✓"}</span>
           <span style={{ fontSize: ".78rem", color: "var(--t1)", fontWeight: 300, lineHeight: 1.5 }}>{toast.msg}</span>
-          <button onClick={() => setToast(null)} style={{ background: "none", border: "none", color: "var(--t3)", cursor: "pointer", marginLeft: "auto", fontSize: ".8rem", flexShrink: 0 }}>\u2715</button>
+          <button onClick={() => setToast(null)} style={{ background: "none", border: "none", color: "var(--t3)", cursor: "pointer", marginLeft: "auto", fontSize: ".8rem", flexShrink: 0 }}>✕</button>
         </div>
       )}
       <style>{`
