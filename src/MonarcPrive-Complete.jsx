@@ -744,7 +744,7 @@ export default function MonarcPrive() {
   const PartnerCTA = ({ msg, btn, stream }) => (
     <div style={{ marginTop: 32, background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: 26, textAlign: "center" }}>
       <div style={{ fontFamily: "var(--serif)", fontSize: "1.2rem", color: "var(--t1)", marginBottom: 8 }}>{msg}</div>
-      <div style={{ fontSize: ".76rem", color: "var(--t3)", fontWeight: 300, marginBottom: 18 }}>Reach Monarc Prive members spending $2,000-$6,000/night on estates who are actively looking for exactly what you offer.</div>
+      <div style={{ fontSize: ".76rem", color: "var(--t3)", fontWeight: 300, marginBottom: 18 }}>Reach Monarc Prive who are actively looking for exactly what you offer.</div>
       <button className="btn-g" onClick={() => { setPage("partners"); setPTab(stream); }}>{btn}</button>
     </div>
   );
@@ -763,6 +763,7 @@ export default function MonarcPrive() {
           <span className="ftl" onClick={() => openModal("login")}>Member Login</span>
           <span className="ftl" onClick={() => setPage("membership")}>Membership Tiers</span>
           <span className="ftl" onClick={() => setPage("experiences")}>Concierge Services</span>
+          <span className="ftll" onClick={() => window.location.href = '/partner'}>Partner Portal</span>
         </div>
         <div>
           <div className="ftct">Explore</div>
