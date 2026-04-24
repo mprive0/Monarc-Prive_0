@@ -233,6 +233,10 @@ html,body{min-height:100%;font-family:var(--sans);background:var(--ink);color:va
 .fi:focus{border-color:var(--bh)}
 .fi::placeholder{color:var(--t3)}
 .fis{width:100%;background:rgba(248,245,240,.04);border:1px solid var(--border);border-radius:2px;padding:11px 13px;font-family:var(--sans);font-size:.8rem;color:var(--t1);font-weight:300;outline:none;-webkit-appearance:none;cursor:pointer;transition:border-color .18s}
+.fis option {
+  background-color: #1c1c1c; /* dark */
+  color: #f5f5f5;            /* visible text */
+}
 .fis:focus{border-color:var(--bh)}
 .fit{width:100%;background:rgba(248,245,240,.04);border:1px solid var(--border);border-radius:2px;padding:11px 13px;font-family:var(--sans);font-size:.8rem;color:var(--t1);font-weight:300;outline:none;resize:vertical;min-height:75px;line-height:1.6;transition:border-color .18s}
 .fit:focus{border-color:var(--bh)}
