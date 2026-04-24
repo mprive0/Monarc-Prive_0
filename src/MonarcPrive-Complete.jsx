@@ -110,7 +110,7 @@ const AGENTS = [
 const PARTNER_STREAMS = [
   { id: "property", icon: "◈", label: "List Property", price: "$250/mo", desc: "List your luxury estate to our members" },
   { id: "agent", icon: "◉", label: "Agent Advertising", price: "$350/mo", desc: "Advertise your real estate brand" },
-  { id: "restaurant", icon: "🍽", label: "Restaurant", price: "$350/mo", desc: "Promote your restaurant to UHNW members" },
+  { id: "restaurant", icon: "🍽", label: "Restaurant", price: "$350/mo", desc: "Promote your restaurant to our members" },
   { id: "golf", icon: "⛳", label: "Golf & Clubs", price: "$599/mo", desc: "Promote tee times and club access" },
   { id: "cars", icon: "🚗", label: "Luxury Cars", price: "$250/mo", desc: "List exotic and luxury vehicle rentals" },
   { id: "medspa", icon: "💆", label: "Med Spa & Beauty", price: "$250/mo", desc: "IV therapy, aesthetics and wellness" },
@@ -803,13 +803,13 @@ export default function MonarcPrive() {
   const PartnerForm = ({ streamId }) => {
     const stream = PARTNER_STREAMS.find(s => s.id === streamId);
     if (!stream) return null;
-    const perks = [[stream.price, "Monthly flat fee — no hidden costs"], ["UHNW Audience", "Members earn $500K+ annually"], ["Cancel Anytime", "No contracts or long-term commitments"], ["24-48hr Review", "Team reviews every listing personally"], ["Premium Placement", "Featured above general search"]];
+    const perks = [[stream.price, "Monthly flat fee — no hidden costs"], ["UHNW Audience", "Verified Members"], ["Cancel Anytime", "No contracts or long-term commitments"], ["72 hr Review", "Team reviews every listing personally"], ["Premium Placement", "Featured above general search"]];
     return (
       <div className="pf-wrap">
         <div>
           <div style={{ fontSize: ".56rem", letterSpacing: ".36em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 12 }}>{stream.icon} {stream.label}</div>
           <h2 style={{ fontFamily: "var(--serif)", fontSize: "2rem", fontWeight: 300, color: "var(--t1)", marginBottom: 14, lineHeight: 1.2 }}>List with Monarc Prive.<br />Reach the right people.</h2>
-          <p style={{ fontSize: ".8rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.8, marginBottom: 22 }}>Our members are high-net-worth individuals spending $2,000-$6,000 per night on their estates. They are actively looking for exactly what you offer.</p>
+          <p style={{ fontSize: ".8rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.8, marginBottom: 22 }}>Our members are actively looking for exactly what you offer.</p>
           <div>
             {perks.map(([val, lbl]) => (
               <div key={lbl} style={{ display: "flex", gap: 14, padding: "9px 0", borderBottom: "1px solid rgba(212,201,181,.07)", alignItems: "flex-start" }}>
@@ -1420,7 +1420,7 @@ export default function MonarcPrive() {
             <div>
               <div style={{ fontSize: ".54rem", letterSpacing: ".36em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 16 }}>Contact Monarc Privé</div>
               <h2 style={{ fontFamily: "var(--serif)", fontSize: "2rem", fontWeight: 300, color: "var(--t1)", lineHeight: 1.2, marginBottom: 18 }}>How can we help you?</h2>
-              <p style={{ fontSize: ".82rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, marginBottom: 28 }}>Whether you have a question about membership, want to list your property, or simply want to learn more — our team responds to every inquiry personally within 24 hours.</p>
+              <p style={{ fontSize: ".82rem", color: "var(--t3)", fontWeight: 300, lineHeight: 1.85, marginBottom: 28 }}>Whether you have a question about membership, want to list your property, or simply want to learn more — our team responds to every inquiry personally.</p>
               {[["Membership Inquiries", "members@monarcprive.com"], ["Partner & Listing", "partners@monarcprive.com"], ["General Questions", "info@monarcprive.com"], ["Location", "Scottsdale, Arizona"]].map(([lbl, val]) => (
                 <div key={lbl} style={{ display: "flex", gap: 16, padding: "12px 0", borderBottom: "1px solid rgba(212,201,181,.07)" }}>
                   <div style={{ fontSize: ".56rem", letterSpacing: ".16em", textTransform: "uppercase", color: "var(--taupe)", minWidth: 130, paddingTop: 2, flexShrink: 0 }}>{lbl}</div>
@@ -1446,7 +1446,7 @@ export default function MonarcPrive() {
                 </select>
               </div>
               <div className="fg"><label className="fl">Message</label><textarea className="fit" rows={4} placeholder="How can we help you?" onChange={field("cmsg")} /></div>
-              <button className="btnf" onClick={() => { showToast("Message sent — we'll be in touch within 24 hours."); setFv({}); }}>Send Message</button>
+              <button className="btnf" onClick={() => { showToast("Message sent — we'll be in touch."); setFv({}); }}>Send Message</button>
             </div>
           </div>
         </div>
@@ -1985,7 +1985,7 @@ export default function MonarcPrive() {
                 <div className="sc">
                   <span className="si">◈</span>
                   <div className="stit">Application Submitted</div>
-                  <p className="ssub">Your {mData.stream?.label || "listing"} application has been received. Our team will review within 24-48 hours. Billing of {mData.stream?.price || "the monthly fee"} begins upon approval.</p>
+                  <p className="ssub">Your {mData.stream?.label || "listing"} application has been received. Our team will review and follow up promptly. Billing of {mData.stream?.price || "the monthly fee"} begins upon approval.</p>
                   <div className="sref">REF · MP-{Math.random().toString(36).substr(2, 8).toUpperCase()}</div>
                   <p style={{ fontSize: ".66rem", color: "var(--taupe)", fontWeight: 300, lineHeight: 1.6, marginBottom: 18 }}>A confirmation email will be sent shortly. Our curation team personally reviews every application.</p>
                   <button className="btnf" onClick={closeModal}>Done</button>
