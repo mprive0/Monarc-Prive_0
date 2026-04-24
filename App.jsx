@@ -1,7 +1,7 @@
 import MonarcMembership from "./MonarcPrive-Complete";
 import MonarcPartnerHub from "./pages/PartnerHub";
 import MonarcAgentHub from "./pages/AgentHub";
-import PartnerPortal from "./PartnerPortal";
+import PartnerPortal from "./src/PartnerPortal";
 
 export default function App() {
   const path = window.location.pathname;
