@@ -1,4 +1,4 @@
-import MonarcMembership from "./pages/LandingPage";
+import MonarcMembership from "./MonarcPrive-Complete";
 import MonarcPartnerHub from "./pages/PartnerHub";
 import MonarcAgentHub from "./pages/AgentHub";
 
