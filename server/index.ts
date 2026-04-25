@@ -347,6 +347,135 @@ app.post("/api/admin/listings/reject", async (req, res) => {
 });
 
 // ════════════════════════════════════════════════════════════
+// NOTIFICATIONS — paste this block into server/index.ts
+// Place it right after the /api/admin/listings/reject route
+// (around line 218, before the FILE UPLOAD section)
+// ════════════════════════════════════════════════════════════
+
+// ── PARTNER APPLICATION NOTIFICATION ─────────────────────────
+// Called by PartnerPortal.jsx after successful listing submit
+app.post("/api/notifications/partner-application", async (req, res) => {
+  const { category, partnerEmail, listingData } = req.body;
+  const ownerEmail = process.env.OWNER_EMAIL;
+  if (!ownerEmail) return res.json({ sent: false, reason: "OWNER_EMAIL not set" });
+
+  try {
+    const categoryNames: Record<string, string> = {
+      property: "Estate / Property", agent: "Real Estate Agent",
+      restaurant: "Restaurant / Dining", golf: "Golf Club / Course",
+      cars: "Luxury Car Rental", medspa: "Med Spa & Wellness",
+      aviation: "Private Aviation", yacht: "Yacht & Charters",
+      shopping: "Luxury Shopping", wine: "Wine & Spirits",
+      events: "Private Events", experience: "Experiences & Activities",
+    };
+
+    const name = listingData?.property_title || listingData?.restaurant_name ||
+      listingData?.club_name || listingData?.company_name ||
+      listingData?.business_name || listingData?.agent_name || "Untitled";
+
+    const html = wrap(`
+      <h2>New Partner Application</h2>
+      <p>A new partner has submitted a listing application and is awaiting your review.</p>
+      <table style="width:100%;border-collapse:collapse;margin:16px 0">
+        <tr><td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);color:rgba(248,245,240,.5);font-size:.75rem;font-family:Arial,sans-serif;width:140px">Category</td>
+            <td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);font-size:.82rem">${categoryNames[category] || category}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);color:rgba(248,245,240,.5);font-size:.75rem;font-family:Arial,sans-serif">Listing Name</td>
+            <td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);font-size:.82rem">${name}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);color:rgba(248,245,240,.5);font-size:.75rem;font-family:Arial,sans-serif">Partner Email</td>
+            <td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);font-size:.82rem">${partnerEmail}</td></tr>
+        <tr><td style="padding:8px 0;color:rgba(248,245,240,.5);font-size:.75rem;font-family:Arial,sans-serif">Submitted</td>
+            <td style="padding:8px 0;font-size:.82rem">${new Date().toLocaleString("en-US", { dateStyle: "full", timeStyle: "short" })}</td></tr>
+      </table>
+      <p style="margin-top:8px;font-size:.78rem;color:rgba(248,245,240,.5);font-family:Arial,sans-serif">Log into your admin portal to review, approve, or reject this application.</p>
+      <a href="${process.env.APP_URL || "https://monarcprive.com"}/admin" class="btn" style="margin-top:18px;display:inline-block">Review in Admin Portal →</a>
+    `);
+
+    await mailer().sendMail({
+      from: `"Monarc Privé" <${process.env.SMTP_USER}>`,
+      to: ownerEmail,
+      subject: `New Partner Application — ${categoryNames[category] || category} — ${name}`,
+      html,
+    });
+
+    res.json({ sent: true });
+  } catch (e: any) {
+    console.error("Partner notification error:", e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+function wrap(content: string) {
+  return emailBase(content);
+}
+
+function mailer() {
+  return getMailTransporter();
+}
+
+// ── CONTACT FORM NOTIFICATION ────────────────────────────────
+// Called by MonarcPrive-Complete.jsx contact form
+app.post("/api/notifications/contact", async (req, res) => {
+  const { firstName, lastName, email, subject, message } = req.body;
+  const ownerEmail = process.env.OWNER_EMAIL;
+  if (!ownerEmail) return res.json({ sent: false, reason: "OWNER_EMAIL not set" });
+
+  try {
+    const html = wrap(`
+      <h2>New Contact Inquiry</h2>
+      <table style="width:100%;border-collapse:collapse;margin:16px 0">
+        <tr><td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);color:rgba(248,245,240,.5);font-size:.75rem;font-family:Arial,sans-serif;width:140px">Name</td>
+            <td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);font-size:.82rem">${firstName} ${lastName}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);color:rgba(248,245,240,.5);font-size:.75rem;font-family:Arial,sans-serif">Email</td>
+            <td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);font-size:.82rem">${email}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);color:rgba(248,245,240,.5);font-size:.75rem;font-family:Arial,sans-serif">Subject</td>
+            <td style="padding:8px 0;border-bottom:1px solid rgba(212,201,181,.1);font-size:.82rem">${subject}</td></tr>
+        <tr><td style="padding:8px 0;color:rgba(248,245,240,.5);font-size:.75rem;font-family:Arial,sans-serif;vertical-align:top;padding-top:12px">Message</td>
+            <td style="padding:8px 0;font-size:.82rem;padding-top:12px;line-height:1.7">${message?.replace(/\n/g, "<br>") || "—"}</td></tr>
+      </table>
+      <p style="margin-top:8px;font-size:.78rem;color:rgba(248,245,240,.5);font-family:Arial,sans-serif">Reply directly to this email to respond to ${firstName}.</p>
+    `);
+
+    await mailer().sendMail({
+      from: `"Monarc Privé" <${process.env.SMTP_USER}>`,
+      to: ownerEmail,
+      replyTo: email,   // ← reply goes straight to the person who contacted you
+      subject: `Contact Form — ${subject} — ${firstName} ${lastName}`,
+      html,
+    });
+
+    // Also send confirmation to the person who submitted
+    const confirmHtml = wrap(`
+      <h2>We received your message</h2>
+      <p>Thank you for reaching out, ${firstName}. Our team will review your inquiry and respond personally within 24 hours.</p>
+      <p style="margin-top:14px;font-size:.78rem;color:rgba(248,245,240,.5);font-family:Arial,sans-serif">
+        <strong style="color:#F8F5F0">Subject:</strong> ${subject}<br/>
+        <strong style="color:#F8F5F0">Submitted:</strong> ${new Date().toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}
+      </p>
+      <a href="${process.env.APP_URL || "https://monarcprive.com"}" class="btn" style="margin-top:20px;display:inline-block">Return to Monarc Privé</a>
+    `);
+
+    
+    await mailer().sendMail({
+      from: `"Monarc Privé" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: `We received your message — Monarc Privé`,
+      html: confirmHtml,
+    });
+
+    res.json({ sent: true });
+  } catch (e: any) {
+    console.error("Contact notification error:", e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ── WELCOME EMAIL (already exists, keeping for reference) ─────
+// POST /api/notifications/welcome  →  already in your server
+
+//////////////////
+
+
+// ════════════════════════════════════════════════════════════
 // FILE UPLOAD ROUTE
 // ════════════════════════════════════════════════════════════
 

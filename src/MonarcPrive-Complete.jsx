@@ -1452,7 +1452,23 @@ export default function MonarcPrive() {
                 </select>
               </div>
               <div className="fg"><label className="fl">Message</label><textarea className="fit" rows={4} placeholder="How can we help you?" onChange={field("cmsg")} /></div>
-              <button className="btnf" onClick={() => { showToast("Message sent — we'll be in touch."); setFv({}); }}>Send Message</button>
+              <button className="btnf" onClick={async () => {
+                const API = import.meta.env.VITE_API_URL;
+                if (API) {
+                  await fetch(`${API}/api/notifications/contact`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      firstName: fv.cfn, lastName: fv.cln,
+                      email: fv.cem, subject: fv.csub, message: fv.cmsg,
+                    }),
+                  }).catch(() => { });
+                }
+                showToast("Message sent — we'll be in touch.");
+                setFv({});
+              }}>
+              Send Message
+              </button>
             </div>
           </div>
         </div>

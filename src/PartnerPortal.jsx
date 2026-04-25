@@ -623,6 +623,20 @@ function PartnerAuthScreen({ onAuth }) {
         if (!form.email || !form.password) throw new Error("Email and password are required.");
         const { data, error: err } = await supabase.auth.signInWithPassword({ email: form.email, password: form.password });
         if (err) throw err;
+        // Verify this user is actually a partner
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role, status")
+          .eq("id", data.user.id)
+          .single();
+        if (!profile || profile.role !== "partner") {
+          await supabase.auth.signOut();
+          throw new Error("This account is not a partner account. Please sign in at the main site if you are a member.");
+        }
+        if (profile.status === "suspended") {
+          await supabase.auth.signOut();
+          throw new Error("This partner account has been suspended. Contact support.");
+        }
         onAuth(data.user);
       }
     } catch (e) { setError(e.message); }
@@ -710,12 +724,28 @@ export default function PartnerPortal() {
   const [listingId] = useState(() => `listing-${Date.now()}-${Math.random().toString(36).substr(2, 8)}`);
 
   useEffect(() => {
+    const verifyPartner = async (user) => {
+      if (!user) { setPartnerUser(null); return; }
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role, status")
+        .eq("id", user.id)
+        .single();
+      if (profile?.role === "partner" && profile?.status === "active") {
+        setPartnerUser(user);
+      } else {
+        await supabase.auth.signOut();
+        setPartnerUser(null);
+      }
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setPartnerUser(session?.user || null);
-      setAuthChecked(true);
+      verifyPartner(session?.user || null).finally(() => setAuthChecked(true));
     });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
-      setPartnerUser(session?.user || null);
+      if (session?.user) verifyPartner(session.user);
+      else setPartnerUser(null);
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -735,6 +765,18 @@ export default function PartnerPortal() {
       const record = { ...fv, status: "pending", photo_url: photoUrls[0] || null, photos: photoUrls, monthly_fee: parseFloat(selected.price.replace(/[^0-9.]/g, "")), partner_user_id: partnerUser?.id || null };
       const { error: dbErr } = await supabase.from(selected.table).insert(record);
       if (dbErr) throw new Error(dbErr.message);
+      const API = import.meta.env.VITE_API_URL;
+      if (API) {
+        await fetch(`${API}/api/notifications/partner-application`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category: selected.id,
+            partnerEmail: partnerUser.email,
+            listingData: fv,
+          }),
+        }).catch(() => { }); // silent fail — don't block submission
+      }
       setSubmitted(true);
     } catch (e) { setError(e.message || "Something went wrong. Please try again."); }
     setSubmitting(false);
@@ -854,7 +896,7 @@ export default function PartnerPortal() {
             ))}
             <div style={{ padding: "20px 20px 0", borderTop: "1px solid var(--border)", marginTop: 12 }}>
               <div style={{ fontSize: ".6rem", color: "var(--taupe)", lineHeight: 1.7, fontWeight: 300 }}>
-                <div style={{ color: "var(--gold)", marginBottom: 4 }}>● Reviewed in 24–48hrs</div>
+                <div style={{ color: "var(--gold)", marginBottom: 4 }}>● Reviewed promptly</div>
                 <div>Billing starts on approval</div>
                 <div>Cancel anytime · No hidden fees</div>
               </div>
@@ -863,7 +905,7 @@ export default function PartnerPortal() {
 
           <div className="pp-main">
             <div className="pp-form-title">{selected.icon} {selected.label}</div>
-            <div className="pp-form-sub">Complete all required fields (*) and upload photos. Our team will review within 24–48 hours.</div>
+            <div className="pp-form-sub">Complete all required fields (*) and upload photos. Our team will review.</div>
             <div className="price-note">
               <div className="price-note-val">{selected.price}</div>
               <div className="price-note-sub">Monthly flat fee · Billed only after approval · Cancel anytime</div>
