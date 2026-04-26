@@ -409,7 +409,6 @@ export default function MonarcPrive() {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [partnerBookingPrompt, setPartnerBookingPrompt] = useState(false);
-  const [userRole, setUserRole] = useState(null); // 'member' | 'partner' | null
   const [memberData, setMemberData] = useState(null);
   const [memberBookings, setMemberBookings] = useState([]);
   const [memberLoading, setMemberLoading] = useState(false);
@@ -472,15 +471,6 @@ export default function MonarcPrive() {
       }
     });
     return () => subscription.unsubscribe();
-  }, []);
-
-  // Auto-open login modal if redirected from partner portal switch
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("member-login") === "true") {
-      openModal("login");
-      window.history.replaceState({}, "", window.location.pathname);
-    }
   }, []);
 
   // Load member's data from Supabase
@@ -798,7 +788,15 @@ export default function MonarcPrive() {
           <span className="ftl" onClick={() => setPage("wine")}>Wine & Spirits</span>
           <span className="ftl" onClick={() => setPage("shopping")}>Luxury Shopping</span>
         </div>
-
+        <div>
+          <div className="ftct">List Your Business</div>
+          <span className="ftl" onClick={() => setPage("partners")}>List Estate </span>
+          <span className="ftl" onClick={() => setPage("partners")}>Agent Ad </span>
+          <span className="ftl" onClick={() => setPage("partners")}>Restaurant </span>
+          <span className="ftl" onClick={() => setPage("partners")}>Golf Club </span>
+          <span className="ftl" onClick={() => setPage("partners")}>Luxury Cars</span>
+          <span className="ftl" onClick={() => setPage("partners")}>Aviation </span>
+        </div>
         <div>
           <div className="ftct">Company</div>
           <span className="ftl" onClick={() => setPage("about")}>About Monarc Prive</span>
@@ -1762,18 +1760,7 @@ export default function MonarcPrive() {
                   if (error) {
                     if (errEl) { errEl.textContent = error.message; errEl.style.display = "block"; }
                   } else {
-                    // Check role — partners cannot sign in here
-                    const { data: profile } = await supabase.from("profiles").select("role").eq("id", data.user.id).single();
-                    if (profile?.role === "partner") {
-                      await supabase.auth.signOut();
-                      if (errEl) {
-                        errEl.textContent = "This is a Partner account. Please sign in at the Partner Portal.";
-                        errEl.style.display = "block";
-                      }
-                      return;
-                    }
                     setCurrentUser(data.user);
-                    setUserRole(profile?.role || "member");
                     if (data.user) loadMemberData(data.user);
                     closeModal();
                     setPage("portal");
@@ -1781,9 +1768,6 @@ export default function MonarcPrive() {
                   }
                 }}>Sign In</button>
                 <div className="sw">No account? <span onClick={() => openModal("join")}>Apply for membership</span></div>
-                <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(212,201,181,.08)", textAlign: "center", fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
-                  Partner? <span style={{ color: "var(--gold)", cursor: "pointer" }} onClick={() => { closeModal(); window.location.href = "/partner"; }}>Sign in at the Partner Portal →</span>
-                </div>
               </div>
             </>}
             {modal === "join" && <>
@@ -1802,9 +1786,6 @@ export default function MonarcPrive() {
                   openModal("questionnaire");
                 }}>Continue to Questions →</button>
                 <div className="sw">Already a member? <span onClick={() => openModal("login")}>Sign in</span></div>
-                <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(212,201,181,.08)", textAlign: "center", fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
-                  Want to list your business? <span style={{ color: "var(--gold)", cursor: "pointer" }} onClick={() => { closeModal(); window.location.href = "/partner"; }}>Apply as a Partner →</span>
-                </div>
               </div>
             </>}
             {modal === "questionnaire" && <>
@@ -1882,7 +1863,7 @@ export default function MonarcPrive() {
                     if (supabase && email && password) {
                       const { data: authData, error: authError } = await supabase.auth.signUp({
                         email, password,
-                        options: { data: { first_name: firstName, last_name: lastName, full_name: fullName, phone, role: "member" } }
+                        options: { data: { first_name: firstName, last_name: lastName, full_name: fullName, phone } }
                       });
                       if (authError && !authError.message.includes("already registered")) {
                         throw new Error(authError.message);
@@ -2044,40 +2025,37 @@ export default function MonarcPrive() {
                 </div>
               </div>
             </>}
+          </div>
+        </div>
+      )}
 
-          </div>   
-        </div>     
-      )}           
-        
-            {/* Partner booking prompt */}
-            {partnerBookingPrompt && (
-              <div className="mov" onClick={() => setPartnerBookingPrompt(false)}>
-                <div className="mb" style={{ maxWidth: 420 }} onClick={e => e.stopPropagation()}>
-                  <div className="mh">
-                    <button className="mc" onClick={() => setPartnerBookingPrompt(false)}>✕</button>
-                    <div className="me">Partner Account</div>
-                    <div className="mt">Members only</div>
-                    <div className="ms">Bookings require a separate member account</div>
-                  </div>
-                  <div className="mbd">
-                    <div style={{ fontSize: ".78rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, marginBottom: 20, padding: "14px 16px", background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.12)", borderRadius: 2 }}>
-                      You are currently signed in as a <strong style={{ color: "var(--gold)" }}>Partner</strong>. To book estates and request services, you need a separate <strong style={{ color: "var(--t1)" }}>Member account</strong>.
-                    </div>
-                    <button className="btnf" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("join"); }}>
-                      Create a Member Account →
-                    </button>
-                    <button className="btng" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("login"); }}>
-                      Sign In as Member
-                    </button>
-                    <div style={{ textAlign: "center", marginTop: 12, fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
-                      Your partner account will remain active. You can switch back anytime.
-                    </div>
-                  </div>
-                </div>
+      {partnerBookingPrompt && (
+        <div className="mov" onClick={() => setPartnerBookingPrompt(false)}>
+          <div className="mb" style={{ maxWidth: 420 }} onClick={e => e.stopPropagation()}>
+            <div className="mh">
+              <button className="mc" onClick={() => setPartnerBookingPrompt(false)}>✕</button>
+              <div className="me">Partner Account</div>
+              <div className="mt">Members only</div>
+              <div className="ms">Bookings require a separate member account</div>
+            </div>
+            <div className="mbd">
+              <div style={{ fontSize: ".78rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, marginBottom: 20, padding: "14px 16px", background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.12)", borderRadius: 2 }}>
+                You are currently signed in as a <strong style={{ color: "var(--gold)" }}>Partner</strong>. To book estates and request services, you need a separate <strong style={{ color: "var(--t1)" }}>Member account</strong>.
               </div>
-            )}
-     
-         
+              <button className="btnf" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("join"); }}>
+                Create a Member Account →
+              </button>
+              <button className="btng" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("login"); }}>
+                Sign In as Member
+              </button>
+              <div style={{ textAlign: "center", marginTop: 12, fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
+                Your partner account will remain active. You can switch back anytime.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── TOAST NOTIFICATIONS ── */}
       {toast && (
         <div style={{

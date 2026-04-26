@@ -1168,22 +1168,6 @@ export default function PartnerPortal() {
             </div>
           ))}
           <div style={{marginTop:"auto",padding:"16px 20px",borderTop:"1px solid var(--border)"}}>
-            {/* Switch to Member Account */}
-            <button
-              onClick={async () => {
-                await supabase.auth.signOut();
-                window.location.href = "/?member-login=true";
-              }}
-              style={{width:"100%",background:"rgba(201,169,110,.08)",border:"1px solid rgba(201,169,110,.2)",borderRadius:2,padding:"9px 12px",cursor:"pointer",marginBottom:12,transition:"all .18s",display:"flex",alignItems:"center",gap:8}}
-              onMouseEnter={e=>{e.currentTarget.style.background="rgba(201,169,110,.14)";e.currentTarget.style.borderColor="rgba(201,169,110,.35)"}}
-              onMouseLeave={e=>{e.currentTarget.style.background="rgba(201,169,110,.08)";e.currentTarget.style.borderColor="rgba(201,169,110,.2)"}}
-            >
-              <span style={{fontSize:".8rem",color:"var(--gold)"}}>⇄</span>
-              <div style={{textAlign:"left"}}>
-                <div style={{fontSize:".6rem",letterSpacing:".14em",textTransform:"uppercase",color:"var(--gold)",fontWeight:600}}>Switch Account</div>
-                <div style={{fontSize:".56rem",color:"var(--taupe)",fontWeight:300,marginTop:1}}>Sign in as Member</div>
-              </div>
-            </button>
             <div style={{fontSize:".58rem",color:"var(--taupe)",lineHeight:1.7,fontWeight:300}}>
               <div style={{color:"var(--gold)",marginBottom:4}}>● Partner Account</div>
               <div>Reviewed in 24–48hrs</div>
