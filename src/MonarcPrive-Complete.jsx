@@ -407,6 +407,7 @@ export default function MonarcPrive() {
   const ADMIN_PASSWORD = "MP@Admin2025!";
   // Member portal state
   const [currentUser, setCurrentUser] = useState(null);
+  const [userRole, setUserRole] = useState(null); // 'member' | 'partner' | null
   const [memberData, setMemberData] = useState(null);
   const [memberBookings, setMemberBookings] = useState([]);
   const [memberLoading, setMemberLoading] = useState(false);
@@ -450,12 +451,22 @@ export default function MonarcPrive() {
   // Track auth state — keep currentUser in sync
   useEffect(() => {
     if (!supabase) return;
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setCurrentUser(session?.user || null);
+      if (session?.user) {
+        const { data: profile } = await supabase.from("profiles").select("role").eq("id", session.user.id).single();
+        setUserRole(profile?.role || "member");
+      }
     });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setCurrentUser(session?.user || null);
-      if (session?.user) loadMemberData(session.user);
+      if (session?.user) {
+        const { data: profile } = await supabase.from("profiles").select("role").eq("id", session.user.id).single();
+        setUserRole(profile?.role || "member");
+        if (profile?.role !== "partner") loadMemberData(session.user);
+      } else {
+        setUserRole(null);
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -986,8 +997,14 @@ export default function MonarcPrive() {
         <div className="nav-right">
           {currentUser ? (
             <>
-              <button className="nb" onClick={() => setPage("portal")} style={{ color: "var(--gold)", borderColor: "rgba(201,169,110,.3)" }}>
-                ◈ My Portal
+              <button className="nb" onClick={() => {
+                if (userRole === "partner") {
+                  window.location.href = "/partner";
+                } else {
+                  setPage("portal");
+                }
+              }} style={{ color: "var(--gold)", borderColor: "rgba(201,169,110,.3)" }}>
+                {userRole === "partner" ? "◈ Partner Portal" : "◈ My Portal"}
               </button>
               <button className="nb" onClick={signOut}>Sign Out</button>
             </>

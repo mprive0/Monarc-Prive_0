@@ -715,22 +715,22 @@ function PartnerAuthScreen({ onAuth }) {
 export default function PartnerPortal() {
   const [partnerUser, setPartnerUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
+  const [view, setView] = useState("dashboard"); // dashboard | new-listing | messages
   const [selected, setSelected] = useState(null);
   const [fv, setFv] = useState({});
   const [photos, setPhotos] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [listings, setListings] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
+  const [loadingData, setLoadingData] = useState(false);
   const [listingId] = useState(() => `listing-${Date.now()}-${Math.random().toString(36).substr(2, 8)}`);
 
   useEffect(() => {
     const verifyPartner = async (user) => {
       if (!user) { setPartnerUser(null); return; }
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role, status")
-        .eq("id", user.id)
-        .single();
+      const { data: profile } = await supabase.from("profiles").select("role, status").eq("id", user.id).single();
       if (profile?.role === "partner" && profile?.status === "active") {
         setPartnerUser(user);
       } else {
@@ -738,17 +738,48 @@ export default function PartnerPortal() {
         setPartnerUser(null);
       }
     };
-
     supabase.auth.getSession().then(({ data: { session } }) => {
       verifyPartner(session?.user || null).finally(() => setAuthChecked(true));
     });
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
       if (session?.user) verifyPartner(session.user);
       else setPartnerUser(null);
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  // Load partner's listings and inquiries from Supabase
+  useEffect(() => {
+    if (!partnerUser) return;
+    const loadData = async () => {
+      setLoadingData(true);
+      const tables = [
+        "host_listings","agent_listings","restaurant_listings","golf_listings",
+        "car_listings","medspa_listings","aviation_listings","yacht_listings",
+        "shopping_listings","wine_listings","events_listings","experience_listings"
+      ];
+      const all = [];
+      for (const table of tables) {
+        const { data } = await supabase.from(table)
+          .select("id, status, created_at, photo_url, property_title, restaurant_name, club_name, company_name, business_name, agent_name, experience_name")
+          .eq("partner_user_id", partnerUser.id)
+          .order("created_at", { ascending: false });
+        if (data) data.forEach(row => {
+          const name = row.property_title || row.restaurant_name || row.club_name ||
+            row.company_name || row.business_name || row.agent_name || row.experience_name || "Untitled";
+          const cat = table.replace("_listings","").replace("_"," ");
+          all.push({ ...row, name, category: cat, table });
+        });
+      }
+      setListings(all);
+      // Load concierge requests as inquiries (member interests)
+      const { data: inq } = await supabase.from("concierge_requests")
+        .select("*").order("created_at", { ascending: false }).limit(20);
+      if (inq) setInquiries(inq);
+      setLoadingData(false);
+    };
+    loadData();
+  }, [partnerUser]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -768,21 +799,16 @@ export default function PartnerPortal() {
       const API = import.meta.env.VITE_API_URL;
       if (API) {
         await fetch(`${API}/api/notifications/partner-application`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            category: selected.id,
-            partnerEmail: partnerUser.email,
-            listingData: fv,
-          }),
-        }).catch(() => { }); // silent fail — don't block submission
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category: selected.id, partnerEmail: partnerUser.email, listingData: fv }),
+        }).catch(() => {});
       }
       setSubmitted(true);
     } catch (e) { setError(e.message || "Something went wrong. Please try again."); }
     setSubmitting(false);
   };
 
-  const resetForm = () => { setSelected(null); setFv({}); setPhotos([]); setSubmitted(false); setError(""); };
+  const resetForm = () => { setSelected(null); setFv({}); setPhotos([]); setSubmitted(false); setError(""); setView("dashboard"); };
 
   const renderForm = () => {
     if (!selected) return null;
@@ -819,7 +845,235 @@ export default function PartnerPortal() {
     </>
   );
 
-  // ── Signed in → Listing Portal ──
+  // ── Calendar helper ───────────────────────────────────────
+  const renderCalendar = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = now.getDate();
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const cells = [];
+    for (let i = 0; i < firstDay; i++) cells.push(<div key={`e${i}`} className="pd-cal-cell other" />);
+    for (let d = 1; d <= daysInMonth; d++) {
+      const isToday = d === today;
+      cells.push(
+        <div key={d} className={`pd-cal-cell${isToday ? " today" : ""}`}>{d}</div>
+      );
+    }
+    return (
+      <div>
+        <div className="pd-cal">{days.map(d => <div key={d} className="pd-cal-day">{d}</div>)}</div>
+        <div className="pd-cal">{cells}</div>
+        <div style={{ display:"flex", gap:12, marginTop:12, fontSize:".6rem", color:"var(--taupe)", fontWeight:300 }}>
+          <span style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:10,height:10,borderRadius:2,background:"rgba(201,169,110,.2)",display:"inline-block"}}/>Today</span>
+          <span style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:10,height:10,borderRadius:2,background:"rgba(91,175,132,.15)",display:"inline-block"}}/>Booked</span>
+          <span style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:10,height:10,borderRadius:2,background:"rgba(224,82,82,.1)",display:"inline-block"}}/>Blocked</span>
+        </div>
+      </div>
+    );
+  };
+
+  // ── DASHBOARD ─────────────────────────────────────────────
+  const renderDashboard = () => {
+    const active = listings.filter(l => l.status === "active").length;
+    const pending = listings.filter(l => l.status === "pending").length;
+    const unread = inquiries.filter(i => !i.resolved).length;
+    const companyName = partnerUser.user_metadata?.company || partnerUser.email.split("@")[0];
+
+    return (
+      <>
+        <div className="pd-header">
+          <div className="pd-header-eyebrow">Partner Dashboard</div>
+          <div className="pd-header-title">Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"}, {companyName}</div>
+        </div>
+        <div className="pd-body">
+
+          {/* Stats */}
+          <div className="pd-stats">
+            {[
+              { label: "Active Listings", val: active, sub: "Live on platform", up: active > 0 },
+              { label: "Pending Review", val: pending, sub: "Awaiting approval" },
+              { label: "Member Inquiries", val: inquiries.length, sub: "Total received", up: inquiries.length > 0 },
+              { label: "Unread Messages", val: unread, sub: "Need response", up: unread > 0 },
+            ].map(s => (
+              <div key={s.label} className="pd-stat">
+                <div className="pd-stat-label">{s.label}</div>
+                <div className="pd-stat-val">{s.val}</div>
+                <div className={s.up ? "pd-stat-up" : "pd-stat-sub"}>{s.up ? `↑ ${s.sub}` : s.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+            {/* My Listings */}
+            <div className="pd-section">
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14 }}>
+                <div className="pd-section-title" style={{marginBottom:0}}>My Listings</div>
+                <button className="pd-outline-btn" onClick={() => setView("new-listing")}>+ New Listing</button>
+              </div>
+              {listings.length === 0 ? (
+                <div className="pd-empty">
+                  <span className="pd-empty-icon">◈</span>
+                  <div className="pd-empty-text">No listings yet.<br />Submit your first listing to appear in front of Monarc Privé members.</div>
+                  <button className="pd-cta-btn" onClick={() => setView("new-listing")}>Create Listing →</button>
+                </div>
+              ) : (
+                <div className="pd-card">
+                  {listings.slice(0, 6).map(l => (
+                    <div key={l.id} className="pd-card-row">
+                      <div>
+                        <div className="pd-listing-name">{l.name}</div>
+                        <div className="pd-listing-cat">{l.category}</div>
+                      </div>
+                      <span className={`pd-badge pd-badge-${l.status}`}>{l.status}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Member Inquiries */}
+            <div className="pd-section">
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14 }}>
+                <div className="pd-section-title" style={{marginBottom:0}}>Member Inquiries</div>
+                {unread > 0 && <span className="pd-badge pd-badge-pending">{unread} new</span>}
+              </div>
+              {inquiries.length === 0 ? (
+                <div className="pd-empty">
+                  <span className="pd-empty-icon">✉</span>
+                  <div className="pd-empty-text">No inquiries yet.<br />Member inquiries about your listings will appear here.</div>
+                </div>
+              ) : (
+                <div className="pd-card">
+                  {inquiries.slice(0, 5).map((inq, i) => (
+                    <div key={inq.id || i} className="pd-inquiry-row" onClick={() => setView("messages")}>
+                      <div className="pd-inquiry-avatar">◉</div>
+                      <div className="pd-inquiry-body">
+                        <div className="pd-inquiry-from">{inq.service_type || "Member Inquiry"}</div>
+                        <div className="pd-inquiry-msg">{inq.special_notes || inq.description || "New inquiry received"}</div>
+                        <div className="pd-inquiry-time">{inq.created_at ? new Date(inq.created_at).toLocaleDateString("en-US",{month:"short",day:"numeric"}) : "Recently"}</div>
+                      </div>
+                      {!inq.resolved && <div className="pd-inquiry-unread" />}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Performance + Calendar row */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginTop: 4 }}>
+            {/* Performance */}
+            <div className="pd-section">
+              <div className="pd-section-title">Performance</div>
+              <div className="pd-card">
+                {[
+                  { label: "Profile Views", val: "—", sub: "This month" },
+                  { label: "Listing Clicks", val: "—", sub: "Across all listings" },
+                  { label: "Inquiry Rate", val: "—", sub: "Clicks → inquiries" },
+                  { label: "Avg Response Time", val: "—", sub: "To member requests" },
+                ].map(m => (
+                  <div key={m.label} className="pd-card-row">
+                    <div>
+                      <div style={{fontSize:".76rem",color:"var(--t1)",fontWeight:400}}>{m.label}</div>
+                      <div style={{fontSize:".6rem",color:"var(--taupe)",fontWeight:300,marginTop:2}}>{m.sub}</div>
+                    </div>
+                    <div style={{fontFamily:"var(--serif)",fontSize:"1.1rem",color:"var(--t1)"}}>{m.val}</div>
+                  </div>
+                ))}
+                <div style={{padding:"12px 16px",fontSize:".62rem",color:"var(--taupe)",fontWeight:300,fontStyle:"italic"}}>
+                  Analytics activate once your first listing is approved and live.
+                </div>
+              </div>
+            </div>
+
+            {/* Calendar */}
+            <div className="pd-section">
+              <div className="pd-section-title">
+                {new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"})}
+              </div>
+              <div className="pd-card" style={{padding:"16px"}}>
+                {renderCalendar()}
+                <div style={{marginTop:16,paddingTop:12,borderTop:"1px solid var(--border)",fontSize:".64rem",color:"var(--taupe)",fontWeight:300}}>
+                  Booking calendar sync available once Stripe billing is active.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick actions */}
+          <div className="pd-section" style={{marginTop:4}}>
+            <div className="pd-section-title">Quick Actions</div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12 }}>
+              {[
+                { icon:"◈", label:"Submit Listing", desc:"Add a new listing to the platform", action: () => setView("new-listing") },
+                { icon:"✉", label:"Messages", desc:"View and reply to member inquiries", action: () => setView("messages") },
+                { icon:"◌", label:"Update Profile", desc:"Edit your partner business details", action: () => setView("new-listing") },
+                { icon:"↗", label:"View Live Listings", desc:"See how your listings appear to members", action: () => window.location.href = "/" },
+              ].map(a => (
+                <div key={a.label} onClick={a.action}
+                  style={{ background:"var(--ink-m)", border:"1px solid var(--border)", borderRadius:3, padding:18, cursor:"pointer", transition:"border-color .18s" }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor="var(--bh)"}
+                  onMouseLeave={e => e.currentTarget.style.borderColor="var(--border)"}>
+                  <span style={{fontSize:"1.2rem",color:"var(--gold)",display:"block",marginBottom:8}}>{a.icon}</span>
+                  <div style={{fontSize:".76rem",color:"var(--t1)",fontWeight:400,marginBottom:4}}>{a.label}</div>
+                  <div style={{fontSize:".64rem",color:"var(--t3)",fontWeight:300,lineHeight:1.5}}>{a.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </>
+    );
+  };
+
+  // ── MESSAGES VIEW ─────────────────────────────────────────
+  const renderMessages = () => (
+    <>
+      <div className="pd-header">
+        <div className="pd-header-eyebrow">Partner Portal · Messages</div>
+        <div className="pd-header-title">Member Inquiries</div>
+      </div>
+      <div className="pd-body">
+        {inquiries.length === 0 ? (
+          <div className="pd-empty">
+            <span className="pd-empty-icon">✉</span>
+            <div className="pd-empty-text">No member inquiries yet.<br />When members express interest in your listings, their messages will appear here.</div>
+          </div>
+        ) : (
+          <div className="pd-card">
+            {inquiries.map((inq, i) => (
+              <div key={inq.id || i} style={{padding:20,borderBottom:"1px solid rgba(212,201,181,.06)"}}>
+                <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:10}}>
+                  <div>
+                    <div style={{fontSize:".8rem",color:"var(--t1)",fontWeight:400}}>{inq.service_type || "Member Inquiry"}</div>
+                    <div style={{fontSize:".6rem",color:"var(--taupe)",marginTop:2}}>
+                      {inq.requested_date ? `Requested: ${new Date(inq.requested_date).toLocaleDateString()}` : ""} · {inq.num_guests ? `${inq.num_guests} guests` : ""}
+                    </div>
+                  </div>
+                  <span style={{fontSize:".58rem",letterSpacing:".12em",textTransform:"uppercase",color:inq.resolved?"var(--green)":"var(--amber)",border:`1px solid ${inq.resolved?"rgba(91,175,132,.3)":"rgba(232,168,56,.3)"}`,padding:"3px 8px",borderRadius:2}}>
+                    {inq.resolved ? "Resolved" : "Open"}
+                  </span>
+                </div>
+                <div style={{fontSize:".76rem",color:"var(--t2)",fontWeight:300,lineHeight:1.7,background:"rgba(248,245,240,.03)",border:"1px solid var(--border)",borderRadius:2,padding:"10px 14px",marginBottom:10}}>
+                  {inq.special_notes || inq.description || "No additional notes provided."}
+                </div>
+                <div className="pd-msg-input-row" style={{padding:0,marginTop:8}}>
+                  <input className="pd-msg-input" placeholder="Reply to this inquiry..." />
+                  <button className="pd-msg-send">↑</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  );
+
+  // ── SIGNED IN RENDER ──────────────────────────────────────
   return (
     <>
       <style>{CSS}</style>
@@ -832,97 +1086,128 @@ export default function PartnerPortal() {
         </div>
       </nav>
 
-      <div className="pp-hero">
-        <div className="pp-hero-e">Partner Hub · Submit Your Listing</div>
-        <h1 className="pp-hero-h">List your business.<br /><em>Reach the right people.</em></h1>
-        <p className="pp-hero-sub">Submit your listing to appear in front of Monarc Privé members — UHNW travelers spending $2,000–$6,000/night on private estates in Scottsdale. Every listing is personally reviewed within 24–48 hours.</p>
+      <div className="pd-view">
+        {/* Sidebar nav */}
+        <div className="pd-sidebar">
+          <div className="pd-sidebar-logo">
+            <div className="pd-sidebar-co">{partnerUser.user_metadata?.company || "Partner"}</div>
+            <div className="pd-sidebar-em">{partnerUser.email}</div>
+          </div>
+          {[
+            { id:"dashboard", icon:"◈", label:"Dashboard" },
+            { id:"new-listing", icon:"＋", label:"New Listing" },
+            { id:"messages", icon:"✉", label:"Messages", badge: inquiries.filter(i=>!i.resolved).length },
+          ].map(n => (
+            <div key={n.id} className={`pd-nav-item${view===n.id?" on":""}`}
+              onClick={() => { setView(n.id); if (n.id !== "new-listing") { setSelected(null); setSubmitted(false); } }}>
+              <span className="pd-nav-icon">{n.icon}</span>
+              {n.label}
+              {n.badge > 0 && <span className="pd-nav-badge">{n.badge}</span>}
+            </div>
+          ))}
+          <div style={{marginTop:"auto",padding:"16px 20px",borderTop:"1px solid var(--border)"}}>
+            <div style={{fontSize:".58rem",color:"var(--taupe)",lineHeight:1.7,fontWeight:300}}>
+              <div style={{color:"var(--gold)",marginBottom:4}}>● Partner Account</div>
+              <div>Reviewed in 24–48hrs</div>
+              <div>Cancel anytime</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="pd-main">
+          {view === "dashboard" && renderDashboard()}
+
+          {view === "messages" && renderMessages()}
+
+          {view === "new-listing" && (
+            <>
+              <div className="pd-header">
+                <div className="pd-header-eyebrow">Partner Portal · New Listing</div>
+                <div className="pd-header-title">Submit a Listing</div>
+              </div>
+              <div style={{padding:"0 0 40px"}}>
+                {!selected ? (
+                  <div style={{ padding: "28px 36px" }}>
+                    <div style={{ fontSize: ".72rem", color: "var(--taupe)", marginBottom: 24, fontWeight: 300 }}>Select the category that best describes your business.</div>
+                    <div className="pp-pick">
+                      {CATEGORIES.map(cat => (
+                        <div key={cat.id} className="pp-pick-card" onClick={() => { setSelected(cat); setFv({}); setPhotos([]); setSubmitted(false); }}>
+                          <span className="pp-pick-icon">{cat.icon}</span>
+                          <div className="pp-pick-name">{cat.label}</div>
+                          <div className="pp-pick-price">{cat.price}</div>
+                          <div className="pp-pick-desc">{{
+                            property:"Full listing with up to 30 photos, amenities, pricing, and house rules",
+                            agent:"Agent profile with headshot, bio, specialties, and credentials",
+                            restaurant:"Dining listing with menu details, private dining, and photos",
+                            golf:"Course listing with facilities, green fees, and access info",
+                            cars:"Fleet listing with vehicle details, services, and photos",
+                            medspa:"Spa listing with services, in-villa options, and credentials",
+                            aviation:"Charter listing with fleet details and FAA credentials",
+                            yacht:"Charter company with fleet, destinations, and packages",
+                            shopping:"Boutique or stylist with brands and portfolio",
+                            wine:"Wine or spirits service with specialties",
+                            events:"Event company with capacity and portfolio",
+                            experience:"Activity listing with full details and pricing",
+                          }[cat.id]}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : submitted ? (
+                  <div style={{ padding: "44px 36px" }}>
+                    <div className="success-box">
+                      <span style={{ fontSize: "2.4rem", color: "var(--green)", display: "block", marginBottom: 14 }}>✓</span>
+                      <div style={{ fontFamily: "var(--serif)", fontSize: "1.8rem", fontWeight: 300, color: "var(--t1)", marginBottom: 10 }}>Application Submitted</div>
+                      <p style={{ fontSize: ".8rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, maxWidth: 480, margin: "0 auto 20px" }}>
+                        Your <strong style={{ color: "var(--t1)" }}>{selected.label}</strong> listing has been received and will be reviewed within 24–48 hours.
+                      </p>
+                      <p style={{ fontSize: ".7rem", color: "var(--taupe)", fontWeight: 300, marginBottom: 24 }}>Billing of <strong style={{ color: "var(--gold)" }}>{selected.price}</strong> begins only upon approval.</p>
+                      <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+                        <button className="submit-btn" style={{ width: "auto", padding: "12px 28px" }} onClick={resetForm}>Back to Dashboard</button>
+                        <button onClick={() => { setSubmitted(false); setSelected(null); }} style={{ background: "none", border: "1px solid var(--border)", color: "var(--t2)", fontFamily: "var(--sans)", fontSize: ".58rem", letterSpacing: ".18em", textTransform: "uppercase", padding: "12px 28px", cursor: "pointer", borderRadius: 2 }}>Submit Another</button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="pp-body" style={{display:"grid",gridTemplateColumns:"220px 1fr",gap:0,minHeight:"calc(100vh - 130px)"}}>
+                    <div className="pp-sidebar" style={{position:"sticky",top:0,height:"calc(100vh - 56px)"}}>
+                      <div className="pp-sidebar-label">Categories</div>
+                      {CATEGORIES.map(cat => (
+                        <div key={cat.id} className={`pp-cat${selected?.id === cat.id ? " on" : ""}`} onClick={() => { setSelected(cat); setFv({}); setPhotos([]); setSubmitted(false); }}>
+                          <span className="pp-cat-icon">{cat.icon}</span>
+                          <div className="pp-cat-info">
+                            <div className="pp-cat-name">{cat.label}</div>
+                            <div className="pp-cat-price">{cat.price}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="pp-main" style={{padding:"28px 36px"}}>
+                      <div className="pp-form-title">{selected.icon} {selected.label}</div>
+                      <div className="pp-form-sub">Complete all required fields (*) and upload photos.</div>
+                      <div className="price-note">
+                        <div className="price-note-val">{selected.price}</div>
+                        <div className="price-note-sub">Monthly flat fee · Billed only after approval · Cancel anytime</div>
+                      </div>
+                      {error && <div className="error-box">⚠ {error}</div>}
+                      {renderForm()}
+                      <div style={{ marginTop: 24, padding: "20px 0", borderTop: "1px solid var(--border)" }}>
+                        <button className="submit-btn" onClick={handleSubmit} disabled={submitting}>
+                          {submitting ? "Submitting..." : `Submit ${selected.label} Application →`}
+                        </button>
+                        <div style={{ fontSize: ".6rem", color: "var(--taupe)", textAlign: "center", marginTop: 10, lineHeight: 1.7 }}>
+                          By submitting you agree to our Partner Terms. Billing of {selected.price} begins only after approval.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
-
-      {!selected ? (
-        <div style={{ padding: "36px 44px" }}>
-          <div style={{ fontFamily: "var(--serif)", fontSize: "1.4rem", color: "var(--t1)", marginBottom: 6 }}>Choose your listing category</div>
-          <div style={{ fontSize: ".72rem", color: "var(--taupe)", marginBottom: 24, fontWeight: 300 }}>Select the category that best describes your business.</div>
-          <div className="pp-pick">
-            {CATEGORIES.map(cat => (
-              <div key={cat.id} className="pp-pick-card" onClick={() => { setSelected(cat); setFv({}); setPhotos([]); setSubmitted(false); }}>
-                <span className="pp-pick-icon">{cat.icon}</span>
-                <div className="pp-pick-name">{cat.label}</div>
-                <div className="pp-pick-price">{cat.price}</div>
-                <div className="pp-pick-desc">{{
-                  property:"Full Airbnb-style listing with up to 30 photos, amenities, pricing, and house rules",
-                  agent:"Agent profile with headshot, bio, specialties, and sales credentials",
-                  restaurant:"Dining listing with menu details, private dining info, and up to 20 photos",
-                  golf:"Course listing with facilities, green fees, and access info",
-                  cars:"Fleet listing with vehicle details, services, and up to 30 photos",
-                  medspa:"Spa listing with services menu, in-villa options, and credentials",
-                  aviation:"Charter listing with fleet details, service types, and FAA credentials",
-                  yacht:"Charter company with fleet, destinations, and packages",
-                  shopping:"Boutique or stylist with brands, services, and portfolio",
-                  wine:"Wine or spirits service with specialties and tasting options",
-                  events:"Event company with capacity, specialty, and portfolio",
-                  experience:"Activity listing with full details, pricing, and group size",
-                }[cat.id]}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : submitted ? (
-        <div style={{ padding: "44px" }}>
-          <div className="success-box">
-            <span style={{ fontSize: "2.4rem", color: "var(--green)", display: "block", marginBottom: 14 }}>✓</span>
-            <div style={{ fontFamily: "var(--serif)", fontSize: "1.8rem", fontWeight: 300, color: "var(--t1)", marginBottom: 10 }}>Application Submitted</div>
-            <p style={{ fontSize: ".8rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, maxWidth: 480, margin: "0 auto 20px" }}>
-              Your <strong style={{ color: "var(--t1)" }}>{selected.label}</strong> listing has been received. Our curation team will review within 24–48 hours and contact you at {partnerUser.email}.
-            </p>
-            <p style={{ fontSize: ".7rem", color: "var(--taupe)", fontWeight: 300, marginBottom: 24 }}>Billing of <strong style={{ color: "var(--gold)" }}>{selected.price}</strong> begins only upon approval.</p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-              <button className="submit-btn" style={{ width: "auto", padding: "12px 28px" }} onClick={resetForm}>Submit Another Listing</button>
-              <button onClick={() => window.location.href = "/"} style={{ background: "none", border: "1px solid var(--border)", color: "var(--t2)", fontFamily: "var(--sans)", fontSize: ".58rem", letterSpacing: ".18em", textTransform: "uppercase", padding: "12px 28px", cursor: "pointer", borderRadius: 2 }}>Return to Site</button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="pp-body">
-          <div className="pp-sidebar">
-            <div className="pp-sidebar-label">Categories</div>
-            {CATEGORIES.map(cat => (
-              <div key={cat.id} className={`pp-cat${selected?.id === cat.id ? " on" : ""}`} onClick={() => { setSelected(cat); setFv({}); setPhotos([]); setSubmitted(false); }}>
-                <span className="pp-cat-icon">{cat.icon}</span>
-                <div className="pp-cat-info">
-                  <div className="pp-cat-name">{cat.label}</div>
-                  <div className="pp-cat-price">{cat.price}</div>
-                </div>
-              </div>
-            ))}
-            <div style={{ padding: "20px 20px 0", borderTop: "1px solid var(--border)", marginTop: 12 }}>
-              <div style={{ fontSize: ".6rem", color: "var(--taupe)", lineHeight: 1.7, fontWeight: 300 }}>
-                <div style={{ color: "var(--gold)", marginBottom: 4 }}>● Reviewed promptly</div>
-                <div>Billing starts on approval</div>
-                <div>Cancel anytime · No hidden fees</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="pp-main">
-            <div className="pp-form-title">{selected.icon} {selected.label}</div>
-            <div className="pp-form-sub">Complete all required fields (*) and upload photos. Our team will review.</div>
-            <div className="price-note">
-              <div className="price-note-val">{selected.price}</div>
-              <div className="price-note-sub">Monthly flat fee · Billed only after approval · Cancel anytime</div>
-            </div>
-            {error && <div className="error-box">⚠ {error}</div>}
-            {renderForm()}
-            <div style={{ marginTop: 24, padding: "20px 0", borderTop: "1px solid var(--border)" }}>
-              <button className="submit-btn" onClick={handleSubmit} disabled={submitting}>
-                {submitting ? "Submitting..." : `Submit ${selected.label} Application →`}
-              </button>
-              <div style={{ fontSize: ".6rem", color: "var(--taupe)", textAlign: "center", marginTop: 10, lineHeight: 1.7 }}>
-                By submitting you agree to our Partner Terms. Billing of {selected.price} begins only after approval.
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
