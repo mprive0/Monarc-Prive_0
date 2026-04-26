@@ -409,7 +409,6 @@ export default function MonarcPrive() {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [partnerBookingPrompt, setPartnerBookingPrompt] = useState(false);
-  const [userRole, setUserRole] = useState(null); // 'member' | 'partner' | null
   const [memberData, setMemberData] = useState(null);
   const [memberBookings, setMemberBookings] = useState([]);
   const [memberLoading, setMemberLoading] = useState(false);
@@ -2026,40 +2025,37 @@ export default function MonarcPrive() {
                 </div>
               </div>
             </>}
+          </div>
+        </div>
+      )}
 
-          </div>   
-        </div>     
-      )}           
-        
-            {/* Partner booking prompt */}
-            {partnerBookingPrompt && (
-              <div className="mov" onClick={() => setPartnerBookingPrompt(false)}>
-                <div className="mb" style={{ maxWidth: 420 }} onClick={e => e.stopPropagation()}>
-                  <div className="mh">
-                    <button className="mc" onClick={() => setPartnerBookingPrompt(false)}>✕</button>
-                    <div className="me">Partner Account</div>
-                    <div className="mt">Members only</div>
-                    <div className="ms">Bookings require a separate member account</div>
-                  </div>
-                  <div className="mbd">
-                    <div style={{ fontSize: ".78rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, marginBottom: 20, padding: "14px 16px", background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.12)", borderRadius: 2 }}>
-                      You are currently signed in as a <strong style={{ color: "var(--gold)" }}>Partner</strong>. To book estates and request services, you need a separate <strong style={{ color: "var(--t1)" }}>Member account</strong>.
-                    </div>
-                    <button className="btnf" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("join"); }}>
-                      Create a Member Account →
-                    </button>
-                    <button className="btng" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("login"); }}>
-                      Sign In as Member
-                    </button>
-                    <div style={{ textAlign: "center", marginTop: 12, fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
-                      Your partner account will remain active. You can switch back anytime.
-                    </div>
-                  </div>
-                </div>
+      {partnerBookingPrompt && (
+        <div className="mov" onClick={() => setPartnerBookingPrompt(false)}>
+          <div className="mb" style={{ maxWidth: 420 }} onClick={e => e.stopPropagation()}>
+            <div className="mh">
+              <button className="mc" onClick={() => setPartnerBookingPrompt(false)}>✕</button>
+              <div className="me">Partner Account</div>
+              <div className="mt">Members only</div>
+              <div className="ms">Bookings require a separate member account</div>
+            </div>
+            <div className="mbd">
+              <div style={{ fontSize: ".78rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, marginBottom: 20, padding: "14px 16px", background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.12)", borderRadius: 2 }}>
+                You are currently signed in as a <strong style={{ color: "var(--gold)" }}>Partner</strong>. To book estates and request services, you need a separate <strong style={{ color: "var(--t1)" }}>Member account</strong>.
               </div>
-            )}
-     
-         
+              <button className="btnf" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("join"); }}>
+                Create a Member Account →
+              </button>
+              <button className="btng" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("login"); }}>
+                Sign In as Member
+              </button>
+              <div style={{ textAlign: "center", marginTop: 12, fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
+                Your partner account will remain active. You can switch back anytime.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── TOAST NOTIFICATIONS ── */}
       {toast && (
         <div style={{
