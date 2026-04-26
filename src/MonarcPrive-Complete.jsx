@@ -473,6 +473,15 @@ export default function MonarcPrive() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Auto-open member login if redirected from partner portal switch
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("member-login") === "true") {
+      openModal("login");
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, []);
+
   // Load member's data from Supabase
   const loadMemberData = async (user) => {
     if (!supabase || !user) return;
@@ -788,15 +797,7 @@ export default function MonarcPrive() {
           <span className="ftl" onClick={() => setPage("wine")}>Wine & Spirits</span>
           <span className="ftl" onClick={() => setPage("shopping")}>Luxury Shopping</span>
         </div>
-        <div>
-          <div className="ftct">List Your Business</div>
-          <span className="ftl" onClick={() => setPage("partners")}>List Estate </span>
-          <span className="ftl" onClick={() => setPage("partners")}>Agent Ad </span>
-          <span className="ftl" onClick={() => setPage("partners")}>Restaurant </span>
-          <span className="ftl" onClick={() => setPage("partners")}>Golf Club </span>
-          <span className="ftl" onClick={() => setPage("partners")}>Luxury Cars</span>
-          <span className="ftl" onClick={() => setPage("partners")}>Aviation </span>
-        </div>
+
         <div>
           <div className="ftct">Company</div>
           <span className="ftl" onClick={() => setPage("about")}>About Monarc Prive</span>
@@ -1760,7 +1761,14 @@ export default function MonarcPrive() {
                   if (error) {
                     if (errEl) { errEl.textContent = error.message; errEl.style.display = "block"; }
                   } else {
+                    const { data: profile } = await supabase.from("profiles").select("role").eq("id", data.user.id).single();
+                    if (profile?.role === "partner") {
+                      await supabase.auth.signOut();
+                      if (errEl) { errEl.textContent = "This is a Partner account. Please sign in at the Partner Portal."; errEl.style.display = "block"; }
+                      return;
+                    }
                     setCurrentUser(data.user);
+                    setUserRole(profile?.role || "member");
                     if (data.user) loadMemberData(data.user);
                     closeModal();
                     setPage("portal");
@@ -1768,6 +1776,9 @@ export default function MonarcPrive() {
                   }
                 }}>Sign In</button>
                 <div className="sw">No account? <span onClick={() => openModal("join")}>Apply for membership</span></div>
+                <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(212,201,181,.08)", textAlign: "center", fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
+                  Partner? <span style={{ color: "var(--gold)", cursor: "pointer" }} onClick={() => { closeModal(); window.location.href = "/partner"; }}>Sign in at the Partner Portal →</span>
+                </div>
               </div>
             </>}
             {modal === "join" && <>
@@ -1786,6 +1797,9 @@ export default function MonarcPrive() {
                   openModal("questionnaire");
                 }}>Continue to Questions →</button>
                 <div className="sw">Already a member? <span onClick={() => openModal("login")}>Sign in</span></div>
+                <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(212,201,181,.08)", textAlign: "center", fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
+                  Want to list your business? <span style={{ color: "var(--gold)", cursor: "pointer" }} onClick={() => { closeModal(); window.location.href = "/partner"; }}>Apply as a Partner →</span>
+                </div>
               </div>
             </>}
             {modal === "questionnaire" && <>
@@ -1863,7 +1877,7 @@ export default function MonarcPrive() {
                     if (supabase && email && password) {
                       const { data: authData, error: authError } = await supabase.auth.signUp({
                         email, password,
-                        options: { data: { first_name: firstName, last_name: lastName, full_name: fullName, phone } }
+                        options: { data: { first_name: firstName, last_name: lastName, full_name: fullName, phone, role: "member" } }
                       });
                       if (authError && !authError.message.includes("already registered")) {
                         throw new Error(authError.message);
