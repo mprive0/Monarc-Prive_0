@@ -407,6 +407,8 @@ export default function MonarcPrive() {
   const ADMIN_PASSWORD = "MP@Admin2025!";
   // Member portal state
   const [currentUser, setCurrentUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+  const [partnerBookingPrompt, setPartnerBookingPrompt] = useState(false);
   const [userRole, setUserRole] = useState(null); // 'member' | 'partner' | null
   const [memberData, setMemberData] = useState(null);
   const [memberBookings, setMemberBookings] = useState([]);
@@ -456,6 +458,7 @@ export default function MonarcPrive() {
       if (session?.user) {
         const { data: profile } = await supabase.from("profiles").select("role").eq("id", session.user.id).single();
         setUserRole(profile?.role || "member");
+        if (profile?.role !== "partner") loadMemberData(session.user);
       }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -636,7 +639,7 @@ export default function MonarcPrive() {
   ];
 
   const PropCard = ({ p, idx }) => (
-    <div className="card" onClick={() => currentUser ? openModal("book", p) : openModal("join")}>
+    <div className="card" onClick={() => !currentUser ? openModal("join") : userRole === "partner" ? setPartnerBookingPrompt(true) : openModal("book", p)}>
       <div className="ciw">
         <img className="ci" src={p.img} alt={p.name} loading="lazy" />
         <span className="cbadge">{p.badge}</span>
@@ -648,14 +651,14 @@ export default function MonarcPrive() {
         <div className="ctags">{p.tags.slice(0, 3).map(t => <span key={t} className="ctag">{t}</span>)}</div>
         <div className="cf">
           <div><span className="cp">${p.price.toLocaleString()}</span><div className="cps">{p.beds}bd · {p.baths}ba · Sleeps {p.guests}</div></div>
-          <button className="cc" onClick={() => currentUser ? openModal("book", p) : openModal("join")}>Request →</button>
+          <button className="cc" onClick={() => !currentUser ? openModal("join") : userRole === "partner" ? setPartnerBookingPrompt(true) : openModal("book", p)}>Request →</button>
         </div>
       </div>
     </div>
   );
 
   const RestCard = ({ r }) => {
-    const handleClick = () => currentUser ? openModal("concierge", { name: r.name, type: "Dining Reservation", price: r.price }) : openModal("join");
+    const handleClick = () => !currentUser ? openModal("join") : userRole === "partner" ? setPartnerBookingPrompt(true) : openModal("concierge", { name: r.name, type: "Dining Reservation", price: r.price });
     return (
       <div className="card" onClick={handleClick}>
         <div className="ciw" style={{ paddingTop: "52%" }}>
@@ -679,7 +682,7 @@ export default function MonarcPrive() {
   };
 
   const CarCard = ({ c }) => {
-    const handleClick = () => currentUser ? openModal("concierge", { name: c.name, type: "Luxury Car Rental", price: `$${c.price.toLocaleString()}/day` }) : openModal("join");
+    const handleClick = () => !currentUser ? openModal("join") : userRole === "partner" ? setPartnerBookingPrompt(true) : openModal("concierge", { name: c.name, type: "Luxury Car Rental", price: `$${c.price.toLocaleString()}/day` });
     return (
       <div className="card" onClick={handleClick}>
         <div className="ciw">
@@ -707,7 +710,7 @@ export default function MonarcPrive() {
   const LuxCard = ({ item, onClick }) => {
     const handleClick = () => {
       if (currentUser) {
-        openModal("concierge", { name: item.name, type: item.type || item.category, price: item.price });
+        userRole === "partner" ? setPartnerBookingPrompt(true) : openModal("concierge", { name: item.name, type: item.type || item.category, price: item.price });
       } else {
         openModal("join");
       }
@@ -732,7 +735,7 @@ export default function MonarcPrive() {
   };
 
   const ExpCard = ({ e }) => {
-    const handleClick = () => currentUser ? openModal("concierge", { name: e.name, type: e.category, price: `$${e.price.toLocaleString()} per ${e.per}` }) : openModal("join");
+    const handleClick = () => !currentUser ? openModal("join") : userRole === "partner" ? setPartnerBookingPrompt(true) : openModal("concierge", { name: e.name, type: e.category, price: `$${e.price.toLocaleString()} per ${e.per}` });
     return (
       <div className="card" onClick={handleClick}>
         <div className="ciw">
@@ -997,16 +1000,9 @@ export default function MonarcPrive() {
         <div className="nav-right">
           {currentUser ? (
             <>
-              <button className="nb" onClick={() => {
-                if (userRole === "partner") {
-                  window.location.href = "/partner";
-                } else {
-                  setPage("portal");
-                }
-              }} style={{ color: "var(--gold)", borderColor: "rgba(201,169,110,.3)" }}>
+              <button className="nb" onClick={() => userRole === "partner" ? window.location.href = "/partner" : setPage("portal")} style={{ color: "var(--gold)", borderColor: "rgba(201,169,110,.3)" }}>
                 {userRole === "partner" ? "◈ Partner Portal" : "◈ My Portal"}
               </button>
-              <button className="nb" onClick={signOut}>Sign Out</button>
             </>
           ) : (
             <>
@@ -1271,8 +1267,7 @@ export default function MonarcPrive() {
                     Welcome back{currentUser.user_metadata?.first_name ? `, ${currentUser.user_metadata.first_name}` : ""}
                   </div>
                   <div style={{ fontSize: ".68rem", color: "var(--taupe)", marginTop: 4, fontWeight: 300 }}>
-                    {memberData ? `${(memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")} Member · Active until ${new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}` : "Member in good standing"}
-                  </div>
+                        {memberData ? `${(memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")} Member · Active until ${new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}` : userRole === "partner" ? "Partner Account" : "Member in good standing"}</div>
                 </div>
                 <div style={{ textAlign: "right" }}>
                   {memberData && (
@@ -1292,7 +1287,7 @@ export default function MonarcPrive() {
                   ["Bookings", memberBookings.length, "total stays"],
                   ["Confirmed", memberBookings.filter(b => b.status === "confirmed").length, "upcoming"],
                   ["Pending", memberBookings.filter(b => b.status === "pending").length, "awaiting approval"],
-                  ["Tier", (memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated"), "membership level"],
+                      ["Tier", userRole === "partner" ? "Partner" : (memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated"), userRole === "partner" ? "partner account" : "membership level"],
                 ].map(([lbl, val, sub]) => (
                   <div key={lbl} style={{ background: "var(--ink-m)", border: "1px solid var(--border)", borderRadius: 3, padding: "16px 18px" }}>
                     <div style={{ fontSize: ".52rem", letterSpacing: ".2em", textTransform: "uppercase", color: "var(--taupe)", marginBottom: 6 }}>{lbl}</div>
@@ -1375,8 +1370,8 @@ export default function MonarcPrive() {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
                   {[
                     ["Email", currentUser.email],
-                    ["Member Since", memberData?.created_at ? new Date(memberData.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "—"],
-                    ["Membership Tier", (memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")],
+                        ["Member Since", memberData?.created_at ? new Date(memberData.created_at).getFullYear().toString() : currentUser?.created_at ? new Date(currentUser.created_at).getFullYear().toString() : new Date().getFullYear().toString()],
+                        ["Membership Tier", userRole === "partner" ? "Partner" : (memberData?.tier ? memberData.tier.charAt(0).toUpperCase() + memberData.tier.slice(1) : "Curated")],
                     ["Valid Through", memberData?.expires_at ? new Date(memberData.expires_at).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "—"],
                   ].map(([lbl, val]) => (
                     <div key={lbl} style={{ padding: "10px 14px", background: "rgba(248,245,240,.03)", borderRadius: 2, border: "1px solid rgba(212,201,181,.06)" }}>
@@ -2031,9 +2026,40 @@ export default function MonarcPrive() {
                 </div>
               </div>
             </>}
-          </div>
-        </div>
-      )}
+
+          </div>   
+        </div>     
+      )}           
+        
+            {/* Partner booking prompt */}
+            {partnerBookingPrompt && (
+              <div className="mov" onClick={() => setPartnerBookingPrompt(false)}>
+                <div className="mb" style={{ maxWidth: 420 }} onClick={e => e.stopPropagation()}>
+                  <div className="mh">
+                    <button className="mc" onClick={() => setPartnerBookingPrompt(false)}>✕</button>
+                    <div className="me">Partner Account</div>
+                    <div className="mt">Members only</div>
+                    <div className="ms">Bookings require a separate member account</div>
+                  </div>
+                  <div className="mbd">
+                    <div style={{ fontSize: ".78rem", color: "var(--t2)", fontWeight: 300, lineHeight: 1.8, marginBottom: 20, padding: "14px 16px", background: "rgba(201,169,110,.05)", border: "1px solid rgba(201,169,110,.12)", borderRadius: 2 }}>
+                      You are currently signed in as a <strong style={{ color: "var(--gold)" }}>Partner</strong>. To book estates and request services, you need a separate <strong style={{ color: "var(--t1)" }}>Member account</strong>.
+                    </div>
+                    <button className="btnf" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("join"); }}>
+                      Create a Member Account →
+                    </button>
+                    <button className="btng" onClick={() => { setPartnerBookingPrompt(false); signOut(); openModal("login"); }}>
+                      Sign In as Member
+                    </button>
+                    <div style={{ textAlign: "center", marginTop: 12, fontSize: ".64rem", color: "var(--taupe)", fontWeight: 300 }}>
+                      Your partner account will remain active. You can switch back anytime.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+     
+         
       {/* ── TOAST NOTIFICATIONS ── */}
       {toast && (
         <div style={{
